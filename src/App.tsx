@@ -10,6 +10,7 @@ import {fetchGames, getMatchStatus} from './lib/games';
 import {buildMatchCards} from './lib/matches';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboard} from './lib/ranking';
+import {buildWhatIf} from './lib/whatif';
 import type {GamesFile} from './lib/types';
 
 const REFRESH_INTERVAL_MS =
@@ -91,6 +92,19 @@ export default function App() {
 		[participants, games]
 	);
 
+	const whatIf = useMemo(
+		() =>
+			Object.fromEntries(
+				cards
+					.filter((card) => card.status === 'live')
+					.map((card) => [
+						card.matchNo,
+						buildWhatIf(participants, games, card.matchNo),
+					])
+			),
+		[cards, participants, games]
+	);
+
 	const liveCount = games.filter(
 		(game) => getMatchStatus(game) === 'live'
 	).length;
@@ -151,7 +165,7 @@ export default function App() {
 				{selected ? (
 					<ParticipantView games={games} participant={selected} />
 				) : tab === 'matches' ? (
-					<MatchesView cards={cards} />
+					<MatchesView cards={cards} whatIf={whatIf} />
 				) : tab === 'race' ? (
 					<EvolutionChart evolution={evolution} />
 				) : (

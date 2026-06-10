@@ -11,6 +11,8 @@ via a scheduled GitHub Action that commits `public/games.json`.
   CSV). Drop a file in, rebuild, done. Predictions are frozen before kickoff.
 - **Kickoff times** — the sheet records them in Brasília time (UTC-3); the UI
   converts each kickoff to the viewer's local timezone at render time.
+- **What if…** — live match cards simulate one more goal for each side and
+  show who gains, who drops, and how the ranking reshuffles.
 - **Scores** — `.github/workflows/update-scores.yml` runs every 15 minutes
   and walks a source chain server-side: **FIFA's public JSON API**
   (`api.fifa.com`, live scores) → ESPN scoreboard → the

@@ -1,9 +1,12 @@
 import {kickoffDate} from '../lib/kickoff';
 import type {MatchCard} from '../lib/matches';
+import type {WhatIfScenario} from '../lib/whatif';
 import {StatusChip, TIER_STYLES} from './StatusChip';
+import {WhatIfPanel} from './WhatIfPanel';
 
 interface MatchesViewProps {
 	cards: MatchCard[];
+	whatIf: Record<number, WhatIfScenario[]>;
 }
 
 interface DayGroup {
@@ -82,7 +85,7 @@ function EntryPill({
 	);
 }
 
-export function MatchesView({cards}: MatchesViewProps) {
+export function MatchesView({cards, whatIf}: MatchesViewProps) {
 	return (
 		<div className="space-y-6">
 			{groupByLocalDay(cards).map((group) => (
@@ -138,6 +141,12 @@ export function MatchesView({cards}: MatchesViewProps) {
 										/>
 									))}
 								</div>
+
+								{card.status === 'live' && (
+									<WhatIfPanel
+										scenarios={whatIf[card.matchNo] ?? []}
+									/>
+								)}
 							</article>
 						))}
 					</div>
