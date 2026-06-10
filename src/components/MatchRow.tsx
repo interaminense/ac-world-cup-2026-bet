@@ -1,4 +1,5 @@
 import {realScoreFor} from '../lib/games';
+import {formatKickoff} from '../lib/kickoff';
 import type {ScoredPrediction} from '../lib/ranking';
 import {POINTS} from '../lib/scoring';
 import type {MatchStatus} from '../lib/types';
@@ -69,7 +70,7 @@ export function MatchRow({scored}: {scored: ScoredPrediction}) {
 			</td>
 
 			<td className="hidden px-3 py-2.5 text-xs text-slate-400 sm:table-cell">
-				{prediction.date} {prediction.time}
+				{formatKickoff(prediction.date, prediction.time)}
 			</td>
 
 			<td className="px-3 py-2.5 text-sm text-white">

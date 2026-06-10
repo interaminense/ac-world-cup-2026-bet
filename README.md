@@ -9,6 +9,8 @@ via a scheduled GitHub Action that commits `public/games.json`.
 - **Predictions** — one CSV per participant in `src/data/predictions/`,
   exported from the pool's Google Sheet (per-person tab → File → Download →
   CSV). Drop a file in, rebuild, done. Predictions are frozen before kickoff.
+- **Kickoff times** — the sheet records them in Brasília time (UTC-3); the UI
+  converts each kickoff to the viewer's local timezone at render time.
 - **Scores** — `.github/workflows/update-scores.yml` runs hourly, fetches the
   [worldcup26.ir](https://github.com/rezarahiminia/worldcup2026) API
   server-side (it has no CORS), normalizes it into `public/games.json`, and
