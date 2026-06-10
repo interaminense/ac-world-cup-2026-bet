@@ -1,9 +1,11 @@
 import {useEffect, useMemo, useState} from 'react';
 
+import {EvolutionChart} from './components/EvolutionChart';
 import {Header} from './components/Header';
 import {Leaderboard} from './components/Leaderboard';
 import {MatchesView} from './components/MatchesView';
 import {ParticipantView} from './components/ParticipantView';
+import {buildEvolution} from './lib/evolution';
 import {fetchGames, getMatchStatus} from './lib/games';
 import {buildMatchCards} from './lib/matches';
 import {loadParticipants} from './lib/predictions';
@@ -84,6 +86,11 @@ export default function App() {
 		[participants, games]
 	);
 
+	const evolution = useMemo(
+		() => buildEvolution(participants, games),
+		[participants, games]
+	);
+
 	const liveCount = games.filter(
 		(game) => getMatchStatus(game) === 'live'
 	).length;
@@ -123,6 +130,13 @@ export default function App() {
 						⚽ Matches
 					</TabButton>
 
+					<TabButton
+						active={tab === 'race'}
+						onClick={() => setTab('race')}
+					>
+						📈 Race
+					</TabButton>
+
 					{participants.map((participant) => (
 						<TabButton
 							active={tab === participant.name}
@@ -138,6 +152,8 @@ export default function App() {
 					<ParticipantView games={games} participant={selected} />
 				) : tab === 'matches' ? (
 					<MatchesView cards={cards} />
+				) : tab === 'race' ? (
+					<EvolutionChart evolution={evolution} />
 				) : (
 					<Leaderboard onSelect={setTab} rows={rows} />
 				)}
