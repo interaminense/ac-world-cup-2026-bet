@@ -10,7 +10,7 @@ import {buildEvolution} from './lib/evolution';
 import {fetchGames, getMatchStatus} from './lib/games';
 import {buildMatchCards} from './lib/matches';
 import {loadParticipants} from './lib/predictions';
-import {buildLeaderboard} from './lib/ranking';
+import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildWhatIf} from './lib/whatif';
 import type {GamesFile} from './lib/types';
 
@@ -85,7 +85,7 @@ export default function App() {
 	const games = gamesFile?.games ?? [];
 
 	const rows = useMemo(
-		() => buildLeaderboard(participants, games),
+		() => buildLeaderboardWithMovement(participants, games),
 		[participants, games]
 	);
 

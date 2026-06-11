@@ -1,5 +1,6 @@
 import {scoreParticipant} from '../lib/ranking';
 import type {Game, Participant} from '../lib/types';
+import {Avatar} from './Avatar';
 import {MatchRow} from './MatchRow';
 
 interface ParticipantViewProps {
@@ -12,19 +13,26 @@ export function ParticipantView({games, participant}: ParticipantViewProps) {
 
 	return (
 		<div className="space-y-4">
-			<div className="flex items-end justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4">
-				<div>
-					<h2 className="font-display text-2xl font-bold text-white">
-						{participant.name}
-					</h2>
+			<div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+				<div className="flex items-center gap-5">
+					<Avatar
+						className="h-32 w-32 rounded-2xl text-4xl sm:h-64 sm:w-64"
+						name={participant.name}
+					/>
 
-					<p className="text-sm text-slate-400">
-						{exactCount} exact score{exactCount === 1 ? '' : 's'}
-					</p>
+					<div>
+						<h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
+							{participant.name}
+						</h2>
+
+						<p className="text-sm text-slate-400">
+							{exactCount} exact score{exactCount === 1 ? '' : 's'}
+						</p>
+					</div>
 				</div>
 
 				<div className="text-right">
-					<p className="font-display text-4xl font-bold text-amber-400">
+					<p className="font-display text-4xl font-bold text-amber-400 sm:text-5xl">
 						{total}
 					</p>
 

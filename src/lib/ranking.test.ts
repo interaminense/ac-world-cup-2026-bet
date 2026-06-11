@@ -1,6 +1,10 @@
 import {describe, expect, it} from 'vitest';
 
-import {buildLeaderboard, scoreParticipant} from './ranking';
+import {
+	buildLeaderboard,
+	buildLeaderboardWithMovement,
+	scoreParticipant,
+} from './ranking';
 import type {Game, Participant} from './types';
 
 function makeGame(overrides: Partial<Game> = {}): Game {
@@ -138,5 +142,75 @@ describe('buildLeaderboard', () => {
 		]);
 
 		expect(rows[0].exactCount).toBe(1);
+	});
+});
+
+describe('buildLeaderboardWithMovement', () => {
+	function makeTwoMatchParticipant(
+		name: string,
+		bets: Array<[number, number]>
+	): Participant {
+		return {
+			name,
+			predictions: bets.map(([p1, p2], index) => ({
+				date: index === 0 ? 'Jun/11' : 'Jun/12',
+				group: 'Group A',
+				matchNo: index + 1,
+				p1,
+				p2,
+				team1: index === 0 ? 'Mexico' : 'Canada',
+				team2: index === 0 ? 'South Africa' : 'Qatar',
+				time: '16:00',
+			})),
+		};
+	}
+
+	const GAME_1 = makeGame({
+		awayScore: 1,
+		finished: true,
+		homeScore: 2,
+		localDate: '2026-06-11T19:00:00Z',
+		timeElapsed: 'finished',
+	});
+
+	const GAME_2 = makeGame({
+		awayScore: 0,
+		awayTeam: 'Qatar',
+		finished: true,
+		homeScore: 1,
+		homeTeam: 'Canada',
+		id: 2,
+		localDate: '2026-06-12T19:00:00Z',
+		timeElapsed: 'finished',
+	});
+
+	it('reports zero movement when nothing has finished', () => {
+		const rows = buildLeaderboardWithMovement(
+			[makeParticipant('Ana', 2, 1)],
+			[makeGame()]
+		);
+
+		expect(rows[0].movement).toBe(0);
+	});
+
+	it('compares ranks before and after the latest finished game', () => {
+		const ana = makeTwoMatchParticipant('Ana', [
+			[2, 1],
+			[0, 0],
+		]);
+		const bia = makeTwoMatchParticipant('Bia', [
+			[2, 0],
+			[1, 0],
+		]);
+
+		const rows = buildLeaderboardWithMovement([ana, bia], [GAME_1, GAME_2]);
+
+		const biaRow = rows.find((row) => row.name === 'Bia')!;
+		const anaRow = rows.find((row) => row.name === 'Ana')!;
+
+		expect(biaRow.rank).toBe(1);
+		expect(biaRow.movement).toBe(1);
+		expect(anaRow.rank).toBe(2);
+		expect(anaRow.movement).toBe(-1);
 	});
 });

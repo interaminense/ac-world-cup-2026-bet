@@ -62,6 +62,7 @@ export function scoreParticipant(
 
 export interface LeaderboardRow {
 	exactCount: number;
+	movement?: number;
 	name: string;
 	rank: number;
 	total: number;
@@ -95,4 +96,46 @@ export function buildLeaderboard(
 			total: score.total,
 		};
 	});
+}
+
+export function buildLeaderboardWithMovement(
+	participants: Participant[],
+	games: Game[]
+): LeaderboardRow[] {
+	const current = buildLeaderboard(participants, games);
+
+	const finishedTimes = games
+		.filter((game) => getMatchStatus(game) === 'finished')
+		.map((game) => new Date(game.localDate).getTime() || 0);
+
+	if (finishedTimes.length === 0) {
+		return current.map((row) => ({...row, movement: 0}));
+	}
+
+	const lastTime = Math.max(...finishedTimes);
+
+	const masked = games.map((game) =>
+		getMatchStatus(game) === 'finished' &&
+		(new Date(game.localDate).getTime() || 0) === lastTime
+			? {
+					...game,
+					awayScore: 0,
+					finished: false,
+					homeScore: 0,
+					timeElapsed: 'notstarted',
+				}
+			: game
+	);
+
+	const previousRanks = new Map(
+		buildLeaderboard(participants, masked).map((row) => [
+			row.name,
+			row.rank,
+		])
+	);
+
+	return current.map((row) => ({
+		...row,
+		movement: (previousRanks.get(row.name) ?? row.rank) - row.rank,
+	}));
 }
