@@ -5,6 +5,7 @@ import {Header} from './components/Header';
 import {Leaderboard} from './components/Leaderboard';
 import {MatchesView} from './components/MatchesView';
 import {ParticipantView} from './components/ParticipantView';
+import {RulesView} from './components/RulesView';
 import {buildEvolution} from './lib/evolution';
 import {fetchGames, getMatchStatus} from './lib/games';
 import {buildMatchCards} from './lib/matches';
@@ -166,6 +167,13 @@ export default function App() {
 					>
 						🎯 Bets
 					</TabButton>
+
+					<TabButton
+						active={tab === 'rules'}
+						onClick={() => setTab('rules')}
+					>
+						📜 Rules
+					</TabButton>
 				</nav>
 
 				{tab === 'bets' && (
@@ -192,6 +200,8 @@ export default function App() {
 					<MatchesView cards={cards} whatIf={whatIf} />
 				) : tab === 'race' ? (
 					<EvolutionChart evolution={evolution} />
+				) : tab === 'rules' ? (
+					<RulesView />
 				) : (
 					<Leaderboard onSelect={selectBettor} rows={rows} />
 				)}

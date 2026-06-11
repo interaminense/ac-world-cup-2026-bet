@@ -17,6 +17,8 @@ via a scheduled GitHub Action that commits `public/games.json`.
 - **🎯 Bets** — pick a participant in the sub-menu to see their 72
   predictions with real scores, status, and per-match points color-coded by
   tier.
+- **📜 Rules** — scoring tiers with examples, ranking rules, and how live
+  matches are handled.
 
 ## How It Works
 
