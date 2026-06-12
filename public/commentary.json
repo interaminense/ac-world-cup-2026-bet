@@ -4,81 +4,86 @@
 			"en": "Match 1 of AC World Cup 2026 BET is in the books, and what a start — EIGHT people nailed the exact 2-0 scoreline (Adriano, Caio, Deborah, Joe, Nilton, Rafaella, Renan, and Tiago all pocket 25 points)! Caio rockets straight to the top with 50 points, while Tiago climbs a spot to sit comfortably at number two. Poor Gabriel, though — a brutal 9-place tumble after just one game… the pool is already ruthless, folks!",
 			"es": "¡El partido 1 del AC World Cup 2026 BET ya está en los libros, y vaya debut — OCHO participantes acertaron el marcador exacto 2-0 (Adriano, Caio, Deborah, Joe, Nilton, Rafaella, Renan y Tiago se llevan 25 puntos cada uno)! Caio se dispara directo a la cima con 50 puntos, y Tiago sube un puesto para instalarse cómodo en el segundo. Pero pobre Gabriel — una caída de 9 posiciones tras un solo partido… esto ya no tiene compasión, amigos.",
 			"pt": "O jogo 1 do AC World Cup 2026 BET já era, e que estreia — OITO pessoas acertaram o placar exato de 2-0 (Adriano, Caio, Deborah, Joe, Nilton, Rafaella, Renan e Tiago embolsam 25 pontos cada)! Caio já foi direto pro topo com 50 pontos, e Tiago subiu uma posição pra se sentar bem confortável em segundo. Mas o Gabriel… despencou 9 posições logo na primeira rodada — a bolinha tá sem dó desde o primeiro apito, galera!"
+		},
+		"2": {
+			"en": "Korea Republic edged Czechia 2-1 in Match 2, and the carnage was REAL — ten people scored a fat zero, including the entire bottom half of the table. Caio and Rachael are out here playing chess while everyone else is playing checkers, nailing the exact scoreline and rocketing to the top. Rachael climbed 9 spots in one game, which is either genius or a sign that everyone else really needs to watch more football.",
+			"es": "Corea del Sur le ganó a Chequia 2-1 en el partido 2, y la destrucción fue TOTAL — diez personas se fueron a casa con un cero, incluidos Adriano, Bruna y compañía. Caio y Rachael acertaron el marcador exacto y ya están en modo 'nos vemos desde arriba', mientras Adriano perdió 3 puestos y probablemente está repasando sus apuestas con cara de póker. Rachael subió 9 posiciones de golpe — alguien ha estado viendo fútbol en secreto.",
+			"pt": "A Coreia do Sul bateu a Tchéquia por 2-1 no Jogo 2, e a lista de zeros foi maior que fila de bandejão — dez pessoas, incluindo Adriano, Bruna e uma galera, foram pro zero redondo. Caio e Rachael acertaram o placar exato e já estão se achando os donos do bolão, enquanto Adriano tombou 3 posições e deve estar relendo o regulamento pra ver se tem alguma saída. Rachael subiu 9 lugares num jogo só — essa moça tá na vibe de spoiler de série, sabe de tudo antes de todo mundo."
 		}
 	},
 	"leaderboard": {
 		"recap": {
-			"en": "Caio is flying at the top with 50 points and a jaw-dropping 2 exact scores in just one match — nobody else is even close to that accuracy. Tiago and Rachael are lurking in 2nd and 3rd, but a six-strong pack at 25 points means the chasing group is massive and anyone can surge. Gabriel is the lone ranger at the bottom with 10 points, but with so many games still to play, nothing is written yet!",
-			"es": "Caio lidera con autoridad con 50 puntos y 2 resultados exactos en un solo partido — una puntería que nadie más ha igualado. Tiago y Rachael acechan desde el 2.º y 3.º puesto, pero un pelotón de seis jugadores empatados a 25 puntos mantiene la carrera completamente abierta. Gabriel es el farolillo rojo con 10 puntos, pero el torneo acaba de empezar y todo puede cambiar.",
-			"pt": "Caio está na liderança absoluta com 50 pontos e impressionantes 2 placares exatos em apenas uma rodada — uma precisão que ninguém mais conseguiu. Tiago e Rachael espreitam na 2ª e 3ª posições, mas um grupo de seis jogadores empatados com 25 pontos deixa a disputa totalmente aberta. Gabriel está sozinho na lanterna com 10 pontos, mas o torneio mal começou e tudo pode mudar!"
+			"en": "Caio is running the show at the top with 50 points and a perfect 2-for-2 on exact scores — nobody else is even close to that kind of precision. Tiago holds second at 40 while Rachael is the story of the week, rocketing up 9 spots to third with a blazing 25-point last match. The middle pack is a logjam at 25, Bruna, Eudaldo, and Marcio are hanging on at 18, and Gabriel is alone at the bottom with 10 — plenty of World Cup left to turn it around!",
+			"es": "Caio manda en lo alto con 50 puntos y un impresionante 2 de 2 en marcadores exactos — nadie más se le acerca en precisión. Tiago aguanta en segunda posición con 40, mientras que Rachael es la gran noticia de la jornada: subió 9 puestos hasta el tercero con 25 puntos en el último partido. En el centro hay un atasco de seis participantes en 25 puntos, Bruna, Eudaldo y Marcio sobreviven con 18, y Gabriel está solo en el fondo con 10 — ¡aún queda mucho Mundial por delante!",
+			"pt": "Caio está dominando com 50 pontos e um perfeito 2 de 2 em placares exatos — ninguém chega perto dessa precisão. Tiago segura o segundo lugar com 40, enquanto Rachael é a grande surpresa da rodada: disparou 9 posições até o terceiro com 25 pontos na última partida. O meio da tabela está congestionado com seis participantes empatados em 25, Bruna, Eudaldo e Marcio sobrevivem com 18, e Gabriel está sozinho na lanterna com 10 — ainda tem muito Copa do Mundo pela frente!"
 		},
 		"titles": {
 			"Caio": {
-				"en": "👑 Untouchable Leader",
-				"es": "👑 Líder Intratable",
-				"pt": "👑 Líder Absoluto"
+				"en": "🎯 Sniper at the Top",
+				"es": "🎯 Francotirador Líder",
+				"pt": "🎯 Atirador de Elite"
 			},
 			"Tiago": {
-				"en": "🚀 Rising Fast",
-				"es": "🚀 Escalando Rápido",
-				"pt": "🚀 Subindo Forte"
+				"en": "✌️ Solid Second",
+				"es": "✌️ Segundo Firme",
+				"pt": "✌️ Segundo Sólido"
 			},
 			"Rachael": {
-				"en": "🎯 Steady Chaser",
-				"es": "🎯 Perseguidora Firme",
-				"pt": "🎯 Perseguidora Sólida"
+				"en": "🚀 Biggest Climber",
+				"es": "🚀 Remontada Épica",
+				"pt": "🚀 Maior Escalada"
 			},
 			"Adriano": {
-				"en": "⚡ Pack Hunter",
-				"es": "⚡ Cazador del Grupo",
-				"pt": "⚡ No Pelotão"
+				"en": "🧱 Holding Ground",
+				"es": "🧱 Aguantando Posición",
+				"pt": "🧱 Segurando Terreno"
 			},
 			"Deborah": {
-				"en": "⚡ Pack Hunter",
-				"es": "⚡ Cazadora del Grupo",
-				"pt": "⚡ No Pelotão"
+				"en": "🧱 Holding Ground",
+				"es": "🧱 Aguantando Posición",
+				"pt": "🧱 Segurando Terreno"
 			},
 			"Joe": {
-				"en": "⚡ Pack Hunter",
-				"es": "⚡ Cazador del Grupo",
-				"pt": "⚡ No Pelotão"
+				"en": "🧱 Holding Ground",
+				"es": "🧱 Aguantando Posición",
+				"pt": "🧱 Segurando Terreno"
 			},
 			"Nilton": {
-				"en": "⚡ Pack Hunter",
-				"es": "⚡ Cazador del Grupo",
-				"pt": "⚡ No Pelotão"
+				"en": "🧱 Holding Ground",
+				"es": "🧱 Aguantando Posición",
+				"pt": "🧱 Segurando Terreno"
 			},
 			"Rafaella": {
-				"en": "⚡ Pack Hunter",
-				"es": "⚡ Cazadora del Grupo",
-				"pt": "⚡ No Pelotão"
+				"en": "🧱 Holding Ground",
+				"es": "🧱 Aguantando Posición",
+				"pt": "🧱 Segurando Terreno"
 			},
 			"Renan": {
-				"en": "⚡ Pack Hunter",
-				"es": "⚡ Cazador del Grupo",
-				"pt": "⚡ No Pelotão"
+				"en": "🧱 Holding Ground",
+				"es": "🧱 Aguantando Posición",
+				"pt": "🧱 Segurando Terreno"
 			},
 			"Bruna": {
-				"en": "📉 Slipping Back",
-				"es": "📉 Perdiendo Terreno",
-				"pt": "📉 Perdendo Chão"
+				"en": "⚠️ Needs a Spark",
+				"es": "⚠️ Necesita Chispa",
+				"pt": "⚠️ Precisa Acordar"
 			},
 			"Eudaldo": {
-				"en": "📉 Slipping Back",
-				"es": "📉 Perdiendo Terreno",
-				"pt": "📉 Perdendo Chão"
+				"en": "⚠️ Needs a Spark",
+				"es": "⚠️ Necesita Chispa",
+				"pt": "⚠️ Precisa Acordar"
 			},
 			"Marcio": {
-				"en": "📉 Slipping Back",
-				"es": "📉 Perdiendo Terreno",
-				"pt": "📉 Perdendo Chão"
+				"en": "⚠️ Needs a Spark",
+				"es": "⚠️ Necesita Chispa",
+				"pt": "⚠️ Precisa Acordar"
 			},
 			"Gabriel": {
-				"en": "🆘 Last Stand",
-				"es": "🆘 Al Límite",
-				"pt": "🆘 Na Lanterna"
+				"en": "😅 Time to Surge",
+				"es": "😅 Hora de Reaccionar",
+				"pt": "😅 Hora de Reagir"
 			}
 		}
 	},
-	"generatedAt": "2026-06-12T03:50:45.659Z"
+	"generatedAt": "2026-06-12T04:00:43.288Z"
 }
