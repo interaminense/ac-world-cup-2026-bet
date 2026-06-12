@@ -1,6 +1,7 @@
 import {kickoffDate} from '../lib/kickoff';
 import type {MatchCard} from '../lib/matches';
 import type {WhatIfScenario} from '../lib/whatif';
+import {Flag} from './Flag';
 import {StatusChip, TIER_STYLES} from './StatusChip';
 import {WhatIfPanel} from './WhatIfPanel';
 
@@ -118,8 +119,10 @@ export function MatchesView({cards, commentary, whatIf}: MatchesViewProps) {
 								</div>
 
 								<div className="mb-3 flex items-center justify-center gap-3 text-center">
-									<span className="flex-1 text-right font-medium text-white">
+									<span className="flex flex-1 items-center justify-end gap-2 font-medium text-white">
 										{card.team1}
+
+										<Flag team={card.team1} />
 									</span>
 
 									<span className="rounded-lg bg-white/10 px-3 py-1 font-display text-lg font-bold text-amber-300">
@@ -128,7 +131,9 @@ export function MatchesView({cards, commentary, whatIf}: MatchesViewProps) {
 											: 'vs'}
 									</span>
 
-									<span className="flex-1 text-left font-medium text-white">
+									<span className="flex flex-1 items-center justify-start gap-2 font-medium text-white">
+										<Flag team={card.team2} />
+
 										{card.team2}
 									</span>
 								</div>

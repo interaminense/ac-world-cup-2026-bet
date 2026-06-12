@@ -1,6 +1,7 @@
 import {realScoreFor} from '../lib/games';
 import {formatKickoff} from '../lib/kickoff';
 import type {ScoredPrediction} from '../lib/ranking';
+import {Flag} from './Flag';
 import {StatusChip, TIER_STYLES} from './StatusChip';
 
 export function MatchRow({scored}: {scored: ScoredPrediction}) {
@@ -30,13 +31,21 @@ export function MatchRow({scored}: {scored: ScoredPrediction}) {
 			</td>
 
 			<td className="px-3 py-2.5 text-sm text-white">
-				<span className="font-medium">{prediction.team1}</span>
+				<span className="inline-flex items-center gap-1.5 font-medium">
+					<Flag className="h-3 w-4" team={prediction.team1} />
+
+					{prediction.team1}
+				</span>
 
 				<span className="mx-2 rounded bg-white/10 px-2 py-0.5 font-display font-bold text-amber-300">
 					{prediction.p1}–{prediction.p2}
 				</span>
 
-				<span className="font-medium">{prediction.team2}</span>
+				<span className="inline-flex items-center gap-1.5 font-medium">
+					<Flag className="h-3 w-4" team={prediction.team2} />
+
+					{prediction.team2}
+				</span>
 			</td>
 
 			<td className="px-3 py-2.5 text-center font-display text-sm font-bold text-white">
