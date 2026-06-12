@@ -5,13 +5,33 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 
 interface LeaderboardProps {
 	onSelect: (name: string) => void;
+	recap?: string;
 	rows: LeaderboardRow[];
+	titles?: Record<string, string>;
 }
 
-export function Leaderboard({onSelect, rows}: LeaderboardProps) {
+export function Leaderboard({
+	onSelect,
+	recap,
+	rows,
+	titles = {},
+}: LeaderboardProps) {
 	return (
-		<div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-			<table className="w-full text-left">
+		<div className="space-y-4">
+			{recap && (
+				<div className="flex gap-2 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 px-4 py-3">
+					<span aria-hidden className="text-sm">
+						🎙️
+					</span>
+
+					<p className="text-sm italic leading-relaxed text-slate-300">
+						{recap}
+					</p>
+				</div>
+			)}
+
+			<div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+				<table className="w-full text-left">
 				<thead>
 					<tr className="border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-slate-400">
 						<th className="w-20 py-3 pl-4 pr-2">Rank</th>
@@ -36,25 +56,35 @@ export function Leaderboard({onSelect, rows}: LeaderboardProps) {
 							</td>
 
 							<td className="py-3 pl-2 pr-4">
-								<span className="flex items-center gap-2.5 font-medium text-white">
+								<span className="flex items-center gap-2.5">
 									<Avatar
 										className="h-8 w-8 rounded-full"
 										name={row.name}
 									/>
 
-									{row.name}
+									<span>
+										<span className="flex items-center gap-1.5 font-medium text-white">
+											{row.name}
 
-									{(row.movement ?? 0) > 0 && (
-										<span className="text-xs text-emerald-400">
-											▲
-										</span>
-									)}
+											{(row.movement ?? 0) > 0 && (
+												<span className="text-xs text-emerald-400">
+													▲
+												</span>
+											)}
 
-									{(row.movement ?? 0) < 0 && (
-										<span className="text-xs text-rose-400">
-											▼
+											{(row.movement ?? 0) < 0 && (
+												<span className="text-xs text-rose-400">
+													▼
+												</span>
+											)}
 										</span>
-									)}
+
+										{titles[row.name] && (
+											<span className="block text-xs text-slate-500">
+												{titles[row.name]}
+											</span>
+										)}
+									</span>
 								</span>
 							</td>
 
@@ -69,6 +99,7 @@ export function Leaderboard({onSelect, rows}: LeaderboardProps) {
 					))}
 				</tbody>
 			</table>
+		</div>
 		</div>
 	);
 }

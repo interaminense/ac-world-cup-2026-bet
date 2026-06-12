@@ -6,8 +6,10 @@ import {Leaderboard} from './components/Leaderboard';
 import {MatchesView} from './components/MatchesView';
 import {ParticipantView} from './components/ParticipantView';
 import {RulesView} from './components/RulesView';
+import {fetchCommentary} from './lib/commentary';
 import {buildEvolution} from './lib/evolution';
 import {fetchGames, getMatchStatus} from './lib/games';
+import {detectLocale, localize} from './lib/locale';
 import {buildMatchCards} from './lib/matches';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboardWithMovement} from './lib/ranking';
@@ -44,6 +46,9 @@ export default function App() {
 	const participants = useMemo(loadParticipants, []);
 
 	const [bettor, setBettor] = useState<string | null>(null);
+	const [boardRecap, setBoardRecap] = useState<string | undefined>(undefined);
+	const [boardTitles, setBoardTitles] = useState<Record<string, string>>({});
+	const [commentary, setCommentary] = useState<Record<number, string>>({});
 	const [fetchFailed, setFetchFailed] = useState(false);
 	const [gamesFile, setGamesFile] = useState<GamesFile | null>(null);
 	const [tab, setTab] = useState('leaderboard');
@@ -69,6 +74,38 @@ export default function App() {
 			}
 			else {
 				setFetchFailed(true);
+			}
+
+			const commentaryFile = await fetchCommentary();
+
+			if (active && commentaryFile) {
+				const locale = detectLocale();
+
+				setCommentary(
+					Object.fromEntries(
+						Object.entries(commentaryFile.byMatch).map(
+							([matchNo, text]) => [
+								matchNo,
+								localize(text, locale) ?? '',
+							]
+						)
+					)
+				);
+
+				setBoardRecap(
+					localize(commentaryFile.leaderboard?.recap, locale)
+				);
+
+				setBoardTitles(
+					Object.fromEntries(
+						Object.entries(
+							commentaryFile.leaderboard?.titles ?? {}
+						).map(([name, text]) => [
+							name,
+							localize(text, locale) ?? '',
+						])
+					)
+				);
 			}
 		};
 
@@ -197,13 +234,22 @@ export default function App() {
 				{activeBettor ? (
 					<ParticipantView games={games} participant={activeBettor} />
 				) : tab === 'matches' ? (
-					<MatchesView cards={cards} whatIf={whatIf} />
+					<MatchesView
+						cards={cards}
+						commentary={commentary}
+						whatIf={whatIf}
+					/>
 				) : tab === 'race' ? (
 					<EvolutionChart evolution={evolution} />
 				) : tab === 'rules' ? (
 					<RulesView />
 				) : (
-					<Leaderboard onSelect={selectBettor} rows={rows} />
+					<Leaderboard
+						onSelect={selectBettor}
+						recap={boardRecap}
+						rows={rows}
+						titles={boardTitles}
+					/>
 				)}
 			</main>
 		</div>

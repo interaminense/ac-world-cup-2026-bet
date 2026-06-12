@@ -6,6 +6,7 @@ import {WhatIfPanel} from './WhatIfPanel';
 
 interface MatchesViewProps {
 	cards: MatchCard[];
+	commentary: Record<number, string>;
 	whatIf: Record<number, WhatIfScenario[]>;
 }
 
@@ -85,7 +86,7 @@ function EntryPill({
 	);
 }
 
-export function MatchesView({cards, whatIf}: MatchesViewProps) {
+export function MatchesView({cards, commentary, whatIf}: MatchesViewProps) {
 	return (
 		<div className="space-y-6">
 			{groupByLocalDay(cards).map((group) => (
@@ -146,6 +147,18 @@ export function MatchesView({cards, whatIf}: MatchesViewProps) {
 									<WhatIfPanel
 										scenarios={whatIf[card.matchNo] ?? []}
 									/>
+								)}
+
+								{commentary[card.matchNo] && (
+									<div className="mt-3 flex gap-2 rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-3 py-2.5">
+										<span aria-hidden className="text-sm">
+											🎙️
+										</span>
+
+										<p className="text-xs italic leading-relaxed text-slate-300">
+											{commentary[card.matchNo]}
+										</p>
+									</div>
 								)}
 							</article>
 						))}

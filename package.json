@@ -12,6 +12,7 @@
 		"update-scores": "node scripts/update-scores.mjs"
 	},
 	"dependencies": {
+		"@anthropic-ai/sdk": "^0.104.1",
 		"papaparse": "^5.5.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0"
