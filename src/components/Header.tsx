@@ -20,7 +20,9 @@ export function Header({liveCount, statusText}: HeaderProps) {
 				<div className="flex items-center gap-3 text-sm text-slate-400">
 					{liveCount > 0 && (
 						<span className="flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 font-semibold text-emerald-400">
-							<span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+							<span aria-hidden className="inline-block animate-spin">
+								⚽
+							</span>
 
 							{liveCount} live
 						</span>
