@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-12T03:20:13.528Z",
+	"fetchedAt": "2026-06-12T03:25:11.961Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -17,7 +17,7 @@
 			"awayScore": 1,
 			"awayTeam": "Czechia",
 			"finished": false,
-			"timeElapsed": "61",
+			"timeElapsed": "66",
 			"group": "Group A",
 			"homeScore": 0,
 			"homeTeam": "Korea Republic",
