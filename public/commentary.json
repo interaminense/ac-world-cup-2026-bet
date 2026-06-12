@@ -19,72 +19,72 @@
 		},
 		"titles": {
 			"Caio": {
-				"en": "Perfect so far",
-				"es": "Perfecto hasta ahora",
-				"pt": "Perfeito até agora"
+				"en": "Untouchable leader",
+				"es": "Líder intratable",
+				"pt": "Líder intocável"
 			},
 			"Tiago": {
-				"en": "Slipping slightly",
-				"es": "Resbalando un poco",
-				"pt": "Escorregando um pouco"
-			},
-			"Rachael": {
-				"en": "Surging up fast",
-				"es": "Subiendo rápido",
+				"en": "Climbing fast",
+				"es": "Subiendo fuerte",
 				"pt": "Subindo rápido"
 			},
+			"Nilton": {
+				"en": "Scoreless, holding on",
+				"es": "Sin puntos, resistiendo",
+				"pt": "Sem pontos, segurando"
+			},
+			"Rachael": {
+				"en": "Big jump up",
+				"es": "Gran salto arriba",
+				"pt": "Grande salto"
+			},
 			"Adriano": {
-				"en": "Stuck in place",
-				"es": "Atascado ahí",
-				"pt": "Parado no lugar"
+				"en": "Stuck in traffic",
+				"es": "Atascado en el grupo",
+				"pt": "Preso no pelotão"
 			},
 			"Deborah": {
-				"en": "Stuck in place",
-				"es": "Atascada ahí",
-				"pt": "Parada no lugar"
+				"en": "Stuck in traffic",
+				"es": "Atascada en el grupo",
+				"pt": "Presa no pelotão"
 			},
 			"Joe": {
-				"en": "Stuck in place",
-				"es": "Atascado ahí",
-				"pt": "Parado no lugar"
-			},
-			"Nilton": {
-				"en": "Stuck in place",
-				"es": "Atascado ahí",
-				"pt": "Parado no lugar"
+				"en": "Stuck in traffic",
+				"es": "Atascado en el grupo",
+				"pt": "Preso no pelotão"
 			},
 			"Rafaella": {
-				"en": "Stuck in place",
-				"es": "Atascada ahí",
-				"pt": "Parada no lugar"
+				"en": "Stuck in traffic",
+				"es": "Atascada en el grupo",
+				"pt": "Presa no pelotão"
 			},
 			"Renan": {
-				"en": "Stuck in place",
-				"es": "Atascado ahí",
-				"pt": "Parado no lugar"
+				"en": "Stuck in traffic",
+				"es": "Atascado en el grupo",
+				"pt": "Preso no pelotão"
 			},
 			"Bruna": {
-				"en": "Losing ground",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo terreno"
+				"en": "Needs a spark",
+				"es": "Necesita despertar",
+				"pt": "Precisa acordar"
 			},
 			"Eudaldo": {
-				"en": "Losing ground",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo terreno"
+				"en": "Needs a spark",
+				"es": "Necesita despertar",
+				"pt": "Precisa acordar"
 			},
 			"Marcio": {
-				"en": "Losing ground",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo terreno"
+				"en": "Needs a spark",
+				"es": "Necesita despertar",
+				"pt": "Precisa acordar"
 			},
 			"Gabriel": {
-				"en": "Long road ahead",
-				"es": "Mucho por remontar",
-				"pt": "Longa estrada pela frente"
+				"en": "Chasing from last",
+				"es": "Remontando desde abajo",
+				"pt": "Caçando lá de baixo"
 			}
 		},
-		"titlesSignature": "[[\"Caio\",50],[\"Tiago\",40],[\"Rachael\",35],[\"Adriano\",25],[\"Deborah\",25],[\"Joe\",25],[\"Nilton\",25],[\"Rafaella\",25],[\"Renan\",25],[\"Bruna\",18],[\"Eudaldo\",18],[\"Marcio\",18],[\"Gabriel\",10]]"
+		"titlesSignature": "[[\"Caio\",75],[\"Tiago\",52],[\"Nilton\",50],[\"Rachael\",47],[\"Adriano\",25],[\"Deborah\",25],[\"Joe\",25],[\"Rafaella\",25],[\"Renan\",25],[\"Bruna\",18],[\"Eudaldo\",18],[\"Marcio\",18],[\"Gabriel\",10]]"
 	},
-	"generatedAt": "2026-06-12T20:15:25.353Z"
+	"generatedAt": "2026-06-12T20:40:24.786Z"
 }
