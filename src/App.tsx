@@ -1,15 +1,16 @@
 import {useEffect, useMemo, useState} from 'react';
 
-import {EvolutionChart} from './components/EvolutionChart';
 import {Header} from './components/Header';
 import {Leaderboard} from './components/Leaderboard';
 import {MatchesView} from './components/MatchesView';
 import {ParticipantView} from './components/ParticipantView';
 import {RulesView} from './components/RulesView';
+import {StatsView} from './components/StatsView';
 import {fetchCommentary} from './lib/commentary';
 import {buildEvolution} from './lib/evolution';
 import {fetchGames} from './lib/games';
 import {detectLocale, localize, stripEmoji} from './lib/locale';
+import {buildStats} from './lib/stats';
 import {buildMatchCards} from './lib/matches';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboardWithMovement} from './lib/ranking';
@@ -136,6 +137,8 @@ export default function App() {
 		[participants, games]
 	);
 
+	const stats = useMemo(() => buildStats(cards), [cards]);
+
 	const whatIf = useMemo(
 		() =>
 			Object.fromEntries(
@@ -201,17 +204,17 @@ export default function App() {
 					</TabButton>
 
 					<TabButton
-						active={tab === 'race'}
-						onClick={() => setTab('race')}
-					>
-						📈 Race
-					</TabButton>
-
-					<TabButton
 						active={tab === 'bets'}
 						onClick={() => setTab('bets')}
 					>
 						🎯 Bets
+					</TabButton>
+
+					<TabButton
+						active={tab === 'stats'}
+						onClick={() => setTab('stats')}
+					>
+						📊 Stats
 					</TabButton>
 
 					<TabButton
@@ -248,8 +251,8 @@ export default function App() {
 						commentary={commentary}
 						whatIf={whatIf}
 					/>
-				) : tab === 'race' ? (
-					<EvolutionChart evolution={evolution} />
+				) : tab === 'stats' ? (
+					<StatsView evolution={evolution} stats={stats} />
 				) : tab === 'rules' ? (
 					<RulesView />
 				) : (
