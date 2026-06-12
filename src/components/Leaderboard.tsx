@@ -34,13 +34,15 @@ export function Leaderboard({
 				<table className="w-full text-left">
 				<thead>
 					<tr className="border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-slate-400">
-						<th className="w-20 py-3 pl-4 pr-2">Rank</th>
+						<th className="w-14 py-3 pl-4 pr-2 sm:w-20">Rank</th>
 
-						<th className="py-3 pl-2 pr-4">Participant</th>
+						<th className="py-3 pl-2 pr-2">Participant</th>
 
-						<th className="px-4 py-3 text-right">Exact scores</th>
+						<th className="hidden px-4 py-3 text-right sm:table-cell">
+							Exact scores
+						</th>
 
-						<th className="px-4 py-3 text-right">Points</th>
+						<th className="px-3 py-3 text-right sm:px-4">Points</th>
 					</tr>
 				</thead>
 
@@ -51,18 +53,18 @@ export function Leaderboard({
 							key={row.name}
 							onClick={() => onSelect(row.name)}
 						>
-							<td className="w-20 py-3 pl-4 pr-2 font-display text-lg font-bold text-slate-300">
+							<td className="w-14 py-3 pl-4 pr-2 font-display text-lg font-bold text-slate-300 sm:w-20">
 								{row.rank <= 3 ? MEDALS[row.rank - 1] : row.rank}
 							</td>
 
-							<td className="py-3 pl-2 pr-4">
-								<span className="flex items-center gap-2.5">
+							<td className="py-3 pl-2 pr-2">
+								<span className="flex min-w-0 items-center gap-2.5">
 									<Avatar
 										className="h-8 w-8 rounded-full"
 										name={row.name}
 									/>
 
-									<span className="font-medium text-white">
+									<span className="truncate font-medium text-white">
 										{row.name}
 									</span>
 
@@ -79,18 +81,18 @@ export function Leaderboard({
 									)}
 
 									{titles[row.name] && (
-										<span className="text-xs text-slate-500">
+										<span className="hidden truncate text-xs text-slate-500 sm:inline">
 											{titles[row.name]}
 										</span>
 									)}
 								</span>
 							</td>
 
-							<td className="px-4 py-3 text-right text-slate-400">
+							<td className="hidden px-4 py-3 text-right text-slate-400 sm:table-cell">
 								{row.exactCount}
 							</td>
 
-							<td className="px-4 py-3 text-right font-display text-lg font-bold text-amber-400">
+							<td className="px-3 py-3 text-right font-display text-lg font-bold text-amber-400 sm:px-4">
 								{row.total}
 							</td>
 						</tr>

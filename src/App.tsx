@@ -185,7 +185,7 @@ export default function App() {
 			<Header liveGames={liveGames} statusText={statusText} />
 
 			<main className="mx-auto max-w-5xl px-4 py-6">
-				<nav className="mb-6 flex gap-1 overflow-x-auto pb-1">
+				<nav className="mb-6 flex flex-wrap gap-1.5">
 					<TabButton
 						active={tab === 'leaderboard'}
 						onClick={() => setTab('leaderboard')}
