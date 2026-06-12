@@ -19,71 +19,72 @@
 		},
 		"titles": {
 			"Caio": {
-				"en": "🎯 Sniper at the Top",
-				"es": "🎯 Francotirador Líder",
-				"pt": "🎯 Atirador de Elite"
+				"en": "Perfect so far",
+				"es": "Perfecto hasta ahora",
+				"pt": "Perfeito até agora"
 			},
 			"Tiago": {
-				"en": "✌️ Solid Second",
-				"es": "✌️ Segundo Firme",
-				"pt": "✌️ Segundo Sólido"
+				"en": "Slipping slightly",
+				"es": "Resbalando un poco",
+				"pt": "Escorregando um pouco"
 			},
 			"Rachael": {
-				"en": "🚀 Biggest Climber",
-				"es": "🚀 Remontada Épica",
-				"pt": "🚀 Maior Escalada"
+				"en": "Surging up fast",
+				"es": "Subiendo rápido",
+				"pt": "Subindo rápido"
 			},
 			"Adriano": {
-				"en": "🧱 Holding Ground",
-				"es": "🧱 Aguantando Posición",
-				"pt": "🧱 Segurando Terreno"
+				"en": "Stuck in place",
+				"es": "Atascado ahí",
+				"pt": "Parado no lugar"
 			},
 			"Deborah": {
-				"en": "🧱 Holding Ground",
-				"es": "🧱 Aguantando Posición",
-				"pt": "🧱 Segurando Terreno"
+				"en": "Stuck in place",
+				"es": "Atascada ahí",
+				"pt": "Parada no lugar"
 			},
 			"Joe": {
-				"en": "🧱 Holding Ground",
-				"es": "🧱 Aguantando Posición",
-				"pt": "🧱 Segurando Terreno"
+				"en": "Stuck in place",
+				"es": "Atascado ahí",
+				"pt": "Parado no lugar"
 			},
 			"Nilton": {
-				"en": "🧱 Holding Ground",
-				"es": "🧱 Aguantando Posición",
-				"pt": "🧱 Segurando Terreno"
+				"en": "Stuck in place",
+				"es": "Atascado ahí",
+				"pt": "Parado no lugar"
 			},
 			"Rafaella": {
-				"en": "🧱 Holding Ground",
-				"es": "🧱 Aguantando Posición",
-				"pt": "🧱 Segurando Terreno"
+				"en": "Stuck in place",
+				"es": "Atascada ahí",
+				"pt": "Parada no lugar"
 			},
 			"Renan": {
-				"en": "🧱 Holding Ground",
-				"es": "🧱 Aguantando Posición",
-				"pt": "🧱 Segurando Terreno"
+				"en": "Stuck in place",
+				"es": "Atascado ahí",
+				"pt": "Parado no lugar"
 			},
 			"Bruna": {
-				"en": "⚠️ Needs a Spark",
-				"es": "⚠️ Necesita Chispa",
-				"pt": "⚠️ Precisa Acordar"
+				"en": "Losing ground",
+				"es": "Perdiendo terreno",
+				"pt": "Perdendo terreno"
 			},
 			"Eudaldo": {
-				"en": "⚠️ Needs a Spark",
-				"es": "⚠️ Necesita Chispa",
-				"pt": "⚠️ Precisa Acordar"
+				"en": "Losing ground",
+				"es": "Perdiendo terreno",
+				"pt": "Perdendo terreno"
 			},
 			"Marcio": {
-				"en": "⚠️ Needs a Spark",
-				"es": "⚠️ Necesita Chispa",
-				"pt": "⚠️ Precisa Acordar"
+				"en": "Losing ground",
+				"es": "Perdiendo terreno",
+				"pt": "Perdendo terreno"
 			},
 			"Gabriel": {
-				"en": "😅 Time to Surge",
-				"es": "😅 Hora de Reaccionar",
-				"pt": "😅 Hora de Reagir"
+				"en": "Long road ahead",
+				"es": "Mucho por remontar",
+				"pt": "Longa estrada pela frente"
 			}
-		}
+		},
+		"titlesSignature": "[[\"Caio\",50],[\"Tiago\",40],[\"Rachael\",35],[\"Adriano\",25],[\"Deborah\",25],[\"Joe\",25],[\"Nilton\",25],[\"Rafaella\",25],[\"Renan\",25],[\"Bruna\",18],[\"Eudaldo\",18],[\"Marcio\",18],[\"Gabriel\",10]]"
 	},
-	"generatedAt": "2026-06-12T04:00:43.288Z"
+	"generatedAt": "2026-06-12T20:15:25.353Z"
 }
