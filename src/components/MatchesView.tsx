@@ -103,7 +103,7 @@ export function MatchesView({cards, commentary, whatIf}: MatchesViewProps) {
 									card.status === 'live'
 										? 'border-emerald-400/40'
 										: 'border-white/10'
-								} ${card.status === 'notstarted' ? 'opacity-80' : ''}`}
+								} ${card.status === 'finished' ? 'opacity-60' : ''}`}
 								key={card.matchNo}
 							>
 								<div className="mb-3 flex items-center justify-between text-xs text-slate-400">
