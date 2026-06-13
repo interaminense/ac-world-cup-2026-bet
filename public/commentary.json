@@ -33,74 +33,74 @@
 			"pt": "Caio esta dominando de um jeito que assusta: 75 pontos e 3 placar exatos em apenas 4 rodadas e ninguem conseguiu chegar perto ainda. Rachael foi a grande destaque da rodada, subindo duas posicoes para o segundo lugar com 57 pontos, enquanto Tiago e Nilton respiram no seu pescoco com 52 e 50. La embaixo, Eudaldo e Marcio estao travados nos 18 pontos e precisam engatar logo antes que a diferenca vire paisagem."
 		},
 		"titles": {
-			"Caio": {
-				"en": "Dominant leader",
-				"es": "Líder dominante",
-				"pt": "Líder dominante"
-			},
 			"Rachael": {
-				"en": "Solid second",
-				"es": "Sólido segundo",
-				"pt": "Segundo sólido"
+				"en": "Sitting pretty",
+				"es": "Cómoda en lo alto",
+				"pt": "Tranquila no topo"
 			},
-			"Tiago": {
-				"en": "Chasing the top",
-				"es": "Persiguiendo al líder",
-				"pt": "Caçando o topo"
+			"Caio": {
+				"en": "Tied for second",
+				"es": "Segundo empatado",
+				"pt": "Empatado em segundo"
 			},
 			"Nilton": {
-				"en": "Right on his heels",
-				"es": "Pisándole los talones",
-				"pt": "No seu encalço"
+				"en": "Tied for second",
+				"es": "Segundo empatado",
+				"pt": "Empatado em segundo"
 			},
-			"Joe": {
-				"en": "Fading back",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo fôlego"
-			},
-			"Adriano": {
-				"en": "Four-way tie",
-				"es": "Empate a cuatro",
-				"pt": "Empate em quatro"
-			},
-			"Deborah": {
-				"en": "Four-way tie",
-				"es": "Empate a cuatro",
-				"pt": "Empate em quatro"
-			},
-			"Rafaella": {
-				"en": "Four-way tie",
-				"es": "Empate a cuatro",
-				"pt": "Empate em quatro"
-			},
-			"Renan": {
-				"en": "Four-way tie",
-				"es": "Empate a cuatro",
-				"pt": "Empate em quatro"
-			},
-			"Bruna": {
-				"en": "Scoreless slump",
-				"es": "Racha sin puntos",
-				"pt": "Em seca de pontos"
-			},
-			"Eudaldo": {
-				"en": "Scoreless slump",
-				"es": "Racha sin puntos",
-				"pt": "Em seca de pontos"
-			},
-			"Gabriel": {
-				"en": "Deep in the pack",
-				"es": "Perdido en el grupo",
-				"pt": "Fundo do grupo"
+			"Tiago": {
+				"en": "Distant fourth",
+				"es": "Cuarto rezagado",
+				"pt": "Quarto distante"
 			},
 			"Marcio": {
+				"en": "Fading fast",
+				"es": "Perdiendo terreno",
+				"pt": "Caindo rápido"
+			},
+			"Adriano": {
+				"en": "Stuck in a tie",
+				"es": "Atascado en empate",
+				"pt": "Preso no empate"
+			},
+			"Deborah": {
+				"en": "Stuck in a tie",
+				"es": "Atascada en empate",
+				"pt": "Presa no empate"
+			},
+			"Rafaella": {
+				"en": "Stuck in a tie",
+				"es": "Atascada en empate",
+				"pt": "Presa no empate"
+			},
+			"Renan": {
+				"en": "Stuck in a tie",
+				"es": "Atascado en empate",
+				"pt": "Preso no empate"
+			},
+			"Bruna": {
+				"en": "Scoreless streak",
+				"es": "Sin exactos aún",
+				"pt": "Sem acerto exato"
+			},
+			"Joe": {
+				"en": "Hanging on",
+				"es": "Aguantando el tipo",
+				"pt": "Se segurando"
+			},
+			"Gabriel": {
 				"en": "Needs a miracle",
 				"es": "Necesita un milagro",
 				"pt": "Precisa de milagre"
+			},
+			"Eudaldo": {
+				"en": "Deep in trouble",
+				"es": "En serios problemas",
+				"pt": "Em maus lençóis"
 			}
 		},
-		"titlesSignature": "[[\"Caio\",75],[\"Rachael\",57],[\"Tiago\",52],[\"Nilton\",50],[\"Joe\",40],[\"Adriano\",35],[\"Deborah\",35],[\"Rafaella\",35],[\"Renan\",35],[\"Bruna\",33],[\"Eudaldo\",33],[\"Gabriel\",20],[\"Marcio\",18]]",
+		"titlesSignature": "[[\"Rachael\",82],[\"Caio\",75],[\"Nilton\",75],[\"Tiago\",64],[\"Marcio\",43],[\"Adriano\",35],[\"Deborah\",35],[\"Rafaella\",35],[\"Renan\",35],[\"Bruna\",33],[\"Joe\",25],[\"Gabriel\",20],[\"Eudaldo\",18]]",
 		"recapSignature": "[[\"Caio\",75],[\"Rachael\",57],[\"Tiago\",52],[\"Nilton\",50],[\"Adriano\",35],[\"Deborah\",35],[\"Rafaella\",35],[\"Renan\",35],[\"Bruna\",33],[\"Joe\",25],[\"Gabriel\",20],[\"Eudaldo\",18],[\"Marcio\",18]]"
 	},
-	"generatedAt": "2026-06-13T22:25:25.128Z"
+	"generatedAt": "2026-06-13T22:40:19.305Z"
 }
