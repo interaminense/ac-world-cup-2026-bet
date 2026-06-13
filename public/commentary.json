@@ -24,73 +24,73 @@
 		},
 		"titles": {
 			"Caio": {
-				"en": "Untouchable leader",
-				"es": "Líder intratable",
-				"pt": "Líder intocável"
-			},
-			"Tiago": {
-				"en": "Climbing fast",
-				"es": "Subiendo fuerte",
-				"pt": "Subindo rápido"
-			},
-			"Nilton": {
-				"en": "Scoreless, holding on",
-				"es": "Sin puntos, resistiendo",
-				"pt": "Sem pontos, segurando"
+				"en": "Perfect so far",
+				"es": "Perfecto hasta ahora",
+				"pt": "Perfeito até agora"
 			},
 			"Rachael": {
-				"en": "Big jump up",
-				"es": "Gran salto arriba",
-				"pt": "Grande salto"
+				"en": "Holding strong",
+				"es": "Aguantando firme",
+				"pt": "Segurando bem"
+			},
+			"Tiago": {
+				"en": "Chasing second",
+				"es": "Persiguiendo el segundo",
+				"pt": "Caçando o segundo"
+			},
+			"Nilton": {
+				"en": "Surging up fast",
+				"es": "Subiendo rápido",
+				"pt": "Subindo rápido"
 			},
 			"Adriano": {
-				"en": "Stuck in traffic",
-				"es": "Atascado en el grupo",
-				"pt": "Preso no pelotão"
+				"en": "Sliding down",
+				"es": "Bajando posiciones",
+				"pt": "Escorregando"
 			},
 			"Deborah": {
-				"en": "Stuck in traffic",
-				"es": "Atascada en el grupo",
-				"pt": "Presa no pelotão"
-			},
-			"Joe": {
-				"en": "Stuck in traffic",
-				"es": "Atascado en el grupo",
-				"pt": "Preso no pelotão"
+				"en": "Sliding down",
+				"es": "Bajando posiciones",
+				"pt": "Escorregando"
 			},
 			"Rafaella": {
-				"en": "Stuck in traffic",
-				"es": "Atascada en el grupo",
-				"pt": "Presa no pelotão"
+				"en": "Sliding down",
+				"es": "Bajando posiciones",
+				"pt": "Escorregando"
 			},
 			"Renan": {
-				"en": "Stuck in traffic",
-				"es": "Atascado en el grupo",
-				"pt": "Preso no pelotão"
+				"en": "Losing ground",
+				"es": "Perdiendo terreno",
+				"pt": "Perdendo terreno"
 			},
 			"Bruna": {
-				"en": "Needs a spark",
-				"es": "Necesita despertar",
-				"pt": "Precisa acordar"
-			},
-			"Eudaldo": {
-				"en": "Needs a spark",
-				"es": "Necesita despertar",
-				"pt": "Precisa acordar"
-			},
-			"Marcio": {
-				"en": "Needs a spark",
-				"es": "Necesita despertar",
-				"pt": "Precisa acordar"
+				"en": "Gone cold",
+				"es": "Se enfrió",
+				"pt": "Esfriou"
 			},
 			"Gabriel": {
-				"en": "Chasing from last",
-				"es": "Remontando desde abajo",
-				"pt": "Caçando lá de baixo"
+				"en": "Stuck in mud",
+				"es": "Atascado",
+				"pt": "Travado"
+			},
+			"Joe": {
+				"en": "Treading water",
+				"es": "Sin avanzar",
+				"pt": "Patinando"
+			},
+			"Eudaldo": {
+				"en": "Off the pace",
+				"es": "Fuera del ritmo",
+				"pt": "Fora do ritmo"
+			},
+			"Marcio": {
+				"en": "Off the pace",
+				"es": "Fuera del ritmo",
+				"pt": "Fora do ritmo"
 			}
 		},
-		"titlesSignature": "[[\"Caio\",75],[\"Tiago\",52],[\"Nilton\",50],[\"Rachael\",47],[\"Adriano\",25],[\"Deborah\",25],[\"Joe\",25],[\"Rafaella\",25],[\"Renan\",25],[\"Bruna\",18],[\"Eudaldo\",18],[\"Marcio\",18],[\"Gabriel\",10]]",
+		"titlesSignature": "[[\"Caio\",75],[\"Rachael\",57],[\"Tiago\",52],[\"Nilton\",50],[\"Adriano\",40],[\"Deborah\",40],[\"Rafaella\",40],[\"Renan\",35],[\"Bruna\",28],[\"Gabriel\",25],[\"Joe\",25],[\"Eudaldo\",18],[\"Marcio\",18]]",
 		"recapSignature": "[[\"Caio\",75],[\"Tiago\",52],[\"Nilton\",50],[\"Rachael\",47],[\"Adriano\",25],[\"Deborah\",25],[\"Joe\",25],[\"Rafaella\",25],[\"Renan\",25],[\"Bruna\",18],[\"Eudaldo\",18],[\"Marcio\",18],[\"Gabriel\",10]]"
 	},
-	"generatedAt": "2026-06-12T21:00:44.251Z"
+	"generatedAt": "2026-06-13T01:10:24.042Z"
 }
