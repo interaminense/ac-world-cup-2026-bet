@@ -30,72 +30,72 @@
 		"titles": {
 			"Caio": {
 				"en": "Untouchable leader",
-				"es": "Líder intratable",
+				"es": "Líder inalcanzable",
 				"pt": "Líder intocável"
 			},
-			"Rachael": {
-				"en": "Climbing fast",
-				"es": "Escalando rápido",
-				"pt": "Subindo rápido"
-			},
 			"Tiago": {
-				"en": "Sliding down",
-				"es": "Perdiendo terreno",
-				"pt": "Escorregando"
+				"en": "Chasing the top",
+				"es": "Persiguiendo al líder",
+				"pt": "Caçando o topo"
 			},
 			"Nilton": {
-				"en": "Dropping a spot",
-				"es": "Bajando un puesto",
-				"pt": "Caindo uma posição"
+				"en": "Breathing down necks",
+				"es": "Pisando los talones",
+				"pt": "No pescoço do líder"
+			},
+			"Rachael": {
+				"en": "Holding steady",
+				"es": "Aguantando el ritmo",
+				"pt": "Segurando firme"
 			},
 			"Adriano": {
-				"en": "Tied and surging",
-				"es": "Empatado y firme",
-				"pt": "Empatado e firme"
+				"en": "Stuck in the pack",
+				"es": "Atascado en el grupo",
+				"pt": "Preso no pelotão"
 			},
 			"Deborah": {
-				"en": "Tied and surging",
-				"es": "Empatada y firme",
-				"pt": "Empatada e firme"
+				"en": "Stuck in the pack",
+				"es": "Atascada en el grupo",
+				"pt": "Presa no pelotão"
 			},
 			"Rafaella": {
-				"en": "Tied and surging",
-				"es": "Empatada y firme",
-				"pt": "Empatada e firme"
+				"en": "Stuck in the pack",
+				"es": "Atascada en el grupo",
+				"pt": "Presa no pelotão"
 			},
 			"Renan": {
-				"en": "Tied and surging",
-				"es": "Empatado y firme",
-				"pt": "Empatado e firme"
+				"en": "Stuck in the pack",
+				"es": "Atascado en el grupo",
+				"pt": "Preso no pelotão"
 			},
 			"Bruna": {
-				"en": "Best last match",
-				"es": "Mejor última jornada",
-				"pt": "Melhor última rodada"
+				"en": "Rising from below",
+				"es": "Subiendo desde abajo",
+				"pt": "Subindo nas posições"
 			},
 			"Joe": {
-				"en": "Falling hard",
-				"es": "Caída libre",
-				"pt": "Em queda livre"
+				"en": "Sliding down fast",
+				"es": "Cayendo en picado",
+				"pt": "Caindo rápido"
 			},
 			"Gabriel": {
-				"en": "Gaining ground",
-				"es": "Ganando terreno",
-				"pt": "Ganhando terreno"
-			},
-			"Eudaldo": {
-				"en": "Stuck in mud",
-				"es": "Sin avanzar",
-				"pt": "Parado no tempo"
+				"en": "Climbing quietly",
+				"es": "Subiendo en silencio",
+				"pt": "Subindo quietinho"
 			},
 			"Marcio": {
-				"en": "Stuck in mud",
-				"es": "Sin avanzar",
-				"pt": "Parado no tempo"
+				"en": "Fading away",
+				"es": "Desvaneciéndose",
+				"pt": "Sumindo no mapa"
+			},
+			"Eudaldo": {
+				"en": "Off the radar",
+				"es": "Fuera del radar",
+				"pt": "Fora do radar"
 			}
 		},
-		"titlesSignature": "[[\"Caio\",75],[\"Rachael\",57],[\"Tiago\",52],[\"Nilton\",50],[\"Adriano\",35],[\"Deborah\",35],[\"Rafaella\",35],[\"Renan\",35],[\"Bruna\",33],[\"Joe\",25],[\"Gabriel\",20],[\"Eudaldo\",18],[\"Marcio\",18]]",
+		"titlesSignature": "[[\"Caio\",90],[\"Tiago\",77],[\"Nilton\",75],[\"Rachael\",67],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Joe\",35],[\"Gabriel\",30],[\"Marcio\",28],[\"Eudaldo\",18]]",
 		"recapSignature": "[[\"Caio\",75],[\"Rachael\",57],[\"Tiago\",52],[\"Nilton\",50],[\"Adriano\",35],[\"Deborah\",35],[\"Rafaella\",35],[\"Renan\",35],[\"Bruna\",33],[\"Joe\",25],[\"Gabriel\",20],[\"Eudaldo\",18],[\"Marcio\",18]]"
 	},
-	"generatedAt": "2026-06-13T03:05:53.575Z"
+	"generatedAt": "2026-06-13T19:23:45.163Z"
 }
