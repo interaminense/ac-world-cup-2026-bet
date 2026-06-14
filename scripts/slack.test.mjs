@@ -36,15 +36,14 @@ describe('buildSlackMessage', () => {
 		);
 	});
 
-	it('includes the AI comment, the ranking and the link', () => {
+	it('includes the AI comment and the link', () => {
 		expect(message).toContain('🎙️ Test comment');
-		expect(message).toMatch(/\n1\. \w.+ — \d+ pts/);
 		expect(message.trimEnd().endsWith(
 			'https://interaminense.github.io/ac-world-cup-2026-bet/'
 		)).toBe(true);
 	});
 
-	it('uses no medals — plain numbered ranking', () => {
-		expect(message).not.toMatch(/🥇|🥈|🥉/u);
+	it('does not include the standings ranking', () => {
+		expect(message).not.toMatch(/\d+\.\s.+ — \d+ pts/);
 	});
 });
