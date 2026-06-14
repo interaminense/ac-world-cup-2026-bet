@@ -36,8 +36,11 @@ describe('buildSlackMessage', () => {
 		);
 	});
 
-	it('includes the AI comment and the link', () => {
+	it('includes the AI comment, the link and its call to action', () => {
 		expect(message).toContain('🎙️ Test comment');
+		expect(message).toContain(
+			'See the live ranking\nhttps://interaminense.github.io/ac-world-cup-2026-bet/'
+		);
 		expect(message.trimEnd().endsWith(
 			'https://interaminense.github.io/ac-world-cup-2026-bet/'
 		)).toBe(true);

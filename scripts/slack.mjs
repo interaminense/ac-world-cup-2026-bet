@@ -16,7 +16,14 @@ export function buildSlackMessage(matchNo, games, players, commentary) {
 	const score = facts.result.replace(/(\d+)-(\d+)/, '$1 x $2');
 	const comment = commentary.byMatch?.[matchNo]?.en ?? '';
 
-	return [`⚽ Round over — ${score}`, '', `🎙️ ${comment}`, '', SITE].join('\n');
+	return [
+		`⚽ Round over — ${score}`,
+		'',
+		`🎙️ ${comment}`,
+		'',
+		'See the live ranking',
+		SITE,
+	].join('\n');
 }
 
 export async function postToSlack(text, webhook = process.env.SLACK_WEBHOOK_URL) {
