@@ -64,58 +64,58 @@
 				"pt": "Segurando posição"
 			},
 			"Tiago": {
-				"en": "Safe in fourth",
-				"es": "Cómodo en cuarto",
-				"pt": "Seguro no quarto"
+				"en": "Fading back",
+				"es": "Perdiendo fuelle",
+				"pt": "Caindo no ritmo"
 			},
 			"Marcio": {
-				"en": "Mid-pack grind",
-				"es": "En la manada",
-				"pt": "No pelotão"
+				"en": "Mid-table drift",
+				"es": "Estancado a medias",
+				"pt": "Estagnado no meio"
 			},
 			"Adriano": {
-				"en": "Tied for sixth",
-				"es": "Empatado sexto",
-				"pt": "Empatado no sexto"
+				"en": "Stuck in sixth",
+				"es": "Atascado en sexto",
+				"pt": "Preso no sexto"
 			},
 			"Deborah": {
-				"en": "Tied for sixth",
-				"es": "Empatada sexta",
-				"pt": "Empatada no sexto"
+				"en": "Stuck in sixth",
+				"es": "Atascada en sexto",
+				"pt": "Presa no sexto"
 			},
 			"Rafaella": {
-				"en": "Tied for sixth",
-				"es": "Empatada sexta",
-				"pt": "Empatada no sexto"
+				"en": "Stuck in sixth",
+				"es": "Atascada en sexto",
+				"pt": "Presa no sexto"
 			},
 			"Renan": {
-				"en": "Tied for sixth",
-				"es": "Empatado sexto",
-				"pt": "Empatado no sexto"
+				"en": "Stuck in sixth",
+				"es": "Atascado en sexto",
+				"pt": "Preso no sexto"
 			},
 			"Bruna": {
-				"en": "Zero exactos",
-				"es": "Sin exactos",
-				"pt": "Sem placar exato"
+				"en": "Scoreless streak",
+				"es": "Sin puntos exactos",
+				"pt": "Sem acertos"
 			},
 			"Eudaldo": {
-				"en": "Quiet climber",
-				"es": "Escalada silenciosa",
-				"pt": "Subindo quieto"
+				"en": "Hanging in there",
+				"es": "Aguantando el tipo",
+				"pt": "Resistindo"
 			},
 			"Joe": {
-				"en": "Late charge",
-				"es": "Remontada tardía",
-				"pt": "Chegando por trás"
+				"en": "Surging hard",
+				"es": "Subiendo fuerte",
+				"pt": "Subindo forte"
 			},
 			"Gabriel": {
-				"en": "Losing ground",
-				"es": "Cediendo terreno",
-				"pt": "Perdendo espaço"
+				"en": "Falling behind",
+				"es": "Quedándose atrás",
+				"pt": "Ficando para trás"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",112],[\"Caio\",110],[\"Nilton\",95],[\"Tiago\",84],[\"Marcio\",63],[\"Adriano\",55],[\"Deborah\",55],[\"Rafaella\",55],[\"Renan\",55],[\"Bruna\",53],[\"Eudaldo\",53],[\"Joe\",53],[\"Gabriel\",40]]",
+		"titlesSignature": "[[\"Rachael\",102],[\"Caio\",100],[\"Nilton\",85],[\"Tiago\",74],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Joe\",43],[\"Gabriel\",30]]",
 		"recapSignature": "[[\"Rachael\",102],[\"Caio\",100],[\"Nilton\",85],[\"Tiago\",74],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Joe\",43],[\"Gabriel\",30]]"
 	},
-	"generatedAt": "2026-06-14T17:10:24.070Z"
+	"generatedAt": "2026-06-14T17:25:22.480Z"
 }
