@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-14T17:05:18.110Z",
+	"fetchedAt": "2026-06-14T17:10:17.020Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -101,9 +101,9 @@
 			"awayScore": 0,
 			"awayTeam": "Curaçao",
 			"finished": false,
-			"timeElapsed": "3",
+			"timeElapsed": "8",
 			"group": "Group E",
-			"homeScore": 0,
+			"homeScore": 1,
 			"homeTeam": "Germany",
 			"id": 400021464,
 			"localDate": "2026-06-14T17:00:00Z",
