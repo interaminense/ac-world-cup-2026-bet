@@ -43,74 +43,74 @@
 			"pt": "Caio parece inalcancavel la em cima com 100 pontos, abrindo 8 de vantagem sobre Rachael e 15 sobre Nilton depois de uma rodada impecavel com 25 pontos e 4 acertos exatos. Rachael e Nilton sao os principais perseguidores, mas precisam de um tropeco de Caio, enquanto Tiago, quarto com 74, ja tem muito chao pela frente. La embaixo, Joe teve uma rodada pra esquecer com 0 pontos e figura em 13o com apenas 25 no total, mas Eudaldo arrancou 25 pontos na rodada e subiu tres posicoes para empatar com Bruna em 43, provando que a briga no meio da tabela ainda tem muito pano pra manga."
 		},
 		"titles": {
+			"Rachael": {
+				"en": "Untouchable leader",
+				"es": "Líder inalcanzable",
+				"pt": "Líder intocável"
+			},
 			"Caio": {
-				"en": "Leading the pack",
-				"es": "Líder destacado",
-				"pt": "Na frente de todos"
+				"en": "Exact score machine",
+				"es": "Máquina de plenos",
+				"pt": "Máquina de exatos"
 			},
 			"Nilton": {
-				"en": "Breathing down your neck",
-				"es": "Pisando los talones",
-				"pt": "Colado no líder"
+				"en": "Sliding back",
+				"es": "Perdiendo terreno",
+				"pt": "Escorregando"
 			},
 			"Tiago": {
-				"en": "Solid third",
-				"es": "Tercero firme",
-				"pt": "Terceiro sólido"
-			},
-			"Rachael": {
 				"en": "Holding steady",
-				"es": "Manteniéndose firme",
-				"pt": "Segurando a posição"
+				"es": "Firme en su sitio",
+				"pt": "Segurando posição"
 			},
 			"Marcio": {
-				"en": "Distant fifth",
-				"es": "Quinto rezagado",
-				"pt": "Quinto distante"
+				"en": "Midpack grinder",
+				"es": "Luchando en el medio",
+				"pt": "Guerreiro do meio"
 			},
 			"Adriano": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Rising up",
+				"es": "Subiendo puestos",
+				"pt": "Subindo na tabela"
 			},
 			"Deborah": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Rising up",
+				"es": "Subiendo puestos",
+				"pt": "Subindo na tabela"
 			},
 			"Rafaella": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Rising up",
+				"es": "Subiendo puestos",
+				"pt": "Subindo na tabela"
 			},
 			"Renan": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Rising up",
+				"es": "Subiendo puestos",
+				"pt": "Subindo na tabela"
 			},
 			"Bruna": {
-				"en": "Just off the pace",
-				"es": "Casi en el grupo",
-				"pt": "Quase no grupo"
+				"en": "Sneaking up quietly",
+				"es": "Acercándose sin ruido",
+				"pt": "Chegando por baixo"
 			},
 			"Eudaldo": {
-				"en": "Surging up fast",
-				"es": "Subiendo con fuerza",
-				"pt": "Subindo rápido"
+				"en": "Big round surge",
+				"es": "Gran remontada parcial",
+				"pt": "Arrancada na rodada"
+			},
+			"Joe": {
+				"en": "Free fall",
+				"es": "En caída libre",
+				"pt": "Em queda livre"
 			},
 			"Gabriel": {
 				"en": "Fading away",
 				"es": "Desapareciendo",
 				"pt": "Sumindo no fim"
-			},
-			"Joe": {
-				"en": "Rough stretch",
-				"es": "Mala racha",
-				"pt": "Momento difícil"
 			}
 		},
-		"titlesSignature": "[[\"Caio\",112],[\"Nilton\",110],[\"Tiago\",99],[\"Rachael\",92],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Gabriel\",30],[\"Joe\",25]]",
+		"titlesSignature": "[[\"Rachael\",117],[\"Caio\",100],[\"Nilton\",85],[\"Tiago\",74],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Joe\",40],[\"Gabriel\",30]]",
 		"recapSignature": "[[\"Caio\",100],[\"Rachael\",92],[\"Nilton\",85],[\"Tiago\",74],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Gabriel\",30],[\"Joe\",25]]"
 	},
-	"generatedAt": "2026-06-14T04:05:24.512Z"
+	"generatedAt": "2026-06-14T04:30:21.295Z"
 }
