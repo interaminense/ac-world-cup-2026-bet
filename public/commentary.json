@@ -48,74 +48,74 @@
 			"pt": "Rachael subiu para a liderança com um ótimo aproveitamento de 10 pontos na rodada, abrindo uma vantagem mínima de apenas 2 pontos sobre Caio numa briga pelo titulo que promete emocionar ate o fim, enquanto Nilton segura tranquilo o terceiro lugar com 85 pontos mas precisaria de um milagre para alcançar a dupla da frente. Marcio, Adriano, Deborah, Rafaella e Renan formam um grupo compacto no meio da tabela, ainda vivos mas torcendo para que os lideres tropecem. La embaixo, Joe foi a grande surpresa da rodada com 18 pontos arrasadores que o fizeram subir tres posicoes de uma vez, enquanto Gabriel, isolado na lanterna com 30 pontos, tem muito chao pela frente."
 		},
 		"titles": {
-			"Caio": {
-				"en": "Steady at the top",
-				"es": "Sólido en lo alto",
-				"pt": "Sólido no topo"
-			},
 			"Rachael": {
-				"en": "Closing the gap",
-				"es": "Acortando distancias",
-				"pt": "Fechando a diferença"
+				"en": "Surging to the top",
+				"es": "Escala a lo alto",
+				"pt": "Disparou na liderança"
+			},
+			"Caio": {
+				"en": "Leader under pressure",
+				"es": "Líder bajo presión",
+				"pt": "Líder sob pressão"
 			},
 			"Nilton": {
-				"en": "Holding third",
-				"es": "Firme en tercero",
-				"pt": "Segurando o terceiro"
+				"en": "Steady in third",
+				"es": "Sólido en tercero",
+				"pt": "Firme em terceiro"
 			},
 			"Tiago": {
-				"en": "Fading back",
-				"es": "Perdiendo terreno",
-				"pt": "Caindo no ritmo"
+				"en": "Holding fourth",
+				"es": "Aguantando el cuarto",
+				"pt": "Segurando o quarto"
 			},
 			"Marcio": {
-				"en": "Midpack grind",
-				"es": "Luchando en el medio",
-				"pt": "Sobrevivendo no meio"
+				"en": "Stuck in neutral",
+				"es": "Sin moverse",
+				"pt": "Parado no tempo"
+			},
+			"Eudaldo": {
+				"en": "Treading water",
+				"es": "Sin avanzar",
+				"pt": "Patinando no lugar"
+			},
+			"Joe": {
+				"en": "Rocket launch",
+				"es": "Despegue total",
+				"pt": "Decolou de vez"
 			},
 			"Adriano": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Slipping back",
+				"es": "Perdiendo terreno",
+				"pt": "Caindo nas posições"
 			},
 			"Deborah": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Losing ground",
+				"es": "Cediendo posiciones",
+				"pt": "Perdendo terreno"
 			},
 			"Renan": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Falling behind",
+				"es": "Quedándose atrás",
+				"pt": "Ficando para trás"
 			},
 			"Rafaella": {
-				"en": "Just off pace",
-				"es": "Cerca pero lejos",
-				"pt": "Perto mas longe"
+				"en": "Dropping fast",
+				"es": "Cayendo rápido",
+				"pt": "Caindo rápido"
 			},
 			"Bruna": {
 				"en": "No exact scores",
-				"es": "Sin aciertos exactos",
+				"es": "Sin plenos",
 				"pt": "Sem acertos exatos"
 			},
-			"Eudaldo": {
-				"en": "Tied, needs a run",
-				"es": "Empatado, necesita más",
-				"pt": "Empatado, precisa mais"
-			},
-			"Joe": {
-				"en": "On the rise",
-				"es": "En racha ascendente",
-				"pt": "Em ascensão"
-			},
 			"Gabriel": {
-				"en": "Sliding down",
-				"es": "Resbalando hacia abajo",
-				"pt": "Escorregando na tabela"
+				"en": "Fighting for survival",
+				"es": "Luchando por sobrevivir",
+				"pt": "Lutando para sobreviver"
 			}
 		},
-		"titlesSignature": "[[\"Caio\",115],[\"Rachael\",112],[\"Nilton\",100],[\"Tiago\",89],[\"Marcio\",71],[\"Adriano\",63],[\"Deborah\",63],[\"Renan\",63],[\"Rafaella\",60],[\"Bruna\",58],[\"Eudaldo\",53],[\"Joe\",53],[\"Gabriel\",40]]",
+		"titlesSignature": "[[\"Rachael\",112],[\"Caio\",110],[\"Nilton\",95],[\"Tiago\",84],[\"Marcio\",68],[\"Eudaldo\",61],[\"Joe\",61],[\"Adriano\",60],[\"Deborah\",60],[\"Renan\",60],[\"Rafaella\",55],[\"Bruna\",53],[\"Gabriel\",48]]",
 		"recapSignature": "[[\"Rachael\",102],[\"Caio\",100],[\"Nilton\",85],[\"Tiago\",74],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Joe\",43],[\"Gabriel\",30]]"
 	},
-	"generatedAt": "2026-06-14T18:15:30.472Z"
+	"generatedAt": "2026-06-14T18:35:26.281Z"
 }
