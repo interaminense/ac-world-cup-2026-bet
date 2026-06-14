@@ -24,13 +24,18 @@
 			"en": "Match 5 brought pure chaos — Qatar 1-1 Switzerland was apparently too spicy for *everyone* to handle, as all 13 players scored a big fat zero on this one. Yes, ALL thirteen. Caio stays on top of the leaderboard at 75 points, but even the leader couldn't sniff this draw — cold comfort for a pool where nobody got bragging rights today!",
 			"es": "El partido 5 fue un desastre colectivo — Qatar 1-1 Suiza resultó ser el acertijo que nadie en el grupo pudo descifrar, con los 13 participantes marcando un redondo cero. Caio sigue líder con 75 puntos, pero ni él se salvó del batacazo. ¡Hoy el único ganador fue el empate!",
 			"pt": "O jogo 5 foi uma tragédia coletiva — Qatar 1-1 Suíça pegou todo mundo de calças curtas, e os 13 participantes foram pra casa com um golaço de zero. Isso mesmo, TREZE pessoas, nem uma acertou. Caio segura a liderança com 75 pontos, mas hoje o bolão inteiro levou uma invertida do futebol!"
+		},
+		"6": {
+			"en": "Match 6 delivered the drama nobody asked for — Brazil and Morocco played out a 1-1 draw that sent nine players (Adriano, Bruna, Caio, Deborah, Eudaldo, Gabriel, Joe, Rafaella, and Renan) home with a big fat zero! Meanwhile, Marcio, Nilton, and Rachael were out here reading crystal balls, all three nailing the exact scoreline. Marcio rode that wave all the way up seven spots on the leaderboard, while Rachael sits pretty at the top with 82 points — someone get her a samba costume!",
+			"es": "¡El partido 6 trajo el caos que nadie pidió — Brasil y Marruecos empataron 1-1 y mandaron a nueve jugadores (Adriano, Bruna, Caio, Deborah, Eudaldo, Gabriel, Joe, Rafaella y Renan) a casa con un cero de campeonato! Marcio, Nilton y Rachael, en cambio, debieron tener una bola de cristal, porque los tres acertaron el marcador exacto. Marcio pegó un salto de siete puestos en la clasificación, y Rachael sigue en lo más alto con 82 puntos — ¡alguien consígale un traje de flamenca!",
+			"pt": "O jogo 6 entregou o caos que ninguém pediu — Brasil e Marrocos empataram em 1-1 e mandaram nove pessoas (Adriano, Bruna, Caio, Deborah, Eudaldo, Gabriel, Joe, Rafaella e Renan) pra casa com um zero na conta! Enquanto isso, Marcio, Nilton e Rachael estavam com a bola de cristal calibrada e acertaram o placar exato. Marcio subiu sete posições de uma vez, e Rachael segue confortável no topo com 82 pontos — alguém chama ela pro desfile da escola de samba!"
 		}
 	},
 	"leaderboard": {
 		"recap": {
-			"en": "Caio is running away with this thing — 75 points and 3 exact scores in just 4 matches is a ridiculous pace that nobody has matched yet. Rachael made the biggest move of the round, climbing two spots to second with 57 points, while Tiago and Nilton are right behind at 52 and 50 keeping the chase honest. Down at the bottom, Eudaldo and Marcio are sitting on 18 points and need a big week before the gap to the leaders becomes a mountain.",
-			"es": "Caio está escapándose del pelotón con 75 puntos y 3 marcadores exactos en solo 4 jornadas, un ritmo que el resto todavía no ha podido igualar. Rachael fue la gran protagonista de la jornada al subir dos puestos hasta el segundo lugar con 57 puntos, con Tiago y Nilton pisándole los talones con 52 y 50. En la parte baja, Eudaldo y Marcio se quedan con 18 puntos y necesitan activarse pronto antes de que la diferencia con los de arriba se vuelva insalvable.",
-			"pt": "Caio esta dominando de um jeito que assusta: 75 pontos e 3 placar exatos em apenas 4 rodadas e ninguem conseguiu chegar perto ainda. Rachael foi a grande destaque da rodada, subindo duas posicoes para o segundo lugar com 57 pontos, enquanto Tiago e Nilton respiram no seu pescoco com 52 e 50. La embaixo, Eudaldo e Marcio estao travados nos 18 pontos e precisam engatar logo antes que a diferenca vire paisagem."
+			"en": "Rachael rules the roost at 82 points after a strong 25-point matchday, while Caio and Nilton are knotted at 75 in a fierce battle for second — though Nilton rocketed up two spots after Caio went scoreless. Tiago sits a lonely fourth at 64, and Marcio was the biggest mover of the round, vaulting seven places to fifth with a perfect 25-point haul. Down at the bottom, Gabriel and Eudaldo are running out of matchdays to make their move, but there is still plenty of football left to turn things around.",
+			"es": "Rachael manda en lo alto con 82 puntos tras un sobresaliente matchday de 25, mientras que Caio y Nilton comparten el segundo puesto con 75 — aunque Nilton le comió terreno a Caio, que se quedó a cero esta jornada. Tiago es un solitario cuarto con 64 puntos, y Marcio fue el gran protagonista de la jornada, pegando un salto de siete puestos hasta el quinto con una ronda perfecta. En la parte baja, Gabriel y Eudaldo tienen cada vez menos jornadas para remontar, pero la competición aún tiene mucha tela que cortar.",
+			"pt": "Rachael lidera com folga com 82 pontos depois de uma rodada brilhante de 25, enquanto Caio e Nilton estao empatados em 75 numa briga acirrada pelo segundo lugar — mas Nilton subiu dois degraus enquanto Caio ficou zerado na rodada. Tiago ocupa um solitario quarto lugar com 64 pontos, e Marcio foi a grande revelacao da rodada, disparando sete posicoes ate o quinto lugar com uma rodada perfeita. La embaixo, Gabriel e Eudaldo estao ficando sem rodadas para reagir, mas o campeonato ainda tem muito a oferecer."
 		},
 		"titles": {
 			"Rachael": {
@@ -100,7 +105,7 @@
 			}
 		},
 		"titlesSignature": "[[\"Rachael\",82],[\"Caio\",75],[\"Nilton\",75],[\"Tiago\",64],[\"Marcio\",43],[\"Adriano\",35],[\"Deborah\",35],[\"Rafaella\",35],[\"Renan\",35],[\"Bruna\",33],[\"Joe\",25],[\"Gabriel\",20],[\"Eudaldo\",18]]",
-		"recapSignature": "[[\"Caio\",75],[\"Rachael\",57],[\"Tiago\",52],[\"Nilton\",50],[\"Adriano\",35],[\"Deborah\",35],[\"Rafaella\",35],[\"Renan\",35],[\"Bruna\",33],[\"Joe\",25],[\"Gabriel\",20],[\"Eudaldo\",18],[\"Marcio\",18]]"
+		"recapSignature": "[[\"Rachael\",82],[\"Caio\",75],[\"Nilton\",75],[\"Tiago\",64],[\"Marcio\",43],[\"Adriano\",35],[\"Deborah\",35],[\"Rafaella\",35],[\"Renan\",35],[\"Bruna\",33],[\"Joe\",25],[\"Gabriel\",20],[\"Eudaldo\",18]]"
 	},
-	"generatedAt": "2026-06-13T22:40:19.305Z"
+	"generatedAt": "2026-06-14T00:10:41.107Z"
 }
