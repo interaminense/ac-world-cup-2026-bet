@@ -1,26 +1,7 @@
 import {useState} from 'react';
 
+import {colorByName} from '../lib/colors';
 import type {Evolution} from '../lib/evolution';
-
-const COLORS = [
-	'#fbbf24',
-	'#34d399',
-	'#60a5fa',
-	'#f472b6',
-	'#a78bfa',
-	'#f87171',
-	'#2dd4bf',
-	'#fb923c',
-	'#a3e635',
-	'#22d3ee',
-	'#e879f9',
-	'#facc15',
-	'#4ade80',
-	'#93c5fd',
-	'#fda4af',
-	'#c084fc',
-	'#5eead4',
-];
 
 const WIDTH = 800;
 const HEIGHT = 340;
@@ -59,9 +40,7 @@ export function EvolutionChart({evolution}: {evolution: Evolution}) {
 		[0.25, 0.5, 0.75, 1].map((fraction) => Math.round(yMax * fraction))
 	)];
 
-	const colorByName = new Map(
-		series.map((item, index) => [item.name, COLORS[index % COLORS.length]])
-	);
+	const colorFor = colorByName(series.map((item) => item.name));
 
 	const ranked = [...series].sort(
 		(a, b) =>
@@ -123,7 +102,7 @@ export function EvolutionChart({evolution}: {evolution: Evolution}) {
 					))}
 
 					{series.map((item) => {
-						const color = colorByName.get(item.name);
+						const color = colorFor.get(item.name);
 
 						const points = [
 							`${PAD.left},${y(0)}`,
@@ -193,7 +172,7 @@ export function EvolutionChart({evolution}: {evolution: Evolution}) {
 					>
 						<span
 							className="h-2.5 w-2.5 rounded-full"
-							style={{backgroundColor: colorByName.get(item.name)}}
+							style={{backgroundColor: colorFor.get(item.name)}}
 						/>
 
 						{item.name}

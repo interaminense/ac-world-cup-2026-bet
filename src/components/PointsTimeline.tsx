@@ -1,16 +1,21 @@
 import {useEffect, useRef, useState} from 'react';
 
+import {colorByName} from '../lib/colors';
 import {kickoffDate} from '../lib/kickoff';
 import type {TimelineFrame} from '../lib/timeline';
 import {Avatar} from './Avatar';
 
-const MEDALS = ['🥇', '🥈', '🥉'];
+// Vertical slot per row (bar height + gap), in pixels. Rows are absolutely
+// positioned at `index * ROW_H` so a changed rank glides via a transform.
+const ROW_H = 48;
 
-// Vertical slot height per row (row + gap), in pixels. Rows are absolutely
-// positioned at `index * ROW_H` so a changed rank animates via CSS transform.
-const ROW_H = 52;
+const PLAY_INTERVAL_MS = 1300;
 
-const PLAY_INTERVAL_MS = 1100;
+// One shared glide for both the reorder (translateY) and the bar length
+// (scaleX). Animating transforms only — never width/top — keeps the work on
+// the GPU compositor, so the whole field can move at once and still read
+// smooth.
+const GLIDE = 'transform 700ms cubic-bezier(0.22, 1, 0.36, 1)';
 
 function frameLabel(frame: TimelineFrame): string {
 	const kickoff = kickoffDate(frame.date, frame.time);
@@ -23,26 +28,6 @@ function frameLabel(frame: TimelineFrame): string {
 		day: 'numeric',
 		month: 'short',
 	});
-}
-
-function Movement({movement}: {movement: number}) {
-	if (movement > 0) {
-		return (
-			<span className="flex w-7 items-center justify-end gap-0.5 text-xs font-semibold text-emerald-400">
-				▲{movement}
-			</span>
-		);
-	}
-
-	if (movement < 0) {
-		return (
-			<span className="flex w-7 items-center justify-end gap-0.5 text-xs font-semibold text-rose-400">
-				▼{-movement}
-			</span>
-		);
-	}
-
-	return <span className="w-7 text-center text-xs text-slate-600">–</span>;
 }
 
 export function PointsTimeline({frames}: {frames: TimelineFrame[]}) {
@@ -100,6 +85,7 @@ export function PointsTimeline({frames}: {frames: TimelineFrame[]}) {
 	// The leader's total sets the scale: their bar fills the whole card, every
 	// other bar is drawn proportionally to it.
 	const maxTotal = Math.max(1, frame.standings[0]?.total ?? 0);
+	const colors = colorByName(frame.standings.map((row) => row.name));
 
 	const seek = (next: number) => {
 		touched.current = true;
@@ -134,62 +120,63 @@ export function PointsTimeline({frames}: {frames: TimelineFrame[]}) {
 				</p>
 			</div>
 
-			<div className="relative" style={{height: frame.standings.length * ROW_H}}>
-				{frame.standings.map((row, position) => (
-					<div
-						className="absolute inset-x-0 transition-transform duration-500 ease-out"
-						key={row.name}
-						style={{transform: `translateY(${position * ROW_H}px)`}}
-					>
+			<div
+				className="relative"
+				style={{height: frame.standings.length * ROW_H}}
+			>
+				{frame.standings.map((row, position) => {
+					const color = colors.get(row.name) ?? '#94a3b8';
+
+					return (
 						<div
-							className={`relative h-11 overflow-hidden rounded-xl border bg-white/5 ${
-								row.gained > 0
-									? 'border-emerald-400/30'
-									: 'border-white/10'
-							}`}
+							className="absolute inset-x-0"
+							key={row.name}
+							style={{
+								transform: `translateY(${position * ROW_H}px)`,
+								transition: GLIDE,
+								willChange: 'transform',
+							}}
 						>
-							<div
-								className="absolute inset-y-0 left-0 bg-amber-400/15 transition-[width] duration-500 ease-out"
-								style={{
-									width: `${(row.total / maxTotal) * 100}%`,
-								}}
-							/>
-
-							<div className="relative flex h-full items-center gap-2 px-2.5 sm:gap-3 sm:px-3">
-								<span className="w-6 text-center font-display text-sm font-bold text-slate-300">
-									{row.rank <= 3
-										? MEDALS[row.rank - 1]
-										: row.rank}
-								</span>
-
-								<Avatar
-									className="h-7 w-7 rounded-full"
-									name={row.name}
+							<div className="relative flex h-10 items-center overflow-hidden rounded-lg bg-white/5">
+								<div
+									className="absolute inset-y-0 left-0 w-full origin-left"
+									style={{
+										backgroundColor: color,
+										opacity: 0.3,
+										transform: `scaleX(${row.total / maxTotal})`,
+										transition: GLIDE,
+										willChange: 'transform',
+									}}
 								/>
 
-								<span className="flex-1 truncate text-sm font-medium text-white">
-									{row.name}
-								</span>
+								<div className="relative flex w-full items-center gap-2.5 px-3">
+									<span className="w-4 text-center text-xs font-semibold tabular-nums text-slate-400">
+										{row.rank}
+									</span>
 
-								<Movement movement={row.movement} />
+									<Avatar
+										className="h-6 w-6 rounded-full"
+										name={row.name}
+									/>
 
-								<span
-									className={`w-9 text-right font-display text-xs font-bold ${
-										row.gained > 0
-											? 'text-emerald-300'
-											: 'text-slate-600'
-									}`}
-								>
-									+{row.gained}
-								</span>
+									<span className="flex-1 truncate text-sm font-medium text-white">
+										{row.name}
+									</span>
 
-								<span className="w-9 text-right font-display text-base font-bold text-amber-400">
-									{row.total}
-								</span>
+									{row.gained > 0 && (
+										<span className="text-xs font-bold text-emerald-300">
+											+{row.gained}
+										</span>
+									)}
+
+									<span className="w-8 text-right font-display text-base font-bold tabular-nums text-white">
+										{row.total}
+									</span>
+								</div>
 							</div>
 						</div>
-					</div>
-				))}
+					);
+				})}
 			</div>
 
 			<div className="flex items-center gap-3">
