@@ -53,74 +53,74 @@
 			"pt": "Rachael segura o comando com autoridade nos 117 pontos, abrindo 7 de vantagem sobre Caio (110) e 22 sobre Nilton (95), sem dar nenhum sinal de desacelerar. No meio do pelotao, o engarrafamento e total: Tiago (84) persegue o pódio enquanto Marcio, Adriano, Deborah, Rafaella e Renan estao todos empatados na faixa dos 55 a 63 pontos. Gabriel fecha a tabela com 40 pontos, mas com muitas rodadas pela frente, ninguem pode cruzar os bracos ainda."
 		},
 		"titles": {
-			"Caio": {
-				"en": "Untouchable leader",
-				"es": "Líder intocable",
-				"pt": "Líder intocável"
-			},
 			"Rachael": {
-				"en": "Closing the gap",
-				"es": "Acortando distancias",
-				"pt": "Chegando por cima"
+				"en": "Comfortable leader",
+				"es": "Líder cómoda",
+				"pt": "Líder tranquila"
 			},
-			"Nilton": {
-				"en": "Solid third",
-				"es": "Tercero sólido",
-				"pt": "Terceiro firme"
+			"Caio": {
+				"en": "Chasing hard",
+				"es": "Persiguiendo fuerte",
+				"pt": "Correndo atrás"
 			},
 			"Tiago": {
 				"en": "Hanging in there",
 				"es": "Aguantando el tipo",
 				"pt": "Se segurando"
 			},
-			"Marcio": {
-				"en": "Tight pack chase",
-				"es": "En la batalla",
-				"pt": "Na briga do bloco"
-			},
-			"Adriano": {
-				"en": "Four-way tie",
-				"es": "Empate cuádruple",
-				"pt": "Empate quádruplo"
-			},
-			"Deborah": {
-				"en": "Four-way tie",
-				"es": "Empate cuádruple",
-				"pt": "Empate quádruplo"
-			},
-			"Rafaella": {
-				"en": "Four-way tie",
-				"es": "Empate cuádruple",
-				"pt": "Empate quádruplo"
-			},
-			"Renan": {
-				"en": "Four-way tie",
-				"es": "Empate cuádruple",
-				"pt": "Empate quádruplo"
-			},
-			"Bruna": {
-				"en": "Just off the pack",
-				"es": "Rozando el grupo",
-				"pt": "Colada no bloco"
-			},
-			"Gabriel": {
-				"en": "Falling behind",
-				"es": "Perdiendo terreno",
-				"pt": "Ficando pra trás"
+			"Nilton": {
+				"en": "Breathing down necks",
+				"es": "Pisando los talones",
+				"pt": "No encalço"
 			},
 			"Eudaldo": {
-				"en": "Must push now",
-				"es": "Hora de empujar",
-				"pt": "Precisa acelerar"
+				"en": "Tied for fifth",
+				"es": "Empatado en quinto",
+				"pt": "Empatado em quinto"
 			},
 			"Joe": {
-				"en": "Must push now",
-				"es": "Hora de empujar",
-				"pt": "Precisa acelerar"
+				"en": "Tied for fifth",
+				"es": "Empatada en quinto",
+				"pt": "Empatado em quinto"
+			},
+			"Marcio": {
+				"en": "Fading back",
+				"es": "Quedándose atrás",
+				"pt": "Perdendo terreno"
+			},
+			"Adriano": {
+				"en": "Stuck in a pack",
+				"es": "Atascado en grupo",
+				"pt": "Preso no grupo"
+			},
+			"Deborah": {
+				"en": "Stuck in a pack",
+				"es": "Atascada en grupo",
+				"pt": "Presa no grupo"
+			},
+			"Rafaella": {
+				"en": "Stuck in a pack",
+				"es": "Atascada en grupo",
+				"pt": "Presa no grupo"
+			},
+			"Renan": {
+				"en": "Stuck in a pack",
+				"es": "Atascado en grupo",
+				"pt": "Preso no grupo"
+			},
+			"Bruna": {
+				"en": "No exact scores",
+				"es": "Sin aciertos exactos",
+				"pt": "Sem placar exato"
+			},
+			"Gabriel": {
+				"en": "Needs a miracle",
+				"es": "Necesita un milagro",
+				"pt": "Precisa de milagre"
 			}
 		},
-		"titlesSignature": "[[\"Caio\",125],[\"Rachael\",117],[\"Nilton\",95],[\"Tiago\",84],[\"Marcio\",81],[\"Adriano\",80],[\"Deborah\",80],[\"Rafaella\",80],[\"Renan\",80],[\"Bruna\",78],[\"Gabriel\",65],[\"Eudaldo\",53],[\"Joe\",53]]",
+		"titlesSignature": "[[\"Rachael\",129],[\"Caio\",110],[\"Tiago\",96],[\"Nilton\",95],[\"Eudaldo\",78],[\"Joe\",78],[\"Marcio\",63],[\"Adriano\",55],[\"Deborah\",55],[\"Rafaella\",55],[\"Renan\",55],[\"Bruna\",53],[\"Gabriel\",40]]",
 		"recapSignature": "[[\"Rachael\",117],[\"Caio\",110],[\"Nilton\",95],[\"Tiago\",84],[\"Marcio\",63],[\"Adriano\",55],[\"Deborah\",55],[\"Rafaella\",55],[\"Renan\",55],[\"Bruna\",53],[\"Eudaldo\",53],[\"Joe\",53],[\"Gabriel\",40]]"
 	},
-	"generatedAt": "2026-06-14T21:25:22.328Z"
+	"generatedAt": "2026-06-14T21:50:25.455Z"
 }
