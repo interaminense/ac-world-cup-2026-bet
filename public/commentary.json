@@ -44,73 +44,73 @@
 		},
 		"titles": {
 			"Caio": {
-				"en": "Exact machine",
-				"es": "Máquina de exactos",
-				"pt": "Máquina de exatos"
-			},
-			"Rachael": {
-				"en": "Closing the gap",
-				"es": "Acortando distancia",
-				"pt": "Fechando a diferença"
+				"en": "Leading the pack",
+				"es": "Líder destacado",
+				"pt": "Na frente de todos"
 			},
 			"Nilton": {
-				"en": "Climbing fast",
-				"es": "Subiendo rápido",
-				"pt": "Subindo rápido"
+				"en": "Breathing down your neck",
+				"es": "Pisando los talones",
+				"pt": "Colado no líder"
 			},
 			"Tiago": {
-				"en": "Losing ground",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo terreno"
+				"en": "Solid third",
+				"es": "Tercero firme",
+				"pt": "Terceiro sólido"
+			},
+			"Rachael": {
+				"en": "Holding steady",
+				"es": "Manteniéndose firme",
+				"pt": "Segurando a posição"
 			},
 			"Marcio": {
-				"en": "Rocket launch",
-				"es": "Despegue cohete",
-				"pt": "Decolagem explosiva"
+				"en": "Distant fifth",
+				"es": "Quinto rezagado",
+				"pt": "Quinto distante"
 			},
 			"Adriano": {
-				"en": "Stuck in place",
-				"es": "Sin avanzar",
-				"pt": "Parado no lugar"
+				"en": "Three-way tie",
+				"es": "Triple empate",
+				"pt": "Empate triplo"
 			},
 			"Deborah": {
-				"en": "Stuck in place",
-				"es": "Sin avanzar",
-				"pt": "Parada no lugar"
+				"en": "Three-way tie",
+				"es": "Triple empate",
+				"pt": "Empate triplo"
 			},
 			"Rafaella": {
-				"en": "Stuck in place",
-				"es": "Sin avanzar",
-				"pt": "Parada no lugar"
+				"en": "Three-way tie",
+				"es": "Triple empate",
+				"pt": "Empate triplo"
 			},
 			"Renan": {
-				"en": "Stuck in place",
-				"es": "Sin avanzar",
-				"pt": "Parado no lugar"
+				"en": "Three-way tie",
+				"es": "Triple empate",
+				"pt": "Empate triplo"
 			},
 			"Bruna": {
-				"en": "Fading out",
-				"es": "Desvaneciéndose",
-				"pt": "Sumindo no mapa"
+				"en": "Just off the pace",
+				"es": "Casi en el grupo",
+				"pt": "Quase no grupo"
 			},
 			"Eudaldo": {
-				"en": "Hanging on",
-				"es": "Aguantando el tipo",
-				"pt": "Se segurando"
+				"en": "Surging up fast",
+				"es": "Subiendo con fuerza",
+				"pt": "Subindo rápido"
 			},
 			"Gabriel": {
-				"en": "Deep in trouble",
-				"es": "En problemas serios",
-				"pt": "Em apuros"
+				"en": "Fading away",
+				"es": "Desapareciendo",
+				"pt": "Sumindo no fim"
 			},
 			"Joe": {
-				"en": "Last place blues",
-				"es": "Blues del último",
-				"pt": "Lanterna acesa"
+				"en": "Rough stretch",
+				"es": "Mala racha",
+				"pt": "Momento difícil"
 			}
 		},
-		"titlesSignature": "[[\"Caio\",100],[\"Rachael\",92],[\"Nilton\",85],[\"Tiago\",74],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Gabriel\",30],[\"Joe\",25]]",
+		"titlesSignature": "[[\"Caio\",112],[\"Nilton\",110],[\"Tiago\",99],[\"Rachael\",92],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Gabriel\",30],[\"Joe\",25]]",
 		"recapSignature": "[[\"Caio\",100],[\"Rachael\",92],[\"Nilton\",85],[\"Tiago\",74],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Gabriel\",30],[\"Joe\",25]]"
 	},
-	"generatedAt": "2026-06-14T03:05:39.361Z"
+	"generatedAt": "2026-06-14T04:05:24.512Z"
 }

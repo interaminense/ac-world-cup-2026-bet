@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-14T03:05:14.881Z",
+	"fetchedAt": "2026-06-14T04:05:17.705Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -89,7 +89,7 @@
 			"awayScore": 0,
 			"awayTeam": "Türkiye",
 			"finished": false,
-			"timeElapsed": "notstarted",
+			"timeElapsed": "4",
 			"group": "Group D",
 			"homeScore": 0,
 			"homeTeam": "Australia",
