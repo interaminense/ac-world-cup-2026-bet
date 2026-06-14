@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-14T01:15:15.059Z",
+	"fetchedAt": "2026-06-14T01:20:18.052Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -77,7 +77,7 @@
 			"awayScore": 0,
 			"awayTeam": "Scotland",
 			"finished": false,
-			"timeElapsed": "12",
+			"timeElapsed": "17",
 			"group": "Group C",
 			"homeScore": 0,
 			"homeTeam": "Haiti",
