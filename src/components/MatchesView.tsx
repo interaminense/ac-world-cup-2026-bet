@@ -87,89 +87,144 @@ function EntryPill({
 	);
 }
 
-export function MatchesView({cards, commentary, whatIf}: MatchesViewProps) {
+function MatchCardArticle({
+	card,
+	commentary,
+	whatIf,
+}: {
+	card: MatchCard;
+	commentary: Record<number, string>;
+	whatIf: Record<number, WhatIfScenario[]>;
+}) {
 	return (
-		<div className="space-y-6">
-			{groupByLocalDay(cards).map((group) => (
-				<section key={group.label}>
-					<h2 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+		<article
+			className={`rounded-2xl border bg-white/5 p-4 ${
+				card.status === 'live'
+					? 'border-emerald-400/40'
+					: 'border-white/10'
+			} ${card.status === 'finished' ? 'opacity-60' : ''}`}
+		>
+			<div className="mb-3 flex items-center justify-between text-xs text-slate-400">
+				<span>
+					#{card.matchNo} · {card.group} · {kickoffTime(card)}
+				</span>
+
+				<StatusChip status={card.status} timeElapsed={card.timeElapsed} />
+			</div>
+
+			<div className="mb-3 flex items-center justify-center gap-3 text-center">
+				<span className="flex flex-1 items-center justify-end gap-2 font-medium text-white">
+					{card.team1}
+
+					<Flag team={card.team1} />
+				</span>
+
+				<span className="rounded-lg bg-white/10 px-3 py-1 font-display text-lg font-bold text-amber-300">
+					{card.r1 !== undefined ? `${card.r1}–${card.r2}` : 'vs'}
+				</span>
+
+				<span className="flex flex-1 items-center justify-start gap-2 font-medium text-white">
+					<Flag team={card.team2} />
+
+					{card.team2}
+				</span>
+			</div>
+
+			<div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+				{card.entries.map((entry) => (
+					<EntryPill
+						entry={entry}
+						key={entry.name}
+						live={card.status === 'live'}
+					/>
+				))}
+			</div>
+
+			{card.status === 'live' && (
+				<WhatIfPanel scenarios={whatIf[card.matchNo] ?? []} />
+			)}
+
+			{commentary[card.matchNo] && (
+				<div className="mt-3 flex gap-2 rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-3 py-2.5">
+					<span aria-hidden className="text-sm">
+						🎙️
+					</span>
+
+					<p className="text-xs italic leading-relaxed text-slate-300">
+						{commentary[card.matchNo]}
+					</p>
+				</div>
+			)}
+		</article>
+	);
+}
+
+function MatchSection({
+	commentary,
+	groups,
+	label,
+	whatIf,
+}: {
+	commentary: Record<number, string>;
+	groups: DayGroup[];
+	label: string;
+	whatIf: Record<number, WhatIfScenario[]>;
+}) {
+	return (
+		<section className="space-y-6">
+			<h2 className="flex items-center gap-3 text-sm font-bold uppercase tracking-wider text-slate-200">
+				{label}
+
+				<span aria-hidden className="h-px flex-1 bg-white/10" />
+			</h2>
+
+			{groups.map((group) => (
+				<div key={group.label}>
+					<h3 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
 						{group.label}
-					</h2>
+					</h3>
 
 					<div className="grid gap-3 lg:grid-cols-2">
 						{group.cards.map((card) => (
-							<article
-								className={`rounded-2xl border bg-white/5 p-4 ${
-									card.status === 'live'
-										? 'border-emerald-400/40'
-										: 'border-white/10'
-								} ${card.status === 'finished' ? 'opacity-60' : ''}`}
+							<MatchCardArticle
+								card={card}
+								commentary={commentary}
 								key={card.matchNo}
-							>
-								<div className="mb-3 flex items-center justify-between text-xs text-slate-400">
-									<span>
-										#{card.matchNo} · {card.group} ·{' '}
-										{kickoffTime(card)}
-									</span>
-
-									<StatusChip
-										status={card.status}
-										timeElapsed={card.timeElapsed}
-									/>
-								</div>
-
-								<div className="mb-3 flex items-center justify-center gap-3 text-center">
-									<span className="flex flex-1 items-center justify-end gap-2 font-medium text-white">
-										{card.team1}
-
-										<Flag team={card.team1} />
-									</span>
-
-									<span className="rounded-lg bg-white/10 px-3 py-1 font-display text-lg font-bold text-amber-300">
-										{card.r1 !== undefined
-											? `${card.r1}–${card.r2}`
-											: 'vs'}
-									</span>
-
-									<span className="flex flex-1 items-center justify-start gap-2 font-medium text-white">
-										<Flag team={card.team2} />
-
-										{card.team2}
-									</span>
-								</div>
-
-								<div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
-									{card.entries.map((entry) => (
-										<EntryPill
-											entry={entry}
-											key={entry.name}
-											live={card.status === 'live'}
-										/>
-									))}
-								</div>
-
-								{card.status === 'live' && (
-									<WhatIfPanel
-										scenarios={whatIf[card.matchNo] ?? []}
-									/>
-								)}
-
-								{commentary[card.matchNo] && (
-									<div className="mt-3 flex gap-2 rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-3 py-2.5">
-										<span aria-hidden className="text-sm">
-											🎙️
-										</span>
-
-										<p className="text-xs italic leading-relaxed text-slate-300">
-											{commentary[card.matchNo]}
-										</p>
-									</div>
-								)}
-							</article>
+								whatIf={whatIf}
+							/>
 						))}
 					</div>
-				</section>
+				</div>
 			))}
+		</section>
+	);
+}
+
+export function MatchesView({cards, commentary, whatIf}: MatchesViewProps) {
+	const upcoming = cards.filter((card) => card.status !== 'finished');
+	const finished = cards.filter((card) => card.status === 'finished');
+
+	const hasLive = upcoming.some((card) => card.status === 'live');
+
+	return (
+		<div className="space-y-10">
+			{upcoming.length > 0 && (
+				<MatchSection
+					commentary={commentary}
+					groups={groupByLocalDay(upcoming)}
+					label={hasLive ? 'Live & upcoming' : 'Upcoming'}
+					whatIf={whatIf}
+				/>
+			)}
+
+			{finished.length > 0 && (
+				<MatchSection
+					commentary={commentary}
+					groups={groupByLocalDay([...finished].reverse())}
+					label="Finished"
+					whatIf={whatIf}
+				/>
+			)}
 		</div>
 	);
 }
