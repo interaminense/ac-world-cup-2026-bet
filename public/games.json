@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-14T21:05:21.798Z",
+	"fetchedAt": "2026-06-14T21:10:18.166Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -113,9 +113,9 @@
 			"awayScore": 0,
 			"awayTeam": "Japan",
 			"finished": false,
-			"timeElapsed": "46",
+			"timeElapsed": "51",
 			"group": "Group F",
-			"homeScore": 0,
+			"homeScore": 1,
 			"homeTeam": "Netherlands",
 			"id": 400021470,
 			"localDate": "2026-06-14T20:00:00Z",
