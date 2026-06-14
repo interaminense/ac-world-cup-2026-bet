@@ -1,0 +1,235 @@
+import {useEffect, useRef, useState} from 'react';
+
+import {kickoffDate} from '../lib/kickoff';
+import type {TimelineFrame} from '../lib/timeline';
+import {Avatar} from './Avatar';
+
+const MEDALS = ['🥇', '🥈', '🥉'];
+
+// Vertical slot height per row (row + gap), in pixels. Rows are absolutely
+// positioned at `index * ROW_H` so a changed rank animates via CSS transform.
+const ROW_H = 52;
+
+const PLAY_INTERVAL_MS = 1100;
+
+function frameLabel(frame: TimelineFrame): string {
+	const kickoff = kickoffDate(frame.date, frame.time);
+
+	if (!kickoff) {
+		return frame.date;
+	}
+
+	return kickoff.toLocaleDateString('en-US', {
+		day: 'numeric',
+		month: 'short',
+	});
+}
+
+function Movement({movement}: {movement: number}) {
+	if (movement > 0) {
+		return (
+			<span className="flex w-7 items-center justify-end gap-0.5 text-xs font-semibold text-emerald-400">
+				▲{movement}
+			</span>
+		);
+	}
+
+	if (movement < 0) {
+		return (
+			<span className="flex w-7 items-center justify-end gap-0.5 text-xs font-semibold text-rose-400">
+				▼{-movement}
+			</span>
+		);
+	}
+
+	return <span className="w-7 text-center text-xs text-slate-600">–</span>;
+}
+
+export function PointsTimeline({frames}: {frames: TimelineFrame[]}) {
+	const [index, setIndex] = useState(() => Math.max(0, frames.length - 1));
+	const [playing, setPlaying] = useState(false);
+	const touched = useRef(false);
+
+	// Follow the latest match until the user grabs the scrubber; afterwards,
+	// just keep their position in range as new frames arrive.
+	useEffect(() => {
+		setIndex((current) =>
+			touched.current
+				? Math.min(current, Math.max(0, frames.length - 1))
+				: Math.max(0, frames.length - 1)
+		);
+	}, [frames.length]);
+
+	useEffect(() => {
+		if (!playing) {
+			return undefined;
+		}
+
+		const id = setInterval(() => {
+			setIndex((current) => {
+				if (current >= frames.length - 1) {
+					setPlaying(false);
+
+					return current;
+				}
+
+				return current + 1;
+			});
+		}, PLAY_INTERVAL_MS);
+
+		return () => clearInterval(id);
+	}, [playing, frames.length]);
+
+	if (frames.length === 0) {
+		return (
+			<div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-12 text-center">
+				<p className="font-display text-lg font-bold text-white">
+					No results to rewind yet ⏳
+				</p>
+
+				<p className="mt-1 text-sm text-slate-400">
+					The timeline unlocks after the first match is final.
+				</p>
+			</div>
+		);
+	}
+
+	const safeIndex = Math.min(index, frames.length - 1);
+	const frame = frames[safeIndex];
+
+	// The leader's total sets the scale: their bar fills the whole card, every
+	// other bar is drawn proportionally to it.
+	const maxTotal = Math.max(1, frame.standings[0]?.total ?? 0);
+
+	const seek = (next: number) => {
+		touched.current = true;
+		setPlaying(false);
+		setIndex(Math.max(0, Math.min(next, frames.length - 1)));
+	};
+
+	const togglePlay = () => {
+		touched.current = true;
+
+		if (!playing && safeIndex >= frames.length - 1) {
+			setIndex(0);
+		}
+
+		setPlaying((value) => !value);
+	};
+
+	return (
+		<div className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+			<div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+				<p className="font-display text-base font-bold text-white">
+					{frame.team1}{' '}
+					<span className="text-amber-300">
+						{frame.r1}–{frame.r2}
+					</span>{' '}
+					{frame.team2}
+				</p>
+
+				<p className="text-xs text-slate-400">
+					Match {frame.matchNo} · {frameLabel(frame)} ·{' '}
+					{safeIndex + 1}/{frames.length}
+				</p>
+			</div>
+
+			<div className="relative" style={{height: frame.standings.length * ROW_H}}>
+				{frame.standings.map((row, position) => (
+					<div
+						className="absolute inset-x-0 transition-transform duration-500 ease-out"
+						key={row.name}
+						style={{transform: `translateY(${position * ROW_H}px)`}}
+					>
+						<div
+							className={`relative h-11 overflow-hidden rounded-xl border bg-white/5 ${
+								row.gained > 0
+									? 'border-emerald-400/30'
+									: 'border-white/10'
+							}`}
+						>
+							<div
+								className="absolute inset-y-0 left-0 bg-amber-400/15 transition-[width] duration-500 ease-out"
+								style={{
+									width: `${(row.total / maxTotal) * 100}%`,
+								}}
+							/>
+
+							<div className="relative flex h-full items-center gap-2 px-2.5 sm:gap-3 sm:px-3">
+								<span className="w-6 text-center font-display text-sm font-bold text-slate-300">
+									{row.rank <= 3
+										? MEDALS[row.rank - 1]
+										: row.rank}
+								</span>
+
+								<Avatar
+									className="h-7 w-7 rounded-full"
+									name={row.name}
+								/>
+
+								<span className="flex-1 truncate text-sm font-medium text-white">
+									{row.name}
+								</span>
+
+								<Movement movement={row.movement} />
+
+								<span
+									className={`w-9 text-right font-display text-xs font-bold ${
+										row.gained > 0
+											? 'text-emerald-300'
+											: 'text-slate-600'
+									}`}
+								>
+									+{row.gained}
+								</span>
+
+								<span className="w-9 text-right font-display text-base font-bold text-amber-400">
+									{row.total}
+								</span>
+							</div>
+						</div>
+					</div>
+				))}
+			</div>
+
+			<div className="flex items-center gap-3">
+				<button
+					aria-label={playing ? 'Pause' : 'Play'}
+					className="shrink-0 rounded-full bg-emerald-500 px-3 py-1.5 text-sm font-semibold text-emerald-950 transition-colors hover:bg-emerald-400"
+					onClick={togglePlay}
+				>
+					{playing ? '⏸' : '▶'}
+				</button>
+
+				<button
+					aria-label="Previous match"
+					className="shrink-0 rounded-full bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 disabled:opacity-30"
+					disabled={safeIndex === 0}
+					onClick={() => seek(safeIndex - 1)}
+				>
+					◀
+				</button>
+
+				<input
+					aria-label="Match timeline"
+					className="h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-white/15 accent-emerald-500"
+					max={frames.length - 1}
+					min={0}
+					onChange={(event) => seek(Number(event.target.value))}
+					step={1}
+					type="range"
+					value={safeIndex}
+				/>
+
+				<button
+					aria-label="Next match"
+					className="shrink-0 rounded-full bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 disabled:opacity-30"
+					disabled={safeIndex === frames.length - 1}
+					onClick={() => seek(safeIndex + 1)}
+				>
+					▶
+				</button>
+			</div>
+		</div>
+	);
+}

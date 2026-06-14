@@ -14,6 +14,7 @@ import {buildStats} from './lib/stats';
 import {buildMatchCards} from './lib/matches';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboardWithMovement} from './lib/ranking';
+import {buildPointsTimeline} from './lib/timeline';
 import {buildWhatIf} from './lib/whatif';
 import type {GamesFile} from './lib/types';
 
@@ -139,6 +140,11 @@ export default function App() {
 
 	const stats = useMemo(() => buildStats(cards), [cards]);
 
+	const timeline = useMemo(
+		() => buildPointsTimeline(participants, games),
+		[participants, games]
+	);
+
 	const whatIf = useMemo(
 		() =>
 			Object.fromEntries(
@@ -252,7 +258,11 @@ export default function App() {
 						whatIf={whatIf}
 					/>
 				) : tab === 'stats' ? (
-					<StatsView evolution={evolution} stats={stats} />
+					<StatsView
+						evolution={evolution}
+						stats={stats}
+						timeline={timeline}
+					/>
 				) : tab === 'rules' ? (
 					<RulesView />
 				) : (

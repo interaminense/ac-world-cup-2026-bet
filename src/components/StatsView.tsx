@@ -1,6 +1,8 @@
 import type {Evolution} from '../lib/evolution';
 import type {PoolStats} from '../lib/stats';
+import type {TimelineFrame} from '../lib/timeline';
 import {EvolutionChart} from './EvolutionChart';
+import {PointsTimeline} from './PointsTimeline';
 
 function StatCard({
 	hint,
@@ -29,12 +31,22 @@ function StatCard({
 export function StatsView({
 	evolution,
 	stats,
+	timeline,
 }: {
 	evolution: Evolution;
 	stats: PoolStats;
+	timeline: TimelineFrame[];
 }) {
 	return (
 		<div className="space-y-6">
+			<section>
+				<h2 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+					⏪ Rewind the race
+				</h2>
+
+				<PointsTimeline frames={timeline} />
+			</section>
+
 			<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
 				<StatCard
 					label="Matches played"
