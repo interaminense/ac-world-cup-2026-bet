@@ -1,3 +1,5 @@
+import {useState} from 'react';
+
 import {kickoffDate} from '../lib/kickoff';
 import type {MatchCard} from '../lib/matches';
 import type {WhatIfScenario} from '../lib/whatif';
@@ -161,23 +163,25 @@ function MatchCardArticle({
 
 function MatchSection({
 	commentary,
+	emptyLabel,
 	groups,
-	label,
 	whatIf,
 }: {
 	commentary: Record<number, string>;
+	emptyLabel: string;
 	groups: DayGroup[];
-	label: string;
 	whatIf: Record<number, WhatIfScenario[]>;
 }) {
+	if (groups.length === 0) {
+		return (
+			<div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-12 text-center text-sm text-slate-400">
+				{emptyLabel}
+			</div>
+		);
+	}
+
 	return (
 		<section className="space-y-6">
-			<h2 className="flex items-center gap-3 text-sm font-bold uppercase tracking-wider text-slate-200">
-				{label}
-
-				<span aria-hidden className="h-px flex-1 bg-white/10" />
-			</h2>
-
 			{groups.map((group) => (
 				<div key={group.label}>
 					<h3 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
@@ -200,31 +204,96 @@ function MatchSection({
 	);
 }
 
+function SubTab({
+	active,
+	children,
+	count,
+	live,
+	onClick,
+}: {
+	active: boolean;
+	children: React.ReactNode;
+	count: number;
+	live?: boolean;
+	onClick: () => void;
+}) {
+	return (
+		<button
+			className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+				active
+					? 'bg-emerald-500 text-emerald-950'
+					: 'bg-white/5 text-slate-300 hover:bg-white/10'
+			}`}
+			onClick={onClick}
+		>
+			{live && (
+				<span
+					aria-hidden
+					className="h-2 w-2 animate-pulse rounded-full bg-rose-500"
+				/>
+			)}
+
+			{children}
+
+			<span
+				className={`rounded-full px-1.5 text-xs font-bold ${
+					active
+						? 'bg-emerald-950/15 text-emerald-950'
+						: 'bg-white/10 text-slate-400'
+				}`}
+			>
+				{count}
+			</span>
+		</button>
+	);
+}
+
 export function MatchesView({cards, commentary, whatIf}: MatchesViewProps) {
 	const upcoming = cards.filter((card) => card.status !== 'finished');
 	const finished = cards.filter((card) => card.status === 'finished');
 
 	const hasLive = upcoming.some((card) => card.status === 'live');
 
-	return (
-		<div className="space-y-10">
-			{upcoming.length > 0 && (
-				<MatchSection
-					commentary={commentary}
-					groups={groupByLocalDay(upcoming)}
-					label={hasLive ? 'Live & upcoming' : 'Upcoming'}
-					whatIf={whatIf}
-				/>
-			)}
+	const [view, setView] = useState<'finished' | 'upcoming'>(() =>
+		upcoming.length === 0 && finished.length > 0 ? 'finished' : 'upcoming'
+	);
 
-			{finished.length > 0 && (
-				<MatchSection
-					commentary={commentary}
-					groups={groupByLocalDay([...finished].reverse())}
-					label="Finished"
-					whatIf={whatIf}
-				/>
-			)}
+	const groups =
+		view === 'finished'
+			? groupByLocalDay([...finished].reverse())
+			: groupByLocalDay(upcoming);
+
+	return (
+		<div className="space-y-6">
+			<div className="flex gap-1.5">
+				<SubTab
+					active={view === 'upcoming'}
+					count={upcoming.length}
+					live={hasLive}
+					onClick={() => setView('upcoming')}
+				>
+					Upcoming
+				</SubTab>
+
+				<SubTab
+					active={view === 'finished'}
+					count={finished.length}
+					onClick={() => setView('finished')}
+				>
+					Finished
+				</SubTab>
+			</div>
+
+			<MatchSection
+				commentary={commentary}
+				emptyLabel={
+					view === 'finished'
+						? 'No finished matches yet — results show up here.'
+						: 'No upcoming matches.'
+				}
+				groups={groups}
+				whatIf={whatIf}
+			/>
 		</div>
 	);
 }
