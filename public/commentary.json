@@ -49,39 +49,29 @@
 		},
 		"titles": {
 			"Caio": {
-				"en": "Untouchable leader",
-				"es": "Líder inalcanzable",
-				"pt": "Líder intocável"
+				"en": "Steady at the top",
+				"es": "Sólido en lo alto",
+				"pt": "Sólido no topo"
 			},
 			"Rachael": {
-				"en": "Climbing fast",
-				"es": "Escalando rápido",
-				"pt": "Subindo rápido"
+				"en": "Closing the gap",
+				"es": "Acortando distancias",
+				"pt": "Fechando a diferença"
 			},
 			"Nilton": {
-				"en": "Sliding back",
-				"es": "Perdiendo terreno",
-				"pt": "Caindo posições"
+				"en": "Holding third",
+				"es": "Firme en tercero",
+				"pt": "Segurando o terceiro"
 			},
 			"Tiago": {
-				"en": "Solid fourth",
-				"es": "Cuarto firme",
-				"pt": "Quarto sólido"
+				"en": "Fading back",
+				"es": "Perdiendo terreno",
+				"pt": "Caindo no ritmo"
 			},
 			"Marcio": {
-				"en": "Tied, watching",
-				"es": "Empatado, alerta",
-				"pt": "Empatado, atento"
-			},
-			"Rafaella": {
-				"en": "Tied, holding",
-				"es": "Empatada, firme",
-				"pt": "Empatada, firme"
-			},
-			"Bruna": {
-				"en": "No exact yet",
-				"es": "Sin exacto aún",
-				"pt": "Sem exato ainda"
+				"en": "Midpack grind",
+				"es": "Luchando en el medio",
+				"pt": "Sobrevivendo no meio"
 			},
 			"Adriano": {
 				"en": "Three-way tie",
@@ -98,24 +88,34 @@
 				"es": "Triple empate",
 				"pt": "Empate triplo"
 			},
+			"Rafaella": {
+				"en": "Just off pace",
+				"es": "Cerca pero lejos",
+				"pt": "Perto mas longe"
+			},
+			"Bruna": {
+				"en": "No exact scores",
+				"es": "Sin aciertos exactos",
+				"pt": "Sem acertos exatos"
+			},
 			"Eudaldo": {
-				"en": "Late charge",
-				"es": "Remontando tarde",
-				"pt": "Arrancada tardia"
+				"en": "Tied, needs a run",
+				"es": "Empatado, necesita más",
+				"pt": "Empatado, precisa mais"
 			},
 			"Joe": {
-				"en": "Shock result hero",
-				"es": "Héroe del marcador",
-				"pt": "Herói do placar"
+				"en": "On the rise",
+				"es": "En racha ascendente",
+				"pt": "Em ascensão"
 			},
 			"Gabriel": {
-				"en": "Fading away",
-				"es": "Desvaneciéndose",
-				"pt": "Sumindo no fim"
+				"en": "Sliding down",
+				"es": "Resbalando hacia abajo",
+				"pt": "Escorregando na tabela"
 			}
 		},
-		"titlesSignature": "[[\"Caio\",118],[\"Rachael\",112],[\"Nilton\",103],[\"Tiago\",92],[\"Marcio\",63],[\"Rafaella\",63],[\"Bruna\",61],[\"Adriano\",55],[\"Deborah\",55],[\"Renan\",55],[\"Eudaldo\",53],[\"Joe\",53],[\"Gabriel\",40]]",
+		"titlesSignature": "[[\"Caio\",115],[\"Rachael\",112],[\"Nilton\",100],[\"Tiago\",89],[\"Marcio\",71],[\"Adriano\",63],[\"Deborah\",63],[\"Renan\",63],[\"Rafaella\",60],[\"Bruna\",58],[\"Eudaldo\",53],[\"Joe\",53],[\"Gabriel\",40]]",
 		"recapSignature": "[[\"Rachael\",102],[\"Caio\",100],[\"Nilton\",85],[\"Tiago\",74],[\"Marcio\",53],[\"Adriano\",45],[\"Deborah\",45],[\"Rafaella\",45],[\"Renan\",45],[\"Bruna\",43],[\"Eudaldo\",43],[\"Joe\",43],[\"Gabriel\",30]]"
 	},
-	"generatedAt": "2026-06-14T17:55:20.076Z"
+	"generatedAt": "2026-06-14T18:15:30.472Z"
 }
