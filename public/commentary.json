@@ -54,13 +54,18 @@
 			"en": "Match 11 and Côte d'Ivoire edged out Ecuador 1-0 — a scoreline so stingy it handed TWELVE people a big fat zero, including leaderboard queen Rachael and hot-shot Caio. Bruna, however, was the lone wolf howling at the right moon, climbing FIVE spots as the only one to call the correct outcome. Marcio took the biggest tumble of the night, slipping a place — though with a room full of zeros, at least he's got company!",
 			"es": "El partido 11 y Costa de Marfil le ganó a Ecuador 1-0 — un marcador tan tacaño que dejó a DOCE personas con un cero pelotero, incluyendo a la líder del marcador Rachael y al siempre peligroso Caio. Bruna, en cambio, fue la loba solitaria aullando en la dirección correcta, trepando CINCO puestos como la única en acertar el resultado. Marcio se llevó el tropiezo más sonado de la noche, aunque con tanta compañía en el cero, tampoco es para tanto.",
 			"pt": "Jogo 11 e a Costa do Marfim venceu o Equador por 1-0 — um placar tão soviético que distribuiu zero pra DOZE pessoas, incluindo a rainha do ranking Rachael e o craque Caio. A Bruna, porém, foi a única lobo solitária uivando pro lado certo, subindo CINCO posições como a única a cravar o resultado. O Marcio levou o tombo mais feio da noite, escorregando uma posição — mas com tanta gente no zero, pelo menos a fila tá grande!"
+		},
+		"12": {
+			"en": "Sweden absolutely steamrolled Tunisia 5-1, but the real carnage was in the pool — Caio, Eudaldo, and Nilton all walked away with zeroes, ouch! Caio at least has some cushion from atop the standings, but that's still a rough night for the second-place guy. Bruna quietly climbed a spot while Eudaldo took the slide — the Swedes weren't the only ones doing the scoring tonight.",
+			"es": "Suecia aplastó a Túnez 5-1, pero el verdadero desastre fue en el pool: Caio, Eudaldo y Nilton se fueron a casa con cero puntos, ¡qué palo! Caio tiene colchón en la clasificación, pero un cero duele igual desde el segundo puesto. Bruna subió un puesto calladita mientras Eudaldo bajaba — esta noche no solo los suecos marcaron goles.",
+			"pt": "A Suécia passou um rodo na Tunísia por 5-1, mas o estrago de verdade foi na bolinha — Caio, Eudaldo e Nilton foram pra casa com zero na conta, que sofrência! O Caio até tem fôlego lá em cima na tabela, mas zero é zero, meu chapa. A Bruna subiu uma posição no silêncio enquanto o Eudaldo descia — não foi só a Suécia que balançou as redes essa noite."
 		}
 	},
 	"leaderboard": {
 		"recap": {
-			"en": "Rachael is sitting pretty at the top with 129 points after 11 matches, holding a comfortable 19-point cushion over Caio in second, while Tiago and Nilton are locked in a fierce battle for third just one point apart at 96 and 95. Eudaldo and Joe are tied at 78 keeping the middle of the table spicy, and Bruna deserves a shoutout for climbing five spots with a 15-point haul last round. Gabriel at the bottom with 40 points will need some serious magic — and a lot of exact scores — to get back in contention.",
-			"es": "Rachael manda con comodidad desde lo alto con 129 puntos tras 11 jornadas, aventajando en 19 puntos a Caio, mientras que Tiago y Nilton se pelean el tercer puesto separados por apenas un punto, con 96 y 95 respectivamente. En la zona media, Eudaldo y Joe están empatados con 78 y le dan emocion a la tabla, y hay que aplaudir a Bruna, que subio cinco puestos gracias a 15 puntos en la ultima jornada. Gabriel cierra la clasificacion con 40 puntos y necesitara acertar muchos resultados exactos si quiere meterse de nuevo en la pelea.",
-			"pt": "Rachael lidera com folga no topo com 129 pontos apos 11 rodadas, abrindo 19 pontos de vantagem sobre Caio em segundo, enquanto Tiago e Nilton travam uma batalha feroz pelo terceiro lugar com 96 e 95 pontos. Eudaldo e Joe estao empatados com 78 e deixam o meio da tabela bem animado, e Bruna merece palmas por ter subido cinco posicoes com 15 pontos na ultima rodada. Gabriel fecha a classificacao com 40 pontos e vai precisar de muita sorte — e varios placares exatos — para voltar a briga."
+			"en": "Rachael is running away with this thing, sitting pretty at 139 points and a full 29 ahead of Caio in second — someone send her a trophy already. Tiago is right on Caio's heels at 106, so the battle for the runner-up spot is very much alive heading into the second half of the tournament. Meanwhile, Gabriel is bringing up the rear at 50 points, but with 12 matches still to play there is still plenty of time to make some noise.",
+			"es": "Rachael lleva el mando con autoridad desde los 139 puntos, aventajando a Caio en 29 — a este paso habrá que enmarcarle el trofeo. Tiago respira en la nuca de Caio con 106 puntos, así que la pelea por el segundo puesto promete mucha emoción en la recta final. En la parte baja, Gabriel acumula 50 puntos, aunque con la mitad del campeonato por delante todavía hay partido para todos.",
+			"pt": "Rachael está dominando a bolão com 139 pontos e 29 de vantagem sobre Caio — alguém já vai encomendar o troféu dela. Tiago está colado em Caio com 106 pontos, então a briga pelo vice-campeonato promete muito nos próximos jogos. Lá atrás, Gabriel está com 50 pontos, mas com 12 rodadas ainda por jogar, a virada não está descartada."
 		},
 		"titles": {
 			"Rachael": {
@@ -130,7 +135,7 @@
 			}
 		},
 		"titlesSignature": "[[\"Rachael\",139],[\"Caio\",110],[\"Tiago\",106],[\"Nilton\",95],[\"Joe\",88],[\"Bruna\",78],[\"Eudaldo\",78],[\"Marcio\",73],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]",
-		"recapSignature": "[[\"Rachael\",129],[\"Caio\",110],[\"Tiago\",96],[\"Nilton\",95],[\"Eudaldo\",78],[\"Joe\",78],[\"Bruna\",68],[\"Marcio\",63],[\"Adriano\",55],[\"Deborah\",55],[\"Rafaella\",55],[\"Renan\",55],[\"Gabriel\",40]]"
+		"recapSignature": "[[\"Rachael\",139],[\"Caio\",110],[\"Tiago\",106],[\"Nilton\",95],[\"Joe\",88],[\"Bruna\",78],[\"Eudaldo\",78],[\"Marcio\",73],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]"
 	},
-	"generatedAt": "2026-06-15T03:55:23.667Z"
+	"generatedAt": "2026-06-15T04:00:38.247Z"
 }
