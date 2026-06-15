@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-15T00:50:21.253Z",
+	"fetchedAt": "2026-06-15T00:55:19.049Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -125,7 +125,7 @@
 			"awayScore": 0,
 			"awayTeam": "Ecuador",
 			"finished": false,
-			"timeElapsed": "84",
+			"timeElapsed": "90",
 			"group": "Group E",
 			"homeScore": 0,
 			"homeTeam": "Côte d'Ivoire",
