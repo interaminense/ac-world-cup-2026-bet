@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-15T18:00:33.350Z",
+	"fetchedAt": "2026-06-15T19:05:26.539Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -161,7 +161,7 @@
 			"awayScore": 0,
 			"awayTeam": "Egypt",
 			"finished": false,
-			"timeElapsed": "notstarted",
+			"timeElapsed": "5",
 			"group": "Group G",
 			"homeScore": 0,
 			"homeTeam": "Belgium",
