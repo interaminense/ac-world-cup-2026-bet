@@ -60,40 +60,55 @@
 		"titles": {
 			"Rachael": {
 				"en": "Commanding the lead",
-				"es": "Mandando en cabeza",
+				"es": "Dominando la cima",
 				"pt": "Dominando a liderança"
 			},
 			"Caio": {
-				"en": "Exact score machine",
-				"es": "Máquina de plenos",
-				"pt": "Máquina de placar exato"
+				"en": "Losing ground fast",
+				"es": "Perdiendo terreno",
+				"pt": "Perdendo terreno rápido"
 			},
 			"Tiago": {
-				"en": "Climbing fast",
-				"es": "Escalando rápido",
-				"pt": "Subindo rápido"
+				"en": "Climbing with fire",
+				"es": "Subiendo con fuerza",
+				"pt": "Subindo com garra"
 			},
 			"Nilton": {
-				"en": "Slipping slightly",
-				"es": "Resbalando un poco",
-				"pt": "Escorregando um pouco"
+				"en": "Slipping one spot",
+				"es": "Cediendo un puesto",
+				"pt": "Escorregando uma posição"
 			},
 			"Eudaldo": {
-				"en": "Big surge up",
-				"es": "Gran remontada",
-				"pt": "Grande salto"
+				"en": "Surging from nowhere",
+				"es": "Remontada explosiva",
+				"pt": "Disparando do nada"
 			},
 			"Joe": {
-				"en": "Big surge up",
-				"es": "Gran remontada",
-				"pt": "Grande salto"
+				"en": "Surging from nowhere",
+				"es": "Remontada explosiva",
+				"pt": "Disparando do nada"
+			},
+			"Bruna": {
+				"en": "Fading badly",
+				"es": "Desvaneciéndose",
+				"pt": "Afundando rápido"
 			},
 			"Marcio": {
-				"en": "Fading back",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo terreno"
+				"en": "Stuck in mud",
+				"es": "Sin despegar",
+				"pt": "Emperrado no lugar"
 			},
 			"Adriano": {
+				"en": "Falling behind",
+				"es": "Quedándose atrás",
+				"pt": "Ficando para trás"
+			},
+			"Deborah": {
+				"en": "Falling behind",
+				"es": "Quedándose atrás",
+				"pt": "Ficando para trás"
+			},
+			"Rafaella": {
 				"en": "Falling behind",
 				"es": "Quedándose atrás",
 				"pt": "Ficando para trás"
@@ -103,29 +118,14 @@
 				"es": "Quedándose atrás",
 				"pt": "Ficando para trás"
 			},
-			"Deborah": {
-				"en": "Deep in trouble",
-				"es": "En zona peligrosa",
-				"pt": "Em zona de perigo"
-			},
-			"Rafaella": {
-				"en": "Deep in trouble",
-				"es": "En zona peligrosa",
-				"pt": "Em zona de perigo"
-			},
-			"Bruna": {
-				"en": "No exact scores",
-				"es": "Sin plenos aún",
-				"pt": "Sem placar exato"
-			},
 			"Gabriel": {
-				"en": "Holding on tight",
-				"es": "Aguantando el tipo",
-				"pt": "Segurando firme"
+				"en": "Lost in last",
+				"es": "Perdido al fondo",
+				"pt": "Perdido na lanterna"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",129],[\"Caio\",110],[\"Tiago\",96],[\"Nilton\",95],[\"Eudaldo\",78],[\"Joe\",78],[\"Marcio\",75],[\"Adriano\",67],[\"Renan\",67],[\"Deborah\",55],[\"Rafaella\",55],[\"Bruna\",53],[\"Gabriel\",52]]",
+		"titlesSignature": "[[\"Rachael\",129],[\"Caio\",110],[\"Tiago\",96],[\"Nilton\",95],[\"Eudaldo\",78],[\"Joe\",78],[\"Bruna\",68],[\"Marcio\",63],[\"Adriano\",55],[\"Deborah\",55],[\"Rafaella\",55],[\"Renan\",55],[\"Gabriel\",40]]",
 		"recapSignature": "[[\"Rachael\",129],[\"Caio\",110],[\"Tiago\",96],[\"Nilton\",95],[\"Eudaldo\",78],[\"Joe\",78],[\"Marcio\",63],[\"Adriano\",55],[\"Deborah\",55],[\"Rafaella\",55],[\"Renan\",55],[\"Bruna\",53],[\"Gabriel\",40]]"
 	},
-	"generatedAt": "2026-06-14T23:05:21.817Z"
+	"generatedAt": "2026-06-15T01:00:22.713Z"
 }
