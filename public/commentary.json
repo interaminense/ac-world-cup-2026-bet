@@ -79,73 +79,73 @@
 		},
 		"titles": {
 			"Rachael": {
-				"en": "Alone at the top",
-				"es": "Sola en lo alto",
-				"pt": "Sozinha no topo"
+				"en": "Untouchable leader",
+				"es": "Líder intocable",
+				"pt": "Líder intocável"
 			},
 			"Nilton": {
-				"en": "Hunting the leader",
-				"es": "Cazando a la líder",
-				"pt": "Caçando a líder"
+				"en": "Surging hard",
+				"es": "Remontando fuerte",
+				"pt": "Subindo forte"
 			},
 			"Caio": {
-				"en": "Closing the gap",
-				"es": "Acortando distancias",
-				"pt": "Encurtando a distância"
+				"en": "Slipping away",
+				"es": "Perdiendo terreno",
+				"pt": "Escorregando"
 			},
 			"Tiago": {
-				"en": "Knocking on the door",
-				"es": "Llamando a la puerta",
-				"pt": "Batendo na porta"
-			},
-			"Joe": {
-				"en": "Fading mid-pack",
-				"es": "Perdiéndose en el grupo",
-				"pt": "Sumindo no pelotão"
-			},
-			"Bruna": {
-				"en": "Zero exact, still alive",
-				"es": "Sin exactos, aún viva",
-				"pt": "Sem exatos, mas viva"
-			},
-			"Eudaldo": {
-				"en": "Tied, holding ground",
-				"es": "Empatado, sin ceder",
-				"pt": "Empatado, firme"
-			},
-			"Marcio": {
-				"en": "Stuck in no-man's-land",
-				"es": "Atascado en tierra de nadie",
-				"pt": "Preso no meio-termo"
-			},
-			"Adriano": {
-				"en": "Lost in the pack",
-				"es": "Perdido en el grupo",
-				"pt": "Perdido no pelotão"
-			},
-			"Deborah": {
-				"en": "Needs a big week",
-				"es": "Necesita una gran semana",
-				"pt": "Precisa de uma grande semana"
-			},
-			"Rafaella": {
-				"en": "Stuck in a tie",
-				"es": "Atrapada en empate",
-				"pt": "Presa no empate"
+				"en": "Holding on tight",
+				"es": "Aguantando el tipo",
+				"pt": "Segurando firme"
 			},
 			"Renan": {
-				"en": "Going nowhere fast",
-				"es": "Sin avanzar",
-				"pt": "Sem sair do lugar"
+				"en": "Stuck in fifth",
+				"es": "Atascado en quinto",
+				"pt": "Travado em quinto"
+			},
+			"Joe": {
+				"en": "Just behind",
+				"es": "Muy cerca",
+				"pt": "Logo atrás"
+			},
+			"Bruna": {
+				"en": "Scoreless so far",
+				"es": "Sin exactos aún",
+				"pt": "Sem acertos exatos"
+			},
+			"Eudaldo": {
+				"en": "Tied for seventh",
+				"es": "Empatado séptimo",
+				"pt": "Empatado em sétimo"
+			},
+			"Marcio": {
+				"en": "Fading midfield",
+				"es": "Hundiéndose al medio",
+				"pt": "Caindo no meio"
+			},
+			"Adriano": {
+				"en": "Three-way tie",
+				"es": "Triple empate",
+				"pt": "Empate triplo"
+			},
+			"Deborah": {
+				"en": "Three-way tie",
+				"es": "Triple empate",
+				"pt": "Empate triplo"
+			},
+			"Rafaella": {
+				"en": "Three-way tie",
+				"es": "Triple empate",
+				"pt": "Empate triplo"
 			},
 			"Gabriel": {
-				"en": "Basement dweller",
-				"es": "En el sótano",
-				"pt": "No fundo da tabela"
+				"en": "Deep in trouble",
+				"es": "Muy rezagado",
+				"pt": "Muito atrás"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",139],[\"Nilton\",120],[\"Caio\",110],[\"Tiago\",106],[\"Joe\",88],[\"Bruna\",78],[\"Eudaldo\",78],[\"Marcio\",73],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]",
+		"titlesSignature": "[[\"Rachael\",139],[\"Nilton\",120],[\"Caio\",110],[\"Tiago\",106],[\"Renan\",90],[\"Joe\",88],[\"Bruna\",78],[\"Eudaldo\",78],[\"Marcio\",73],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Gabriel\",50]]",
 		"recapSignature": "[[\"Rachael\",139],[\"Nilton\",120],[\"Caio\",110],[\"Tiago\",106],[\"Joe\",88],[\"Bruna\",78],[\"Eudaldo\",78],[\"Marcio\",73],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]"
 	},
-	"generatedAt": "2026-06-15T21:00:40.437Z"
+	"generatedAt": "2026-06-15T22:45:21.772Z"
 }
