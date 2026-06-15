@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-15T16:09:42.240Z",
+	"fetchedAt": "2026-06-15T16:10:41.515Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -149,7 +149,7 @@
 			"awayScore": 0,
 			"awayTeam": "Cabo Verde",
 			"finished": false,
-			"timeElapsed": "8",
+			"timeElapsed": "9",
 			"group": "Group H",
 			"homeScore": 0,
 			"homeTeam": "Spain",
