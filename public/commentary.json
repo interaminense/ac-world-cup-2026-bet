@@ -64,73 +64,73 @@
 		},
 		"titles": {
 			"Rachael": {
-				"en": "Dominant leader",
-				"es": "Líder dominante",
-				"pt": "Líder dominante"
-			},
-			"Tiago": {
-				"en": "Holding second",
-				"es": "Firme en segundo",
-				"pt": "Segurando o segundo"
+				"en": "Running the show",
+				"es": "Mandando en todo",
+				"pt": "Dominando tudo"
 			},
 			"Caio": {
-				"en": "Exact score king",
-				"es": "Rey del marcador exacto",
-				"pt": "Rei do placar exato"
+				"en": "Sharp shooter",
+				"es": "Puntería afilada",
+				"pt": "Olho no lance"
 			},
-			"Joe": {
+			"Tiago": {
 				"en": "Chasing the top",
-				"es": "Persiguiendo el liderato",
-				"pt": "Caçando o topo"
+				"es": "Persiguiendo el trono",
+				"pt": "Na cola do topo"
 			},
 			"Nilton": {
-				"en": "Steady in fifth",
-				"es": "Sólido en quinto",
-				"pt": "Firme em quinto"
+				"en": "Holding steady",
+				"es": "Aguantando firme",
+				"pt": "Segurando bem"
 			},
-			"Marcio": {
-				"en": "Staying in range",
-				"es": "Manteniéndose cerca",
-				"pt": "Mantendo o ritmo"
+			"Joe": {
+				"en": "Lurking in fifth",
+				"es": "Al acecho en quinto",
+				"pt": "Rondando em quinto"
 			},
 			"Bruna": {
 				"en": "Surging up fast",
-				"es": "Subiendo con fuerza",
-				"pt": "Subindo rápido"
-			},
-			"Rafaella": {
-				"en": "Sliding down slightly",
-				"es": "Bajando levemente",
-				"pt": "Caindo um pouco"
+				"es": "Subiendo como cohete",
+				"pt": "Voando na tabela"
 			},
 			"Eudaldo": {
-				"en": "Losing some ground",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo terreno"
+				"en": "Tied for sixth",
+				"es": "Empatado en sexto",
+				"pt": "Empatado em sexto"
+			},
+			"Marcio": {
+				"en": "Slipped a spot",
+				"es": "Perdió un puesto",
+				"pt": "Caiu uma posição"
 			},
 			"Adriano": {
-				"en": "Stuck in tenth",
-				"es": "Atascado en décimo",
-				"pt": "Preso em décimo"
+				"en": "Fading slightly",
+				"es": "Perdiendo terreno",
+				"pt": "Perdendo espaço"
 			},
 			"Deborah": {
-				"en": "Tied, hanging on",
-				"es": "Empatada, resistiendo",
-				"pt": "Empatada, resistindo"
+				"en": "Treading water",
+				"es": "Sin avanzar",
+				"pt": "Marcando passo"
 			},
 			"Renan": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Stuck in ninth",
+				"es": "Atascado en noveno",
+				"pt": "Preso em nono"
+			},
+			"Rafaella": {
+				"en": "Sliding back",
+				"es": "Resbalando atrás",
+				"pt": "Escorregando"
 			},
 			"Gabriel": {
-				"en": "Needs a miracle",
+				"en": "Needs a lifeline",
 				"es": "Necesita un milagro",
-				"pt": "Precisa de um milagre"
+				"pt": "Precisando reagir"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",154],[\"Tiago\",111],[\"Caio\",110],[\"Joe\",103],[\"Nilton\",95],[\"Marcio\",88],[\"Bruna\",83],[\"Rafaella\",80],[\"Eudaldo\",78],[\"Adriano\",73],[\"Deborah\",73],[\"Renan\",73],[\"Gabriel\",58]]",
+		"titlesSignature": "[[\"Rachael\",139],[\"Caio\",110],[\"Tiago\",106],[\"Nilton\",95],[\"Joe\",88],[\"Bruna\",78],[\"Eudaldo\",78],[\"Marcio\",73],[\"Adriano\",70],[\"Deborah\",70],[\"Renan\",70],[\"Rafaella\",65],[\"Gabriel\",55]]",
 		"recapSignature": "[[\"Rachael\",129],[\"Caio\",110],[\"Tiago\",96],[\"Nilton\",95],[\"Eudaldo\",78],[\"Joe\",78],[\"Bruna\",68],[\"Marcio\",63],[\"Adriano\",55],[\"Deborah\",55],[\"Rafaella\",55],[\"Renan\",55],[\"Gabriel\",40]]"
 	},
-	"generatedAt": "2026-06-15T02:45:26.524Z"
+	"generatedAt": "2026-06-15T03:20:29.736Z"
 }
