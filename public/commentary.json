@@ -64,73 +64,73 @@
 		},
 		"titles": {
 			"Rachael": {
-				"en": "Runaway leader",
-				"es": "Líder destacada",
-				"pt": "Líder isolada"
-			},
-			"Caio": {
-				"en": "Most exact scores",
-				"es": "Más aciertos exactos",
-				"pt": "Mais acertos exatos"
+				"en": "Dominant leader",
+				"es": "Líder dominante",
+				"pt": "Líder dominante"
 			},
 			"Tiago": {
-				"en": "Chasing the top",
-				"es": "Persiguiendo al líder",
-				"pt": "Caçando o topo"
+				"en": "Holding second",
+				"es": "Firme en segundo",
+				"pt": "Segurando o segundo"
+			},
+			"Caio": {
+				"en": "Exact score king",
+				"es": "Rey del marcador exacto",
+				"pt": "Rei do placar exato"
 			},
 			"Joe": {
-				"en": "Solid mid-pack",
-				"es": "Sólido en el grupo",
-				"pt": "Sólido no pelotão"
+				"en": "Chasing the top",
+				"es": "Persiguiendo el liderato",
+				"pt": "Caçando o topo"
 			},
 			"Nilton": {
-				"en": "Breathing down necks",
-				"es": "Pisando los talones",
-				"pt": "No encalço do top 4"
+				"en": "Steady in fifth",
+				"es": "Sólido en quinto",
+				"pt": "Firme em quinto"
 			},
 			"Marcio": {
-				"en": "Needs more exact",
-				"es": "Necesita más exactos",
-				"pt": "Precisa de mais exatos"
+				"en": "Staying in range",
+				"es": "Manteniéndose cerca",
+				"pt": "Mantendo o ritmo"
+			},
+			"Bruna": {
+				"en": "Surging up fast",
+				"es": "Subiendo con fuerza",
+				"pt": "Subindo rápido"
+			},
+			"Rafaella": {
+				"en": "Sliding down slightly",
+				"es": "Bajando levemente",
+				"pt": "Caindo um pouco"
+			},
+			"Eudaldo": {
+				"en": "Losing some ground",
+				"es": "Perdiendo terreno",
+				"pt": "Perdendo terreno"
 			},
 			"Adriano": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Stuck in tenth",
+				"es": "Atascado en décimo",
+				"pt": "Preso em décimo"
 			},
 			"Deborah": {
-				"en": "Three-way tie",
-				"es": "Triple empate",
-				"pt": "Empate triplo"
+				"en": "Tied, hanging on",
+				"es": "Empatada, resistiendo",
+				"pt": "Empatada, resistindo"
 			},
 			"Renan": {
 				"en": "Three-way tie",
 				"es": "Triple empate",
 				"pt": "Empate triplo"
 			},
-			"Bruna": {
-				"en": "Late surge",
-				"es": "Remontando fuerte",
-				"pt": "Chegando forte"
-			},
-			"Eudaldo": {
-				"en": "Stuck in neutral",
-				"es": "Estancado",
-				"pt": "Estagnado"
-			},
-			"Rafaella": {
-				"en": "Sliding back",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo posição"
-			},
 			"Gabriel": {
-				"en": "Must accelerate",
-				"es": "Necesita acelerar",
-				"pt": "Precisa acelerar"
+				"en": "Needs a miracle",
+				"es": "Necesita un milagro",
+				"pt": "Precisa de um milagre"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",147],[\"Caio\",110],[\"Tiago\",106],[\"Joe\",96],[\"Nilton\",95],[\"Marcio\",81],[\"Adriano\",80],[\"Deborah\",80],[\"Renan\",80],[\"Bruna\",78],[\"Eudaldo\",78],[\"Rafaella\",73],[\"Gabriel\",65]]",
+		"titlesSignature": "[[\"Rachael\",154],[\"Tiago\",111],[\"Caio\",110],[\"Joe\",103],[\"Nilton\",95],[\"Marcio\",88],[\"Bruna\",83],[\"Rafaella\",80],[\"Eudaldo\",78],[\"Adriano\",73],[\"Deborah\",73],[\"Renan\",73],[\"Gabriel\",58]]",
 		"recapSignature": "[[\"Rachael\",129],[\"Caio\",110],[\"Tiago\",96],[\"Nilton\",95],[\"Eudaldo\",78],[\"Joe\",78],[\"Bruna\",68],[\"Marcio\",63],[\"Adriano\",55],[\"Deborah\",55],[\"Rafaella\",55],[\"Renan\",55],[\"Gabriel\",40]]"
 	},
-	"generatedAt": "2026-06-15T02:30:28.794Z"
+	"generatedAt": "2026-06-15T02:45:26.524Z"
 }
