@@ -89,9 +89,9 @@
 		},
 		"titles": {
 			"Rachael": {
-				"en": "Untouchable leader",
-				"es": "Líder inalcanzable",
-				"pt": "Líder intocável"
+				"en": "Lone leader",
+				"es": "Líder en solitario",
+				"pt": "Líder isolada"
 			},
 			"Nilton": {
 				"en": "Closing the gap",
@@ -104,58 +104,58 @@
 				"pt": "No encalço deles"
 			},
 			"Tiago": {
-				"en": "Surging up the ranks",
-				"es": "Escalando posiciones",
-				"pt": "Subindo forte"
-			},
-			"Bruna": {
-				"en": "Moving on up",
-				"es": "Subiendo puestos",
+				"en": "Gaining ground",
+				"es": "Ganando terreno",
 				"pt": "Ganhando terreno"
 			},
-			"Joe": {
-				"en": "Slipping back",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo posições"
+			"Bruna": {
+				"en": "Surging up",
+				"es": "Subiendo fuerte",
+				"pt": "Subindo forte"
 			},
 			"Eudaldo": {
-				"en": "Sliding down",
-				"es": "Cayendo puestos",
-				"pt": "Caindo no rank"
+				"en": "Slipping back",
+				"es": "Perdiendo posiciones",
+				"pt": "Escorregando para trás"
+			},
+			"Joe": {
+				"en": "Holding steady",
+				"es": "Manteniéndose firme",
+				"pt": "Se mantendo firme"
 			},
 			"Marcio": {
-				"en": "Staying in the hunt",
-				"es": "Sigue en la pelea",
-				"pt": "Ainda na briga"
+				"en": "Best mover",
+				"es": "Mayor escalada",
+				"pt": "Maior escalada"
 			},
 			"Adriano": {
-				"en": "Losing ground",
-				"es": "Cediendo terreno",
-				"pt": "Perdendo espaço"
+				"en": "Dropped a spot",
+				"es": "Bajó un puesto",
+				"pt": "Caiu uma posição"
 			},
 			"Deborah": {
-				"en": "Fading fast",
-				"es": "Desvaneciendo",
-				"pt": "Caindo no ritmo"
+				"en": "Dropped a spot",
+				"es": "Bajó un puesto",
+				"pt": "Caiu uma posição"
+			},
+			"Gabriel": {
+				"en": "Stuck in neutral",
+				"es": "Sin avanzar",
+				"pt": "Sem sair do lugar"
 			},
 			"Rafaella": {
 				"en": "Stuck in neutral",
 				"es": "Sin avanzar",
-				"pt": "Sem evolução"
+				"pt": "Sem sair do lugar"
 			},
 			"Renan": {
-				"en": "Treading water",
-				"es": "Pisando el agua",
-				"pt": "Parado no tempo"
-			},
-			"Gabriel": {
-				"en": "Adrift at the bottom",
-				"es": "A la deriva",
-				"pt": "À deriva no fim"
+				"en": "Stuck in neutral",
+				"es": "Sin avanzar",
+				"pt": "Sem sair do lugar"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",164],[\"Nilton\",142],[\"Caio\",137],[\"Tiago\",128],[\"Bruna\",108],[\"Joe\",98],[\"Eudaldo\",96],[\"Marcio\",95],[\"Adriano\",83],[\"Deborah\",83],[\"Rafaella\",80],[\"Renan\",80],[\"Gabriel\",68]]",
+		"titlesSignature": "[[\"Rachael\",157],[\"Nilton\",142],[\"Caio\",132],[\"Tiago\",128],[\"Bruna\",115],[\"Eudaldo\",103],[\"Joe\",98],[\"Marcio\",95],[\"Adriano\",90],[\"Deborah\",90],[\"Gabriel\",75],[\"Rafaella\",75],[\"Renan\",75]]",
 		"recapSignature": "[[\"Rachael\",139],[\"Nilton\",132],[\"Caio\",122],[\"Tiago\",118],[\"Bruna\",90],[\"Joe\",88],[\"Marcio\",85],[\"Eudaldo\",78],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]"
 	},
-	"generatedAt": "2026-06-16T20:50:33.876Z"
+	"generatedAt": "2026-06-16T21:00:28.119Z"
 }

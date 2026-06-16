@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-16T20:55:20.504Z",
+	"fetchedAt": "2026-06-16T21:00:19.674Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -194,7 +194,7 @@
 			"matchday": 16
 		},
 		{
-			"awayScore": 0,
+			"awayScore": 1,
 			"awayTeam": "Senegal",
 			"finished": false,
 			"timeElapsed": "90",
