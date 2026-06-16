@@ -84,73 +84,73 @@
 		},
 		"titles": {
 			"Rachael": {
-				"en": "Runaway leader",
-				"es": "Líder destacada",
+				"en": "Lone leader",
+				"es": "Líder en solitario",
 				"pt": "Líder isolada"
 			},
 			"Nilton": {
-				"en": "Best exact scores",
-				"es": "Mejor marcador exacto",
-				"pt": "Rei dos placares exatos"
+				"en": "Chasing hard",
+				"es": "Pisando los talones",
+				"pt": "Na cola da líder"
 			},
 			"Caio": {
-				"en": "Chasing the top",
-				"es": "A la caza del líder",
-				"pt": "Caçando a liderança"
+				"en": "Staying in touch",
+				"es": "Manteniéndose cerca",
+				"pt": "Mantendo contato"
 			},
 			"Tiago": {
-				"en": "Solid fourth",
-				"es": "Cuarto sólido",
-				"pt": "Quarto firme"
-			},
-			"Joe": {
-				"en": "Knocking on top five",
-				"es": "Pegado al top cinco",
-				"pt": "Colado no top cinco"
+				"en": "Lurking in fourth",
+				"es": "Acechando desde cuarto",
+				"pt": "Espreitando em quarto"
 			},
 			"Bruna": {
-				"en": "Zero exact scores",
-				"es": "Sin aciertos exactos",
-				"pt": "Sem placar exato"
+				"en": "Midpack grinder",
+				"es": "Resistiendo en mitad",
+				"pt": "Sobrevivendo no meio"
 			},
-			"Eudaldo": {
-				"en": "Midfield contender",
-				"es": "Candidato del medio",
-				"pt": "Candidato do meio"
+			"Joe": {
+				"en": "Steady at sixth",
+				"es": "Firme en sexto",
+				"pt": "Firme em sexto"
 			},
 			"Marcio": {
-				"en": "Fading away",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo terreno"
+				"en": "Hanging on",
+				"es": "Aguantando el tipo",
+				"pt": "Segurando a posição"
+			},
+			"Eudaldo": {
+				"en": "Needs a run",
+				"es": "Necesita un empujón",
+				"pt": "Precisa acelerar"
 			},
 			"Adriano": {
-				"en": "Stuck in ninth",
-				"es": "Atascado en noveno",
-				"pt": "Preso no nono"
+				"en": "Four-way logjam",
+				"es": "Atasco cuádruple",
+				"pt": "Empate em quatro"
 			},
 			"Deborah": {
-				"en": "Stuck in ninth",
-				"es": "Atascada en noveno",
-				"pt": "Presa no nono"
+				"en": "Stuck in the pack",
+				"es": "Atrapada en el grupo",
+				"pt": "Presa no grupo"
 			},
 			"Rafaella": {
-				"en": "Stuck in ninth",
-				"es": "Atascada en noveno",
-				"pt": "Presa no nono"
+				"en": "Level with rivals",
+				"es": "Igualada con rivales",
+				"pt": "Empatada com rivais"
 			},
 			"Renan": {
-				"en": "Stuck in ninth",
-				"es": "Atascado en noveno",
-				"pt": "Preso no nono"
+				"en": "Needs to break free",
+				"es": "Debe despegarse ya",
+				"pt": "Precisa se soltar"
 			},
 			"Gabriel": {
-				"en": "Trailing the pack",
-				"es": "Al fondo del grupo",
-				"pt": "Na lanterna"
+				"en": "Playing catch-up",
+				"es": "Remontando desde atrás",
+				"pt": "Tentando se recuperar"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",139],[\"Nilton\",120],[\"Caio\",110],[\"Tiago\",106],[\"Joe\",103],[\"Bruna\",78],[\"Eudaldo\",78],[\"Marcio\",73],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]",
+		"titlesSignature": "[[\"Rachael\",139],[\"Nilton\",132],[\"Caio\",122],[\"Tiago\",118],[\"Bruna\",90],[\"Joe\",88],[\"Marcio\",85],[\"Eudaldo\",78],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]",
 		"recapSignature": "[[\"Rachael\",139],[\"Nilton\",120],[\"Caio\",110],[\"Tiago\",106],[\"Joe\",88],[\"Bruna\",78],[\"Eudaldo\",78],[\"Marcio\",73],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]"
 	},
-	"generatedAt": "2026-06-16T02:25:23.867Z"
+	"generatedAt": "2026-06-16T02:35:31.605Z"
 }
