@@ -93,74 +93,74 @@
 			"pt": "Rachael segura a lideranca com 154 pontos, mas Nilton (150) e Caio (147) estao colados nela — essa disputa pelo titulo virou uma briga de tres com sete rodadas pela frente. Tiago aparece em quarto com 128, perto o suficiente pra sonhar mas longe o suficiente pra se preocupar, e Marcio subiu duas posicoes pra quinto com um excelente aproveitamento de 18 pontos na ultima rodada. La atras, Gabriel esta parado nos 60 pontos e vai precisar de um milagre — ou de um arbitro muito generoso — pra voltar a conversa."
 		},
 		"titles": {
-			"Rachael": {
-				"en": "Holding the throne",
-				"es": "Aferrada al trono",
-				"pt": "Segurando o trono"
-			},
 			"Nilton": {
-				"en": "Breathing down her neck",
-				"es": "Pisándole los talones",
-				"pt": "No seu encalço"
+				"en": "Untouchable leader",
+				"es": "Líder intocable",
+				"pt": "Líder intocável"
+			},
+			"Rachael": {
+				"en": "Steady in second",
+				"es": "Sólida en segundo",
+				"pt": "Sólida em segundo"
 			},
 			"Caio": {
-				"en": "Most exact, closing in",
-				"es": "Más exacto, acercándose",
-				"pt": "Mais exato, chegando perto"
-			},
-			"Tiago": {
-				"en": "Safe in fourth",
-				"es": "Seguro en cuarto",
-				"pt": "Tranquilo em quarto"
-			},
-			"Marcio": {
 				"en": "Climbing fast",
-				"es": "Subiendo rápido",
+				"es": "Escalando rápido",
 				"pt": "Subindo rápido"
 			},
+			"Tiago": {
+				"en": "Holding fourth",
+				"es": "Firme en cuarto",
+				"pt": "Segurando o quarto"
+			},
+			"Marcio": {
+				"en": "Big jump up",
+				"es": "Gran salto arriba",
+				"pt": "Grande salto"
+			},
 			"Bruna": {
-				"en": "Slipping, holding on",
-				"es": "Resbalando pero aguanta",
-				"pt": "Escorregando, mas firme"
-			},
-			"Joe": {
-				"en": "Fading quietly",
-				"es": "Desvaneciéndose sin ruido",
-				"pt": "Sumindo aos poucos"
-			},
-			"Rafaella": {
-				"en": "Surging upward",
-				"es": "Remontando con fuerza",
-				"pt": "Disparando pra cima"
-			},
-			"Renan": {
-				"en": "Tied and rising",
-				"es": "Empatado y subiendo",
-				"pt": "Empatado e subindo"
+				"en": "Tied, slipping",
+				"es": "Empatada, bajando",
+				"pt": "Empatada, caindo"
 			},
 			"Eudaldo": {
-				"en": "Losing ground",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo terreno"
+				"en": "Tied, sliding",
+				"es": "Empatado, bajando",
+				"pt": "Empatado, caindo"
+			},
+			"Joe": {
+				"en": "Just off pace",
+				"es": "Justo fuera",
+				"pt": "Fora do ritmo"
+			},
+			"Rafaella": {
+				"en": "Surging from ninth",
+				"es": "Remontando en noveno",
+				"pt": "Acelerando do nono"
+			},
+			"Renan": {
+				"en": "Tied, pushing hard",
+				"es": "Empatado, apretando",
+				"pt": "Empatado, pressionando"
 			},
 			"Adriano": {
-				"en": "Stuck in freefall",
-				"es": "En caída libre",
-				"pt": "Em queda livre"
+				"en": "Falling behind",
+				"es": "Quedándose atrás",
+				"pt": "Ficando pra trás"
 			},
 			"Deborah": {
-				"en": "Freefall with company",
-				"es": "Cayendo en compañía",
-				"pt": "Caindo junto"
+				"en": "Dropping fast",
+				"es": "Cayendo rápido",
+				"pt": "Caindo rápido"
 			},
 			"Gabriel": {
-				"en": "Just showing up",
-				"es": "Solo apareciendo",
-				"pt": "Só aparecendo"
+				"en": "Stuck at bottom",
+				"es": "Atascado al fondo",
+				"pt": "Preso na lanterna"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",154],[\"Nilton\",150],[\"Caio\",147],[\"Tiago\",128],[\"Marcio\",103],[\"Bruna\",100],[\"Joe\",98],[\"Rafaella\",90],[\"Renan\",90],[\"Eudaldo\",88],[\"Adriano\",75],[\"Deborah\",75],[\"Gabriel\",60]]",
+		"titlesSignature": "[[\"Nilton\",175],[\"Rachael\",154],[\"Caio\",147],[\"Tiago\",128],[\"Marcio\",103],[\"Bruna\",100],[\"Eudaldo\",100],[\"Joe\",98],[\"Rafaella\",90],[\"Renan\",90],[\"Adriano\",75],[\"Deborah\",75],[\"Gabriel\",60]]",
 		"recapSignature": "[[\"Rachael\",154],[\"Nilton\",150],[\"Caio\",147],[\"Tiago\",128],[\"Marcio\",103],[\"Bruna\",100],[\"Joe\",98],[\"Rafaella\",90],[\"Renan\",90],[\"Eudaldo\",88],[\"Adriano\",75],[\"Deborah\",75],[\"Gabriel\",60]]"
 	},
-	"generatedAt": "2026-06-16T21:05:56.076Z"
+	"generatedAt": "2026-06-16T22:05:27.836Z"
 }

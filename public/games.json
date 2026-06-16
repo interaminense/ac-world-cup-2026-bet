@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-16T21:05:26.904Z",
+	"fetchedAt": "2026-06-16T22:05:20.186Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -209,7 +209,7 @@
 			"awayScore": 0,
 			"awayTeam": "Norway",
 			"finished": false,
-			"timeElapsed": "notstarted",
+			"timeElapsed": "4",
 			"group": "Group I",
 			"homeScore": 0,
 			"homeTeam": "Iraq",
