@@ -74,13 +74,18 @@
 			"en": "Match 15 was a bloodbath — Saudi Arabia and Uruguay played out a 1-1 draw, and thirteen pool players watched their points prediction go up in smoke. That's right, THIRTEEN zeros on the board, including leaderboard royalty Rachael, Nilton, AND Caio all taking a collective gut punch. At least misery loves company — everyone was wrong together, beautifully, painfully wrong.",
 			"es": "El partido 15 fue una masacre: Arabia Saudí y Uruguay empataron 1-1, y trece participantes del grupo vieron sus predicciones arder en llamas. Así es, TRECE ceros en el marcador, incluyendo a los líderes Rachael, Nilton Y Caio, que se llevaron un golpe colectivo en el estómago. Al menos el fracaso es más llevadero en buena compañía — todos fallaron juntos, de forma gloriosa y dolorosa.",
 			"pt": "O jogo 15 foi um banho de sangue: Arábia Saudita e Uruguai empataram em 1-1, e treze participantes do bolão viram seus palpites irem pro ralo. Isso mesmo, TREZE zeros no placar, incluindo os líderes Rachael, Nilton E Caio levando uma porrada coletiva no estômago. Mas pelo menos a derrota é mais gostosa quando todo mundo erra junto — foi feio, foi doloroso, mas foi democrático!"
+		},
+		"16": {
+			"en": "Match 16 ends Iran 2-2 New Zealand, and eight — EIGHT — pool players walked away with zero points: Adriano, Deborah, Eudaldo, Gabriel, Joe, Rachael, Rafaella, and Renan all whiffed on this draw. Eudaldo took the biggest ranking hit, sliding down 2 spots, while Bruna quietly crept up one place like she knew something the rest of us didn't. Rachael stays on top of the leaderboard at 139 points, but after a goose egg today, she might want to keep an eye on Nilton breathing down her neck at 132!",
+			"es": "El partido 16 termina Irán 2-2 Nueva Zelanda, y ocho — OCHO — jugadores del grupo se fueron a casa con cero puntos: Adriano, Deborah, Eudaldo, Gabriel, Joe, Rachael, Rafaella y Renan fallaron este empate por completo. Eudaldo sufrió la mayor caída, bajando 2 puestos, mientras que Bruna subió sigilosamente uno como si supiera algo que el resto no sabía. Rachael sigue líder con 139 puntos, ¡pero tras un cero hoy, mejor que vigile a Nilton pisándole los talones con 132!",
+			"pt": "O jogo 16 termina Irã 2-2 Nova Zelândia, e oito — OITO — jogadores do bolão voltaram pra casa com zero pontos: Adriano, Deborah, Eudaldo, Gabriel, Joe, Rachael, Rafaella e Renan não chegaram nem perto desse empate. Eudaldo foi quem mais caiu no ranking, despencando 2 posições, enquanto Bruna subiu um lugarzinho na surdina, tipo quem sabia de algo que o resto não sabia. Rachael segura o topo com 139 pontos, mas depois de um zero hoje, é bom ficar de olho no Nilton colado com 132!"
 		}
 	},
 	"leaderboard": {
 		"recap": {
-			"en": "Rachael sits pretty at the top with 139 points, but Nilton is heating up after a 25-point matchday that vaulted him to second and has the gap down to 19 — this title race is far from over. Caio (110) and Tiago (106) are lurking just behind, keeping the pressure on the leaders heading into the second half of the pool. Meanwhile, Gabriel is having a rough ride at the back with 50 points, but there is still plenty of football left to turn things around.",
-			"es": "Rachael lidera con comodidad con 139 puntos, pero Nilton llega con fuerza tras sumar 25 en la ultima jornada y escalar al segundo puesto, dejando la diferencia en solo 19 puntos. Caio (110) y Tiago (106) acechan de cerca y mantienen viva la batalla por los puestos de honor. En la parte baja, Gabriel acumula 50 puntos y tiene trabajo por delante, aunque el torneo aun tiene mucho que ofrecer.",
-			"pt": "Rachael segura a lideranca com folga nos 139 pontos, mas Nilton chegou com tudo na ultima rodada, marcando 25 pontos e subindo para o segundo lugar, deixando a diferenca em apenas 19 pontos. Caio (110) e Tiago (106) estao bem proximos e prometem dar trabalho na segunda metade do bolao. La atras, Gabriel tem 50 pontos e precisa engatar uma sequencia, mas ainda tem muito futebol pela frente."
+			"en": "Rachael sits on top with 139 points, but she had a quiet matchday while Nilton (132) and Caio (122) both pocketed 12 points and are breathing right down her neck after 16 matches played. Tiago (118) is lurking dangerously close in fourth, making this a four-horse race nobody can afford to sleep on. Down in the lower half, Gabriel is parked at 50 points and could use a serious lucky streak to get back in the conversation.",
+			"es": "Rachael lidera con 139 puntos, pero tuvo una jornada para olvidar mientras Nilton (132) y Caio (122) sumaron 12 puntos cada uno y le siguen pisando los talones tras 16 jornadas disputadas. Tiago (118) acecha en cuarta posicion y esto se ha convertido en una carrera de cuatro con mucha miga. En la parte baja de la tabla, Gabriel se queda en 50 puntos y necesita una racha de inspiracion para volver a meterse en la pelea.",
+			"pt": "Rachael segura a lideranca com 139 pontos, mas ficou parada nesta rodada enquanto Nilton (132) e Caio (122) marcaram 12 pontos cada e estao colados nela depois de 16 partidas. Tiago (118) espreia perigosamente na quarta posicao, tornando isso uma briga de quatro que nao da pra piscar. La embaixo, Gabriel esta estacionado em 50 pontos e precisa de uma virada de sorte pra voltar a aparecer no radar."
 		},
 		"titles": {
 			"Rachael": {
@@ -150,7 +155,7 @@
 			}
 		},
 		"titlesSignature": "[[\"Rachael\",139],[\"Nilton\",132],[\"Caio\",122],[\"Tiago\",118],[\"Bruna\",90],[\"Joe\",88],[\"Marcio\",85],[\"Eudaldo\",78],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]",
-		"recapSignature": "[[\"Rachael\",139],[\"Nilton\",120],[\"Caio\",110],[\"Tiago\",106],[\"Joe\",88],[\"Bruna\",78],[\"Eudaldo\",78],[\"Marcio\",73],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]"
+		"recapSignature": "[[\"Rachael\",139],[\"Nilton\",132],[\"Caio\",122],[\"Tiago\",118],[\"Bruna\",90],[\"Joe\",88],[\"Marcio\",85],[\"Eudaldo\",78],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]"
 	},
-	"generatedAt": "2026-06-16T02:35:31.605Z"
+	"generatedAt": "2026-06-16T03:05:42.017Z"
 }
