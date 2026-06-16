@@ -79,83 +79,88 @@
 			"en": "Match 16 ends Iran 2-2 New Zealand, and eight — EIGHT — pool players walked away with zero points: Adriano, Deborah, Eudaldo, Gabriel, Joe, Rachael, Rafaella, and Renan all whiffed on this draw. Eudaldo took the biggest ranking hit, sliding down 2 spots, while Bruna quietly crept up one place like she knew something the rest of us didn't. Rachael stays on top of the leaderboard at 139 points, but after a goose egg today, she might want to keep an eye on Nilton breathing down her neck at 132!",
 			"es": "El partido 16 termina Irán 2-2 Nueva Zelanda, y ocho — OCHO — jugadores del grupo se fueron a casa con cero puntos: Adriano, Deborah, Eudaldo, Gabriel, Joe, Rachael, Rafaella y Renan fallaron este empate por completo. Eudaldo sufrió la mayor caída, bajando 2 puestos, mientras que Bruna subió sigilosamente uno como si supiera algo que el resto no sabía. Rachael sigue líder con 139 puntos, ¡pero tras un cero hoy, mejor que vigile a Nilton pisándole los talones con 132!",
 			"pt": "O jogo 16 termina Irã 2-2 Nova Zelândia, e oito — OITO — jogadores do bolão voltaram pra casa com zero pontos: Adriano, Deborah, Eudaldo, Gabriel, Joe, Rachael, Rafaella e Renan não chegaram nem perto desse empate. Eudaldo foi quem mais caiu no ranking, despencando 2 posições, enquanto Bruna subiu um lugarzinho na surdina, tipo quem sabia de algo que o resto não sabia. Rachael segura o topo com 139 pontos, mas depois de um zero hoje, é bom ficar de olho no Nilton colado com 132!"
+		},
+		"17": {
+			"en": "France cooked Senegal 3-1, and Caio, Rafaella, and Renan were already waiting at the buffet — all three nailed the exact score for a tasty 25-pointer! Marcio and Nilton at least got France's three goals right, but Marcio's read was good enough to climb two spots up the table. Rachael holds the throne at 154, but Nilton is breathing down her neck at 150 — this pool is getting spicy!",
+			"es": "Francia le metió un 3-1 a Senegal, y Caio, Rafaella y Renan ya lo sabían antes de que pitara el árbitro — los tres acertaron el marcador exacto y se embolsaron 25 puntos cada uno. Marcio y Nilton pillaron los tres goles de Francia, lo justo para que Marcio escale dos puestos en la clasificación. Rachael sigue en el trono con 154, pero Nilton le pisa los talones con 150 — ¡esto se está poniendo muy bueno!",
+			"pt": "A França foi lá e goleou o Senegal por 3-1, e Caio, Rafaella e Renan já sabiam do placar antes mesmo do jogo começar — trio certeiro na mosca, 25 pontos cada, obrigado! Marcio e Nilton pelo menos acertaram os três gols da França, e isso foi o suficiente pra Marcio subir dois lugares na tabela. Rachael segura o topo com 154, mas Nilton tá colado com 150 — isso aqui tá ficando quente, hein!"
 		}
 	},
 	"leaderboard": {
 		"recap": {
-			"en": "Rachael sits on top with 139 points, but she had a quiet matchday while Nilton (132) and Caio (122) both pocketed 12 points and are breathing right down her neck after 16 matches played. Tiago (118) is lurking dangerously close in fourth, making this a four-horse race nobody can afford to sleep on. Down in the lower half, Gabriel is parked at 50 points and could use a serious lucky streak to get back in the conversation.",
-			"es": "Rachael lidera con 139 puntos, pero tuvo una jornada para olvidar mientras Nilton (132) y Caio (122) sumaron 12 puntos cada uno y le siguen pisando los talones tras 16 jornadas disputadas. Tiago (118) acecha en cuarta posicion y esto se ha convertido en una carrera de cuatro con mucha miga. En la parte baja de la tabla, Gabriel se queda en 50 puntos y necesita una racha de inspiracion para volver a meterse en la pelea.",
-			"pt": "Rachael segura a lideranca com 139 pontos, mas ficou parada nesta rodada enquanto Nilton (132) e Caio (122) marcaram 12 pontos cada e estao colados nela depois de 16 partidas. Tiago (118) espreia perigosamente na quarta posicao, tornando isso uma briga de quatro que nao da pra piscar. La embaixo, Gabriel esta estacionado em 50 pontos e precisa de uma virada de sorte pra voltar a aparecer no radar."
+			"en": "Rachael holds the throne at 154 points, but Nilton (150) and Caio (147) are breathing right down her neck — this title race is basically a three-way street fight with seven matchdays to go. Tiago sits fourth at 128, close enough to dream but far enough to sweat, while Marcio climbed two spots to fifth with a solid 18-point haul last round. At the back, Gabriel is parked at 60 points and might need a miracle — or at least a very generous referee — to get back in the conversation.",
+			"es": "Rachael lidera con 154 puntos, pero Nilton (150) y Caio (147) le pisan los talones y esto se ha convertido en una batalla a tres bandas que promete mucho. Tiago es cuarto con 128 puntos, suficientemente cerca para soñar y suficientemente lejos para ponerse nervioso, mientras que Marcio subió dos puestos hasta el quinto con un buen botín de 18 puntos en la última jornada. En la parte baja, Gabriel se queda en 60 puntos y necesitará algo cercano a un milagro para volver a la pelea.",
+			"pt": "Rachael segura a lideranca com 154 pontos, mas Nilton (150) e Caio (147) estao colados nela — essa disputa pelo titulo virou uma briga de tres com sete rodadas pela frente. Tiago aparece em quarto com 128, perto o suficiente pra sonhar mas longe o suficiente pra se preocupar, e Marcio subiu duas posicoes pra quinto com um excelente aproveitamento de 18 pontos na ultima rodada. La atras, Gabriel esta parado nos 60 pontos e vai precisar de um milagre — ou de um arbitro muito generoso — pra voltar a conversa."
 		},
 		"titles": {
 			"Rachael": {
-				"en": "Lone leader",
-				"es": "Líder en solitario",
-				"pt": "Líder isolada"
+				"en": "Holding the throne",
+				"es": "Aferrada al trono",
+				"pt": "Segurando o trono"
 			},
 			"Nilton": {
-				"en": "Closing the gap",
-				"es": "Acortando distancias",
-				"pt": "Fechando a diferença"
+				"en": "Breathing down her neck",
+				"es": "Pisándole los talones",
+				"pt": "No seu encalço"
 			},
 			"Caio": {
-				"en": "Hot on their heels",
-				"es": "Pisando los talones",
-				"pt": "No encalço deles"
+				"en": "Most exact, closing in",
+				"es": "Más exacto, acercándose",
+				"pt": "Mais exato, chegando perto"
 			},
 			"Tiago": {
-				"en": "Gaining ground",
-				"es": "Ganando terreno",
-				"pt": "Ganhando terreno"
-			},
-			"Bruna": {
-				"en": "Surging up",
-				"es": "Subiendo fuerte",
-				"pt": "Subindo forte"
-			},
-			"Eudaldo": {
-				"en": "Slipping back",
-				"es": "Perdiendo posiciones",
-				"pt": "Escorregando para trás"
-			},
-			"Joe": {
-				"en": "Holding steady",
-				"es": "Manteniéndose firme",
-				"pt": "Se mantendo firme"
+				"en": "Safe in fourth",
+				"es": "Seguro en cuarto",
+				"pt": "Tranquilo em quarto"
 			},
 			"Marcio": {
-				"en": "Best mover",
-				"es": "Mayor escalada",
-				"pt": "Maior escalada"
+				"en": "Climbing fast",
+				"es": "Subiendo rápido",
+				"pt": "Subindo rápido"
 			},
-			"Adriano": {
-				"en": "Dropped a spot",
-				"es": "Bajó un puesto",
-				"pt": "Caiu uma posição"
+			"Bruna": {
+				"en": "Slipping, holding on",
+				"es": "Resbalando pero aguanta",
+				"pt": "Escorregando, mas firme"
 			},
-			"Deborah": {
-				"en": "Dropped a spot",
-				"es": "Bajó un puesto",
-				"pt": "Caiu uma posição"
-			},
-			"Gabriel": {
-				"en": "Stuck in neutral",
-				"es": "Sin avanzar",
-				"pt": "Sem sair do lugar"
+			"Joe": {
+				"en": "Fading quietly",
+				"es": "Desvaneciéndose sin ruido",
+				"pt": "Sumindo aos poucos"
 			},
 			"Rafaella": {
-				"en": "Stuck in neutral",
-				"es": "Sin avanzar",
-				"pt": "Sem sair do lugar"
+				"en": "Surging upward",
+				"es": "Remontando con fuerza",
+				"pt": "Disparando pra cima"
 			},
 			"Renan": {
-				"en": "Stuck in neutral",
-				"es": "Sin avanzar",
-				"pt": "Sem sair do lugar"
+				"en": "Tied and rising",
+				"es": "Empatado y subiendo",
+				"pt": "Empatado e subindo"
+			},
+			"Eudaldo": {
+				"en": "Losing ground",
+				"es": "Perdiendo terreno",
+				"pt": "Perdendo terreno"
+			},
+			"Adriano": {
+				"en": "Stuck in freefall",
+				"es": "En caída libre",
+				"pt": "Em queda livre"
+			},
+			"Deborah": {
+				"en": "Freefall with company",
+				"es": "Cayendo en compañía",
+				"pt": "Caindo junto"
+			},
+			"Gabriel": {
+				"en": "Just showing up",
+				"es": "Solo apareciendo",
+				"pt": "Só aparecendo"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",157],[\"Nilton\",142],[\"Caio\",132],[\"Tiago\",128],[\"Bruna\",115],[\"Eudaldo\",103],[\"Joe\",98],[\"Marcio\",95],[\"Adriano\",90],[\"Deborah\",90],[\"Gabriel\",75],[\"Rafaella\",75],[\"Renan\",75]]",
-		"recapSignature": "[[\"Rachael\",139],[\"Nilton\",132],[\"Caio\",122],[\"Tiago\",118],[\"Bruna\",90],[\"Joe\",88],[\"Marcio\",85],[\"Eudaldo\",78],[\"Adriano\",65],[\"Deborah\",65],[\"Rafaella\",65],[\"Renan\",65],[\"Gabriel\",50]]"
+		"titlesSignature": "[[\"Rachael\",154],[\"Nilton\",150],[\"Caio\",147],[\"Tiago\",128],[\"Marcio\",103],[\"Bruna\",100],[\"Joe\",98],[\"Rafaella\",90],[\"Renan\",90],[\"Eudaldo\",88],[\"Adriano\",75],[\"Deborah\",75],[\"Gabriel\",60]]",
+		"recapSignature": "[[\"Rachael\",154],[\"Nilton\",150],[\"Caio\",147],[\"Tiago\",128],[\"Marcio\",103],[\"Bruna\",100],[\"Joe\",98],[\"Rafaella\",90],[\"Renan\",90],[\"Eudaldo\",88],[\"Adriano\",75],[\"Deborah\",75],[\"Gabriel\",60]]"
 	},
-	"generatedAt": "2026-06-16T21:00:28.119Z"
+	"generatedAt": "2026-06-16T21:05:56.076Z"
 }
