@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 
-// Fixed reaction set. Phase 1 is UI only (local mock state); Firebase will back
-// the counts and per-session identity in phase 2.
+// Reaction set, backed by Firebase (counts + per-session identity).
 export const REACTIONS = [
 	{emoji: '👍', label: 'Thumbs up'},
 	{emoji: '👎', label: 'Thumbs down'},
@@ -19,7 +18,22 @@ export const REACTIONS = [
 	{emoji: '🥶', label: 'Ice cold'},
 	{emoji: '🐌', label: 'Snail'},
 	{emoji: '🤏', label: 'Pinch'},
+	{emoji: '🐐', label: 'GOAT'},
+	{emoji: '🍀', label: 'Lucky'},
+	{emoji: '🍿', label: 'Popcorn'},
+	{emoji: '👑', label: 'Crown'},
 ];
+
+// Country flags get their own row at the bottom of the picker.
+export const FLAG_REACTIONS = [
+	{emoji: '🇧🇷', label: 'Brazil'},
+	{emoji: '🇺🇸', label: 'USA'},
+	{emoji: '🇪🇸', label: 'Spain'},
+	{emoji: '🇫🇷', label: 'France'},
+	{emoji: '🇦🇷', label: 'Argentina'},
+];
+
+const ALL_REACTIONS = [...REACTIONS, ...FLAG_REACTIONS];
 
 export function Reactions({
 	counts,
@@ -53,9 +67,14 @@ export function Reactions({
 		return () => document.removeEventListener('mousedown', onPointerDown);
 	}, [open]);
 
-	const active = REACTIONS.filter(
+	const active = ALL_REACTIONS.filter(
 		(reaction) => (counts[reaction.emoji] ?? 0) > 0
 	);
+
+	const pick = (emoji: string) => {
+		onReact(emoji);
+		setOpen(false);
+	};
 
 	return (
 		<div
@@ -90,20 +109,34 @@ export function Reactions({
 				</button>
 
 				{open && (
-					<div className="absolute left-full top-1/2 z-20 ml-1 flex w-52 -translate-y-1/2 flex-wrap gap-0.5 rounded-2xl border border-white/10 bg-slate-800 p-1.5 shadow-xl">
-						{REACTIONS.map((reaction) => (
-							<button
-								aria-label={reaction.label}
-								className="rounded-full px-1.5 py-0.5 text-lg transition-transform hover:scale-125"
-								key={reaction.emoji}
-								onClick={() => {
-									onReact(reaction.emoji);
-									setOpen(false);
-								}}
-							>
-								{reaction.emoji}
-							</button>
-						))}
+					<div className="absolute left-full top-1/2 z-20 ml-1 flex w-52 -translate-y-1/2 flex-col gap-1 rounded-2xl border border-white/10 bg-slate-800 p-1.5 shadow-xl">
+						<div className="flex flex-wrap gap-0.5">
+							{REACTIONS.map((reaction) => (
+								<button
+									aria-label={reaction.label}
+									className="rounded-full px-1.5 py-0.5 text-lg transition-transform hover:scale-125"
+									key={reaction.emoji}
+									onClick={() => pick(reaction.emoji)}
+								>
+									{reaction.emoji}
+								</button>
+							))}
+						</div>
+
+						<div className="h-px w-full bg-white/10" />
+
+						<div className="flex flex-wrap gap-0.5">
+							{FLAG_REACTIONS.map((reaction) => (
+								<button
+									aria-label={reaction.label}
+									className="rounded-full px-1.5 py-0.5 text-lg transition-transform hover:scale-125"
+									key={reaction.emoji}
+									onClick={() => pick(reaction.emoji)}
+								>
+									{reaction.emoji}
+								</button>
+							))}
+						</div>
 					</div>
 				)}
 			</div>
