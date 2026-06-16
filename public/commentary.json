@@ -94,73 +94,73 @@
 		},
 		"titles": {
 			"Rachael": {
-				"en": "Untouchable leader",
-				"es": "Líder intratable",
-				"pt": "Líder intocável"
+				"en": "Sitting pretty on top",
+				"es": "Cómoda en lo alto",
+				"pt": "Tranquila no topo"
 			},
 			"Caio": {
-				"en": "Charging hard",
-				"es": "Imparable",
-				"pt": "Vindo com tudo"
+				"en": "Exact score machine",
+				"es": "Máquina de exactos",
+				"pt": "Máquina de exatos"
 			},
 			"Nilton": {
-				"en": "Steady contender",
-				"es": "Firme en el podio",
-				"pt": "Sólido no pódio"
+				"en": "Slipped one spot",
+				"es": "Bajó un puesto",
+				"pt": "Escorregou um lugar"
 			},
 			"Tiago": {
-				"en": "Slipping away",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo espaço"
+				"en": "Steady mid-pack",
+				"es": "Sólido en el medio",
+				"pt": "Firme no meio"
 			},
 			"Marcio": {
-				"en": "Surging up",
-				"es": "Escalando posiciones",
-				"pt": "Subindo forte"
-			},
-			"Bruna": {
-				"en": "Holding on",
-				"es": "Aguantando el tipo",
-				"pt": "Segurando a posição"
-			},
-			"Joe": {
-				"en": "Treading water",
-				"es": "Sin avanzar",
-				"pt": "Patinando no lugar"
-			},
-			"Renan": {
-				"en": "Big round, midfield",
-				"es": "Gran jornada, zona media",
-				"pt": "Boa rodada, meio de tabela"
-			},
-			"Rafaella": {
-				"en": "Rising fast",
-				"es": "Subiendo rápido",
+				"en": "Surging up fast",
+				"es": "Subiendo fuerte",
 				"pt": "Subindo rápido"
 			},
+			"Bruna": {
+				"en": "Fading at the top",
+				"es": "Perdiendo terreno",
+				"pt": "Perdendo fôlego"
+			},
+			"Joe": {
+				"en": "Holding on tight",
+				"es": "Agarrándose fuerte",
+				"pt": "Segurando a posição"
+			},
+			"Renan": {
+				"en": "Big round comeback",
+				"es": "Gran ronda reciente",
+				"pt": "Rodada forte recente"
+			},
+			"Rafaella": {
+				"en": "Climbing the table",
+				"es": "Escalando posiciones",
+				"pt": "Subindo na tabela"
+			},
 			"Adriano": {
-				"en": "Falling behind",
-				"es": "Quedándose atrás",
-				"pt": "Ficando para trás"
+				"en": "Slipped down hard",
+				"es": "Cayó bastante",
+				"pt": "Caiu bastante"
 			},
 			"Deborah": {
 				"en": "Tied and sliding",
-				"es": "Empatado y cayendo",
-				"pt": "Empatada e caindo"
+				"es": "Empatado y bajando",
+				"pt": "Empatado e caindo"
 			},
 			"Eudaldo": {
-				"en": "Staying the course",
-				"es": "Manteniéndose firme",
-				"pt": "Mantendo o rumo"
+				"en": "Quietly hanging in",
+				"es": "Aguantando en silencio",
+				"pt": "Resistindo quietinho"
 			},
 			"Gabriel": {
-				"en": "Stuck at the bottom",
-				"es": "Anclado abajo",
-				"pt": "Preso na lanterna"
+				"en": "Long way to go",
+				"es": "Mucho por remontar",
+				"pt": "Muito a recuperar"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",172],[\"Caio\",157],[\"Nilton\",150],[\"Tiago\",143],[\"Marcio\",121],[\"Bruna\",118],[\"Joe\",116],[\"Renan\",108],[\"Rafaella\",105],[\"Adriano\",93],[\"Deborah\",93],[\"Eudaldo\",88],[\"Gabriel\",78]]",
+		"titlesSignature": "[[\"Rachael\",169],[\"Caio\",157],[\"Nilton\",150],[\"Tiago\",138],[\"Marcio\",118],[\"Bruna\",115],[\"Joe\",113],[\"Renan\",105],[\"Rafaella\",100],[\"Adriano\",90],[\"Deborah\",90],[\"Eudaldo\",88],[\"Gabriel\",75]]",
 		"recapSignature": "[[\"Rachael\",154],[\"Nilton\",150],[\"Caio\",147],[\"Tiago\",128],[\"Marcio\",103],[\"Bruna\",100],[\"Joe\",98],[\"Rafaella\",90],[\"Renan\",90],[\"Eudaldo\",88],[\"Adriano\",75],[\"Deborah\",75],[\"Gabriel\",60]]"
 	},
-	"generatedAt": "2026-06-16T22:46:42.945Z"
+	"generatedAt": "2026-06-16T23:49:13.996Z"
 }
