@@ -1,4 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
+import {createPortal} from 'react-dom';
 
 // Reaction set, backed by Firebase (counts + per-session identity).
 export const REACTIONS = [
@@ -35,6 +36,8 @@ export const FLAG_REACTIONS = [
 
 const ALL_REACTIONS = [...REACTIONS, ...FLAG_REACTIONS];
 
+const PICKER_WIDTH = 208;
+
 export function Reactions({
 	counts,
 	mine,
@@ -45,36 +48,71 @@ export function Reactions({
 	onReact: (emoji: string) => void;
 }) {
 	const [open, setOpen] = useState(false);
-	const pickerRef = useRef<HTMLDivElement>(null);
+	const [pos, setPos] = useState({left: 0, top: 0});
+	const buttonRef = useRef<HTMLButtonElement>(null);
+	const popoverRef = useRef<HTMLDivElement>(null);
 
-	// Close the picker when clicking anywhere outside it.
+	// Close on click outside (button + portaled popover), or on scroll/resize.
 	useEffect(() => {
 		if (!open) {
 			return undefined;
 		}
 
 		const onPointerDown = (event: MouseEvent) => {
+			const target = event.target as Node;
+
 			if (
-				pickerRef.current &&
-				!pickerRef.current.contains(event.target as Node)
+				!buttonRef.current?.contains(target) &&
+				!popoverRef.current?.contains(target)
 			) {
 				setOpen(false);
 			}
 		};
 
-		document.addEventListener('mousedown', onPointerDown);
+		const close = () => setOpen(false);
 
-		return () => document.removeEventListener('mousedown', onPointerDown);
+		document.addEventListener('mousedown', onPointerDown);
+		window.addEventListener('scroll', close, true);
+		window.addEventListener('resize', close);
+
+		return () => {
+			document.removeEventListener('mousedown', onPointerDown);
+			window.removeEventListener('scroll', close, true);
+			window.removeEventListener('resize', close);
+		};
 	}, [open]);
 
-	const active = ALL_REACTIONS.filter(
-		(reaction) => (counts[reaction.emoji] ?? 0) > 0
-	);
+	const togglePicker = () => {
+		if (open) {
+			setOpen(false);
+
+			return;
+		}
+
+		const rect = buttonRef.current?.getBoundingClientRect();
+
+		if (!rect) {
+			return;
+		}
+
+		// Open to the right of the button, flipping left if it would overflow.
+		const openRight = rect.right + 6 + PICKER_WIDTH <= window.innerWidth;
+
+		setPos({
+			left: openRight ? rect.right + 6 : rect.left - 6 - PICKER_WIDTH,
+			top: rect.top + rect.height / 2,
+		});
+		setOpen(true);
+	};
 
 	const pick = (emoji: string) => {
 		onReact(emoji);
 		setOpen(false);
 	};
+
+	const active = ALL_REACTIONS.filter(
+		(reaction) => (counts[reaction.emoji] ?? 0) > 0
+	);
 
 	return (
 		<div
@@ -99,17 +137,23 @@ export function Reactions({
 				</button>
 			))}
 
-			<div className="relative" ref={pickerRef}>
-				<button
-					aria-label="Add reaction"
-					className="flex h-6 w-6 items-center justify-center rounded-full bg-white/5 text-sm text-slate-400 transition-colors hover:bg-white/10 hover:text-slate-200"
-					onClick={() => setOpen((value) => !value)}
-				>
-					＋
-				</button>
+			<button
+				aria-label="Add reaction"
+				className="flex h-6 w-6 items-center justify-center rounded-full bg-white/5 text-sm text-slate-400 transition-colors hover:bg-white/10 hover:text-slate-200"
+				onClick={togglePicker}
+				ref={buttonRef}
+			>
+				＋
+			</button>
 
-				{open && (
-					<div className="absolute left-full top-1/2 z-20 ml-1 flex w-52 -translate-y-1/2 flex-col gap-1 rounded-2xl border border-white/10 bg-slate-800 p-1.5 shadow-xl">
+			{open &&
+				createPortal(
+					<div
+						className="fixed z-50 flex w-52 -translate-y-1/2 flex-col gap-1 rounded-2xl border border-white/10 bg-slate-800 p-1.5 shadow-xl"
+						onClick={(event) => event.stopPropagation()}
+						ref={popoverRef}
+						style={{left: pos.left, top: pos.top}}
+					>
 						<div className="flex flex-wrap gap-0.5">
 							{REACTIONS.map((reaction) => (
 								<button
@@ -137,9 +181,9 @@ export function Reactions({
 								</button>
 							))}
 						</div>
-					</div>
+					</div>,
+					document.body
 				)}
-			</div>
 		</div>
 	);
 }

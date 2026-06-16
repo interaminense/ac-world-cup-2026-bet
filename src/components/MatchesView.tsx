@@ -2,15 +2,19 @@ import {useState} from 'react';
 
 import {kickoffDate} from '../lib/kickoff';
 import type {MatchCard} from '../lib/matches';
+import type {ReactionsApi} from '../lib/useReactions';
 import type {WhatIfScenario} from '../lib/whatif';
 import {Avatar} from './Avatar';
 import {Flag} from './Flag';
+import {Reactions} from './Reactions';
 import {StatusChip, TIER_STYLES} from './StatusChip';
 import {WhatIfPanel} from './WhatIfPanel';
 
 interface MatchesViewProps {
 	cards: MatchCard[];
 	commentary: Record<number, string>;
+	matchReactions: ReactionsApi;
+	onMatchReact: (matchNo: number, emoji: string) => void;
 	whatIf: Record<number, WhatIfScenario[]>;
 }
 
@@ -102,10 +106,14 @@ function predictionGroups(entries: MatchCard['entries']): PredictionGroup[] {
 function MatchCardArticle({
 	card,
 	commentary,
+	matchReactions,
+	onMatchReact,
 	whatIf,
 }: {
 	card: MatchCard;
 	commentary: Record<number, string>;
+	matchReactions: ReactionsApi;
+	onMatchReact: (matchNo: number, emoji: string) => void;
 	whatIf: Record<number, WhatIfScenario[]>;
 }) {
 	return (
@@ -220,6 +228,14 @@ function MatchCardArticle({
 					</p>
 				</div>
 			)}
+
+			<div className="mt-3 border-t border-white/5 pt-2.5">
+				<Reactions
+					counts={matchReactions.counts[String(card.matchNo)] ?? {}}
+					mine={matchReactions.mine[String(card.matchNo)] ?? []}
+					onReact={(emoji) => onMatchReact(card.matchNo, emoji)}
+				/>
+			</div>
 		</article>
 	);
 }
@@ -228,11 +244,15 @@ function MatchSection({
 	commentary,
 	emptyLabel,
 	groups,
+	matchReactions,
+	onMatchReact,
 	whatIf,
 }: {
 	commentary: Record<number, string>;
 	emptyLabel: string;
 	groups: DayGroup[];
+	matchReactions: ReactionsApi;
+	onMatchReact: (matchNo: number, emoji: string) => void;
 	whatIf: Record<number, WhatIfScenario[]>;
 }) {
 	if (groups.length === 0) {
@@ -257,6 +277,8 @@ function MatchSection({
 								card={card}
 								commentary={commentary}
 								key={card.matchNo}
+								matchReactions={matchReactions}
+								onMatchReact={onMatchReact}
 								whatIf={whatIf}
 							/>
 						))}
@@ -311,7 +333,13 @@ function SubTab({
 	);
 }
 
-export function MatchesView({cards, commentary, whatIf}: MatchesViewProps) {
+export function MatchesView({
+	cards,
+	commentary,
+	matchReactions,
+	onMatchReact,
+	whatIf,
+}: MatchesViewProps) {
 	const upcoming = cards.filter((card) => card.status !== 'finished');
 	const finished = cards.filter((card) => card.status === 'finished');
 
@@ -355,6 +383,8 @@ export function MatchesView({cards, commentary, whatIf}: MatchesViewProps) {
 						: 'No upcoming matches.'
 				}
 				groups={groups}
+				matchReactions={matchReactions}
+				onMatchReact={onMatchReact}
 				whatIf={whatIf}
 			/>
 		</div>

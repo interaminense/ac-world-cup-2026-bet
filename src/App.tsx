@@ -17,7 +17,7 @@ import {buildMatchCards} from './lib/matches';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
-import {useReactions} from './lib/useReactions';
+import {useMatchReactions, useReactions} from './lib/useReactions';
 import {buildWhatIf} from './lib/whatif';
 import type {GamesFile} from './lib/types';
 
@@ -77,6 +77,7 @@ export default function App() {
 	const [tab, setTab] = useState('leaderboard');
 
 	const {counts, mine, toggle} = useReactions();
+	const matchReactions = useMatchReactions();
 	const [bursts, setBursts] = useState<Array<{emoji: string; id: number}>>(
 		[]
 	);
@@ -87,23 +88,35 @@ export default function App() {
 		setTab('bets');
 	};
 
+	const fireBurst = (emoji: string) => {
+		const id = (burstId.current += 1);
+
+		setBursts((current) => [...current, {emoji, id}]);
+		setTimeout(
+			() =>
+				setBursts((current) =>
+					current.filter((burst) => burst.id !== id)
+				),
+			2000
+		);
+	};
+
 	const react = (name: string, emoji: string) => {
-		const adding = !(mine[name] ?? []).includes(emoji);
-
-		if (adding) {
-			const id = (burstId.current += 1);
-
-			setBursts((current) => [...current, {emoji, id}]);
-			setTimeout(
-				() =>
-					setBursts((current) =>
-						current.filter((burst) => burst.id !== id)
-					),
-				2000
-			);
+		if (!(mine[name] ?? []).includes(emoji)) {
+			fireBurst(emoji);
 		}
 
 		toggle(name, emoji);
+	};
+
+	const reactMatch = (matchNo: number, emoji: string) => {
+		const key = String(matchNo);
+
+		if (!(matchReactions.mine[key] ?? []).includes(emoji)) {
+			fireBurst(emoji);
+		}
+
+		matchReactions.toggle(key, emoji);
 	};
 
 	useEffect(() => {
@@ -350,6 +363,8 @@ export default function App() {
 					<MatchesView
 						cards={cards}
 						commentary={commentary}
+						matchReactions={matchReactions}
+						onMatchReact={reactMatch}
 						whatIf={whatIf}
 					/>
 				) : tab === 'h2h' ? (

@@ -4,18 +4,18 @@ import {useEffect, useState} from 'react';
 
 import {auth, db, signedIn} from './firebase';
 
-// reactions/<player>/<emoji>/<uid> = true
+// <root>/<key>/<emoji>/<uid> = true  — key is a player name or a match id.
 type ReactionTree = Record<string, Record<string, Record<string, boolean>>>;
 
 export interface ReactionsApi {
 	counts: Record<string, Record<string, number>>;
 	mine: Record<string, string[]>;
-	toggle: (player: string, emoji: string) => void;
+	toggle: (key: string, emoji: string) => void;
 }
 
-// Realtime reactions backed by Firebase. Each anonymous session can toggle one
-// reaction per emoji per player; counts aggregate across everyone live.
-export function useReactions(): ReactionsApi {
+// Realtime reactions backed by Firebase under `rootPath`. Each anonymous
+// session can toggle one reaction per emoji per key; counts aggregate live.
+function useReactionTree(rootPath: string): ReactionsApi {
 	const [uid, setUid] = useState<string | null>(null);
 	const [tree, setTree] = useState<ReactionTree>({});
 
@@ -27,16 +27,16 @@ export function useReactions(): ReactionsApi {
 
 	useEffect(
 		() =>
-			onValue(ref(db, 'reactions'), (snapshot) => {
+			onValue(ref(db, rootPath), (snapshot) => {
 				setTree((snapshot.val() as ReactionTree) ?? {});
 			}),
-		[]
+		[rootPath]
 	);
 
 	const counts: Record<string, Record<string, number>> = {};
 	const mine: Record<string, string[]> = {};
 
-	for (const [player, emojis] of Object.entries(tree)) {
+	for (const [key, emojis] of Object.entries(tree)) {
 		for (const [emoji, uids] of Object.entries(emojis ?? {})) {
 			const ids = Object.keys(uids ?? {});
 
@@ -44,22 +44,22 @@ export function useReactions(): ReactionsApi {
 				continue;
 			}
 
-			(counts[player] ??= {})[emoji] = ids.length;
+			(counts[key] ??= {})[emoji] = ids.length;
 
 			if (uid && uids[uid]) {
-				(mine[player] ??= []).push(emoji);
+				(mine[key] ??= []).push(emoji);
 			}
 		}
 	}
 
-	const toggle = (player: string, emoji: string) => {
+	const toggle = (key: string, emoji: string) => {
 		if (!uid) {
 			return;
 		}
 
-		const node = ref(db, `reactions/${player}/${emoji}/${uid}`);
+		const node = ref(db, `${rootPath}/${key}/${emoji}/${uid}`);
 
-		if (mine[player]?.includes(emoji)) {
+		if (mine[key]?.includes(emoji)) {
 			remove(node);
 		}
 		else {
@@ -68,4 +68,14 @@ export function useReactions(): ReactionsApi {
 	};
 
 	return {counts, mine, toggle};
+}
+
+// Reactions on each leaderboard player.
+export function useReactions(): ReactionsApi {
+	return useReactionTree('reactions');
+}
+
+// Reactions on each match (keyed by match number).
+export function useMatchReactions(): ReactionsApi {
+	return useReactionTree('matches/reactions');
 }
