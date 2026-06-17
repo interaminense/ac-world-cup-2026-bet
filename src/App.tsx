@@ -10,6 +10,7 @@ import {ReactionBurst} from './components/ReactionBurst';
 import {RulesView} from './components/RulesView';
 import {StatsView} from './components/StatsView';
 import {buildEvolution} from './lib/evolution';
+import {getMatchStatus} from './lib/games';
 import {detectLocale, localize, stripEmoji} from './lib/locale';
 import {buildStats} from './lib/stats';
 import {buildMatchCards} from './lib/matches';
@@ -194,7 +195,12 @@ export default function App() {
 
 				const [home, away] = previous.split('-').map(Number);
 
-				return game.homeScore > home || game.awayScore > away;
+				// Only celebrate goals scored while the match is live — not
+				// post-match score corrections or backfilled finals.
+				return (
+					(game.homeScore > home || game.awayScore > away) &&
+					getMatchStatus(game) === 'live'
+				);
 			});
 
 			if (goal) {
