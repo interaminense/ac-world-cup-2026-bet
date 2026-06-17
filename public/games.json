@@ -1,5 +1,5 @@
 {
-	"fetchedAt": "2026-06-17T02:10:19.213Z",
+	"fetchedAt": "2026-06-17T02:15:25.263Z",
 	"games": [
 		{
 			"awayScore": 0,
@@ -221,7 +221,7 @@
 			"awayScore": 0,
 			"awayTeam": "Algeria",
 			"finished": false,
-			"timeElapsed": "47",
+			"timeElapsed": "52",
 			"group": "Group J",
 			"homeScore": 1,
 			"homeTeam": "Argentina",
