@@ -1,15 +1,23 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
+import {
+	NavLink,
+	Navigate,
+	Route,
+	Routes,
+	useLocation,
+	useNavigate,
+} from 'react-router-dom';
 
+import {BetsView} from './components/BetsView';
 import {GoalOverlay} from './components/GoalOverlay';
 import {HeadToHeadView} from './components/HeadToHeadView';
 import {Header} from './components/Header';
 import {Leaderboard} from './components/Leaderboard';
 import {MatchesView} from './components/MatchesView';
-import {ParticipantView} from './components/ParticipantView';
 import {ReactionBurst} from './components/ReactionBurst';
 import {RulesView} from './components/RulesView';
 import {StatsView} from './components/StatsView';
-import {trackEvent} from './lib/analytics';
+import {trackEvent, trackPageView} from './lib/analytics';
 import {buildEvolution} from './lib/evolution';
 import {getMatchStatus} from './lib/games';
 import {detectLocale, localize, stripEmoji} from './lib/locale';
@@ -36,37 +44,22 @@ const LOADING_MESSAGES = [
 	'Tallying the bets…',
 ];
 
-function TabButton({
-	active,
-	children,
-	onClick,
-}: {
-	active: boolean;
-	children: React.ReactNode;
-	onClick: () => void;
-}) {
-	return (
-		<button
-			className={`whitespace-nowrap rounded-full px-4 py-2 text-center text-sm font-medium transition-colors sm:py-1.5 ${
-				active
-					? 'bg-emerald-500 text-emerald-950'
-					: 'bg-white/5 text-slate-300 hover:bg-white/10'
-			}`}
-			onClick={onClick}
-		>
-			{children}
-		</button>
-	);
-}
+const tabClass = ({isActive}: {isActive: boolean}) =>
+	`whitespace-nowrap rounded-full px-4 py-2 text-center text-sm font-medium transition-colors sm:py-1.5 ${
+		isActive
+			? 'bg-emerald-500 text-emerald-950'
+			: 'bg-white/5 text-slate-300 hover:bg-white/10'
+	}`;
 
 export default function App() {
 	const participants = useMemo(loadParticipants, []);
 
-	const [bettor, setBettor] = useState<string | null>(null);
 	const [loadingMessage, setLoadingMessage] = useState(() =>
 		Math.floor(Math.random() * LOADING_MESSAGES.length)
 	);
-	const [tab, setTab] = useState('leaderboard');
+
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const {failed: fetchFailed, gamesFile} = useGames();
 	const {commentaryFile, ready: commentaryReady} = useCommentary();
@@ -120,17 +113,10 @@ export default function App() {
 	const [showGoal, setShowGoal] = useState(false);
 	const prevScores = useRef<Map<number, string> | null>(null);
 
-	const selectBettor = (name: string) => {
-		setBettor(name);
-		setTab('bets');
-	};
-
-	// Track tab navigation in GA4 — one named event per tab so each shows its
-	// own click count in the Events report (e.g. tab_leaderboard, tab_matches).
-	const selectTab = (id: string) => {
-		trackEvent(`tab_${id}`);
-		setTab(id);
-	};
+	// GA4 page_view per route — fires on the first view and every navigation.
+	useEffect(() => {
+		trackPageView(location.pathname);
+	}, [location.pathname]);
 
 	const fireBurst = (emoji: string) => {
 		const id = (burstId.current += 1);
@@ -284,13 +270,6 @@ export default function App() {
 			? 'Scores unavailable — showing predictions only'
 			: 'Loading scores…';
 
-	const activeBettor =
-		tab === 'bets'
-			? (participants.find(
-					(participant) => participant.name === bettor
-				) ?? participants[0])
-			: undefined;
-
 	if (loading) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-slate-950 font-sans">
@@ -323,110 +302,116 @@ export default function App() {
 
 			<main className="mx-auto max-w-5xl px-4 py-6">
 				<nav className="mb-6 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap">
-					<TabButton
-						active={tab === 'leaderboard'}
-						onClick={() => selectTab('leaderboard')}
-					>
+					<NavLink className={tabClass} end to="/">
 						🏆 Leaderboard
-					</TabButton>
+					</NavLink>
 
-					<TabButton
-						active={tab === 'matches'}
-						onClick={() => selectTab('matches')}
-					>
+					<NavLink className={tabClass} to="/matches">
 						⚽ Matches
-					</TabButton>
+					</NavLink>
 
-					<TabButton
-						active={tab === 'bets'}
-						onClick={() => selectTab('bets')}
-					>
+					<NavLink className={tabClass} to="/bets">
 						🎯 Bets
-					</TabButton>
+					</NavLink>
 
-					<TabButton
-						active={tab === 'h2h'}
-						onClick={() => selectTab('h2h')}
-					>
+					<NavLink className={tabClass} to="/h2h">
 						⚔️ Head to Head
 						<span className="ml-1.5 inline-block rounded-full bg-amber-400 px-1.5 py-0.5 align-middle text-[9px] font-bold uppercase tracking-wide text-amber-950">
 							New
 						</span>
-					</TabButton>
+					</NavLink>
 
-					<TabButton
-						active={tab === 'stats'}
-						onClick={() => selectTab('stats')}
-					>
+					<NavLink className={tabClass} to="/stats">
 						📊 Stats
-					</TabButton>
+					</NavLink>
 
-					<TabButton
-						active={tab === 'rules'}
-						onClick={() => selectTab('rules')}
-					>
+					<NavLink className={tabClass} to="/rules">
 						📜 Rules
-					</TabButton>
+					</NavLink>
 				</nav>
 
-				{tab === 'bets' && (
-					<nav className="-mt-4 mb-6 flex gap-1 overflow-x-auto border-l-2 border-emerald-500/30 pb-1 pl-3">
-						{participants.map((participant) => (
-							<button
-								className={`whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-									activeBettor?.name === participant.name
-										? 'bg-amber-400 font-semibold text-amber-950'
-										: 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-slate-200'
-								}`}
-								key={participant.name}
-								onClick={() => setBettor(participant.name)}
-							>
-								{participant.name}
-							</button>
-						))}
-					</nav>
-				)}
+				<Routes>
+					<Route
+						element={
+							<Leaderboard
+								live={liveGames.length > 0}
+								myReactions={mine}
+								onReact={react}
+								onSelect={(name) =>
+									navigate(`/bets/${name.toLowerCase()}`)
+								}
+								reactions={counts}
+								recap={
+									liveGames.length === 0
+										? boardRecap
+										: undefined
+								}
+								rows={rows}
+								titles={boardTitles}
+							/>
+						}
+						path="/"
+					/>
 
-				{activeBettor ? (
-					<ParticipantView
-						games={games}
-						participant={activeBettor}
-						participants={participants}
+					<Route
+						element={
+							<MatchesView
+								cards={cards}
+								commentary={commentary}
+								matchReactions={matchReactions}
+								onMatchReact={reactMatch}
+								whatIf={whatIf}
+							/>
+						}
+						path="/matches"
 					/>
-				) : tab === 'matches' ? (
-					<MatchesView
-						cards={cards}
-						commentary={commentary}
-						matchReactions={matchReactions}
-						onMatchReact={reactMatch}
-						whatIf={whatIf}
+
+					<Route
+						element={
+							<Navigate
+								replace
+								to={`/bets/${participants[0].name.toLowerCase()}`}
+							/>
+						}
+						path="/bets"
 					/>
-				) : tab === 'h2h' ? (
-					<HeadToHeadView
-						games={games}
-						participants={participants}
-						rows={rows}
+
+					<Route
+						element={
+							<BetsView
+								games={games}
+								participants={participants}
+							/>
+						}
+						path="/bets/:id"
 					/>
-				) : tab === 'stats' ? (
-					<StatsView
-						evolution={evolution}
-						stats={stats}
-						timeline={timeline}
+
+					<Route
+						element={
+							<HeadToHeadView
+								games={games}
+								participants={participants}
+								rows={rows}
+							/>
+						}
+						path="/h2h"
 					/>
-				) : tab === 'rules' ? (
-					<RulesView />
-				) : (
-					<Leaderboard
-						live={liveGames.length > 0}
-						myReactions={mine}
-						onReact={react}
-						onSelect={selectBettor}
-						reactions={counts}
-						recap={liveGames.length === 0 ? boardRecap : undefined}
-						rows={rows}
-						titles={boardTitles}
+
+					<Route
+						element={
+							<StatsView
+								evolution={evolution}
+								stats={stats}
+								timeline={timeline}
+							/>
+						}
+						path="/stats"
 					/>
-				)}
+
+					<Route element={<RulesView />} path="/rules" />
+
+					<Route element={<Navigate replace to="/" />} path="*" />
+				</Routes>
 			</main>
 		</div>
 	);

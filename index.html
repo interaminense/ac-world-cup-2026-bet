@@ -13,7 +13,9 @@
 			}
 			gtag('js', new Date());
 
-			gtag('config', 'G-4DYQ0QZV28');
+			// Route-level page_views are sent manually from the app
+			// (HashRouter), so the automatic one is disabled here.
+			gtag('config', 'G-4DYQ0QZV28', {send_page_view: false});
 		</script>
 		<title>AC World Cup 2026 BET</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
