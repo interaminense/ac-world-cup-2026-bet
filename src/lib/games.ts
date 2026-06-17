@@ -1,4 +1,4 @@
-import type {Game, GamesFile, MatchStatus, Prediction} from './types';
+import type {Game, MatchStatus, Prediction} from './types';
 
 export function getMatchStatus(game: Game): MatchStatus {
 	if (game.finished || game.timeElapsed === 'finished') {
@@ -132,23 +132,4 @@ export function realScoreFor(
 	return flipped
 		? {r1: game.awayScore, r2: game.homeScore}
 		: {r1: game.homeScore, r2: game.awayScore};
-}
-
-const DEFAULT_GAMES_URL = `${import.meta.env.BASE_URL}games.json`;
-
-export async function fetchGames(
-	url: string = import.meta.env.VITE_GAMES_URL || DEFAULT_GAMES_URL
-): Promise<GamesFile | null> {
-	try {
-		const response = await fetch(`${url}?t=${Date.now()}`);
-
-		if (!response.ok) {
-			return null;
-		}
-
-		return (await response.json()) as GamesFile;
-	}
-	catch {
-		return null;
-	}
 }

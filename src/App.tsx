@@ -10,16 +10,15 @@ import {RulesView} from './components/RulesView';
 import {StatsView} from './components/StatsView';
 import {fetchCommentary} from './lib/commentary';
 import {buildEvolution} from './lib/evolution';
-import {fetchGames} from './lib/games';
 import {detectLocale, localize, stripEmoji} from './lib/locale';
 import {buildStats} from './lib/stats';
 import {buildMatchCards} from './lib/matches';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
+import {useGames} from './lib/useGames';
 import {useMatchReactions, useReactions} from './lib/useReactions';
 import {buildWhatIf} from './lib/whatif';
-import type {GamesFile} from './lib/types';
 
 const REFRESH_INTERVAL_MS =
 	Number(import.meta.env.VITE_REFRESH_INTERVAL_MS) || 3_600_000;
@@ -68,13 +67,17 @@ export default function App() {
 	const [boardRecap, setBoardRecap] = useState<string | undefined>(undefined);
 	const [boardTitles, setBoardTitles] = useState<Record<string, string>>({});
 	const [commentary, setCommentary] = useState<Record<number, string>>({});
-	const [fetchFailed, setFetchFailed] = useState(false);
-	const [gamesFile, setGamesFile] = useState<GamesFile | null>(null);
-	const [loading, setLoading] = useState(true);
+	const [commentaryReady, setCommentaryReady] = useState(false);
 	const [loadingMessage, setLoadingMessage] = useState(() =>
 		Math.floor(Math.random() * LOADING_MESSAGES.length)
 	);
 	const [tab, setTab] = useState('leaderboard');
+
+	const {failed: fetchFailed, gamesFile} = useGames();
+
+	// Hold the splash until both feeds are in: scores (live from RTDB) and the
+	// commentary (still fetched from the GitHub Action's JSON).
+	const loading = (gamesFile === null && !fetchFailed) || !commentaryReady;
 
 	const {counts, mine, toggle} = useReactions();
 	const matchReactions = useMatchReactions();
@@ -139,20 +142,6 @@ export default function App() {
 		let active = true;
 
 		const load = async () => {
-			const file = await fetchGames();
-
-			if (!active) {
-				return;
-			}
-
-			if (file) {
-				setFetchFailed(false);
-				setGamesFile(file);
-			}
-			else {
-				setFetchFailed(true);
-			}
-
 			const commentaryFile = await fetchCommentary();
 
 			if (active && commentaryFile) {
@@ -185,7 +174,7 @@ export default function App() {
 				);
 			}
 			if (active) {
-				setLoading(false);
+				setCommentaryReady(true);
 			}
 		};
 

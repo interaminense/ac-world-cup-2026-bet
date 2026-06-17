@@ -2,6 +2,7 @@ import {onAuthStateChanged} from 'firebase/auth';
 import {onValue, ref, remove, set} from 'firebase/database';
 import {useEffect, useState} from 'react';
 
+import {dataPath} from './dataRoot';
 import {auth, db, signedIn} from './firebase';
 
 // <root>/<key>/<emoji>/<uid> = true  — key is a player name or a match id.
@@ -72,10 +73,10 @@ function useReactionTree(rootPath: string): ReactionsApi {
 
 // Reactions on each leaderboard player.
 export function useReactions(): ReactionsApi {
-	return useReactionTree('reactions');
+	return useReactionTree(dataPath('reactions'));
 }
 
 // Reactions on each match (keyed by match number).
 export function useMatchReactions(): ReactionsApi {
-	return useReactionTree('matches/reactions');
+	return useReactionTree(dataPath('matches/reactions'));
 }
