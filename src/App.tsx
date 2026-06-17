@@ -8,7 +8,6 @@ import {ParticipantView} from './components/ParticipantView';
 import {ReactionBurst} from './components/ReactionBurst';
 import {RulesView} from './components/RulesView';
 import {StatsView} from './components/StatsView';
-import {fetchCommentary} from './lib/commentary';
 import {buildEvolution} from './lib/evolution';
 import {detectLocale, localize, stripEmoji} from './lib/locale';
 import {buildStats} from './lib/stats';
@@ -16,13 +15,10 @@ import {buildMatchCards} from './lib/matches';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
+import {useCommentary} from './lib/useCommentary';
 import {useGames} from './lib/useGames';
 import {useMatchReactions, useReactions} from './lib/useReactions';
 import {buildWhatIf} from './lib/whatif';
-
-const REFRESH_INTERVAL_MS =
-	Number(import.meta.env.VITE_REFRESH_INTERVAL_MS) || 3_600_000;
-
 
 const LOADING_MESSAGES = [
 	'Mowing the pitch…',
@@ -64,20 +60,51 @@ export default function App() {
 	const participants = useMemo(loadParticipants, []);
 
 	const [bettor, setBettor] = useState<string | null>(null);
-	const [boardRecap, setBoardRecap] = useState<string | undefined>(undefined);
-	const [boardTitles, setBoardTitles] = useState<Record<string, string>>({});
-	const [commentary, setCommentary] = useState<Record<number, string>>({});
-	const [commentaryReady, setCommentaryReady] = useState(false);
 	const [loadingMessage, setLoadingMessage] = useState(() =>
 		Math.floor(Math.random() * LOADING_MESSAGES.length)
 	);
 	const [tab, setTab] = useState('leaderboard');
 
 	const {failed: fetchFailed, gamesFile} = useGames();
+	const {commentaryFile, ready: commentaryReady} = useCommentary();
 
-	// Hold the splash until both feeds are in: scores (live from RTDB) and the
-	// commentary (still fetched from the GitHub Action's JSON).
+	// Both feeds are live from the Realtime Database now — hold the splash until
+	// the scores and the commentary have each pushed their first snapshot.
 	const loading = (gamesFile === null && !fetchFailed) || !commentaryReady;
+
+	const locale = useMemo(detectLocale, []);
+
+	const commentary = useMemo<Record<number, string>>(
+		() =>
+			Object.fromEntries(
+				Object.entries(commentaryFile?.byMatch ?? {})
+					.filter(([, text]) => text)
+					.map(([matchNo, text]) => [
+						matchNo,
+						localize(text, locale) ?? '',
+					])
+			),
+		[commentaryFile, locale]
+	);
+
+	const boardRecap = useMemo(() => {
+		const recap = localize(commentaryFile?.leaderboard?.recap, locale);
+
+		return recap ? stripEmoji(recap) : undefined;
+	}, [commentaryFile, locale]);
+
+	const boardTitles = useMemo<Record<string, string>>(
+		() =>
+			Object.fromEntries(
+				Object.entries(commentaryFile?.leaderboard?.titles ?? {}).map(
+					([name, text]) => [
+						name,
+						stripEmoji(localize(text, locale) ?? ''),
+					]
+				)
+			),
+		[commentaryFile, locale]
+	);
 
 	const {counts, mine, toggle} = useReactions();
 	const matchReactions = useMatchReactions();
@@ -137,56 +164,6 @@ export default function App() {
 
 		return () => clearInterval(id);
 	}, [loading]);
-
-	useEffect(() => {
-		let active = true;
-
-		const load = async () => {
-			const commentaryFile = await fetchCommentary();
-
-			if (active && commentaryFile) {
-				const locale = detectLocale();
-
-				setCommentary(
-					Object.fromEntries(
-						Object.entries(commentaryFile.byMatch).map(
-							([matchNo, text]) => [
-								matchNo,
-								localize(text, locale) ?? '',
-							]
-						)
-					)
-				);
-
-				const recap = localize(commentaryFile.leaderboard?.recap, locale);
-
-				setBoardRecap(recap ? stripEmoji(recap) : undefined);
-
-				setBoardTitles(
-					Object.fromEntries(
-						Object.entries(
-							commentaryFile.leaderboard?.titles ?? {}
-						).map(([name, text]) => [
-							name,
-							stripEmoji(localize(text, locale) ?? ''),
-						])
-					)
-				);
-			}
-			if (active) {
-				setCommentaryReady(true);
-			}
-		};
-
-		load();
-
-		const intervalId = setInterval(load, REFRESH_INTERVAL_MS);
-
-		return () => {
-			active = false;
-			clearInterval(intervalId);
-		};
-	}, []);
 
 	const games = gamesFile?.games ?? [];
 

@@ -1,5 +1,7 @@
 import type {Localized} from './locale';
 
+// Shape of the `commentary` Realtime Database node, written by the local poller
+// (scripts/push-scores.mjs) and read live via useCommentary.
 export interface CommentaryFile {
 	byMatch: Record<number, Localized>;
 	generatedAt: string;
@@ -7,23 +9,4 @@ export interface CommentaryFile {
 		recap: Localized;
 		titles: Record<string, Localized>;
 	};
-}
-
-const DEFAULT_URL = `${import.meta.env.BASE_URL}commentary.json`;
-
-export async function fetchCommentary(
-	url: string = DEFAULT_URL
-): Promise<CommentaryFile | null> {
-	try {
-		const response = await fetch(`${url}?t=${Date.now()}`);
-
-		if (!response.ok) {
-			return null;
-		}
-
-		return (await response.json()) as CommentaryFile;
-	}
-	catch {
-		return null;
-	}
 }

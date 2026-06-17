@@ -3,6 +3,9 @@ import {readFileSync} from 'node:fs';
 import {cert, initializeApp} from 'firebase-admin/app';
 import {getDatabase} from 'firebase-admin/database';
 
+import {parsePredictions} from './commentary-facts.mjs';
+import {updateCommentary} from './commentary-core.mjs';
+
 // Simulate a score change on the demo subtree so we can watch the UI push it
 // live (the browser, opened with ?demo, is subscribed via onValue).
 //
@@ -21,6 +24,8 @@ if (idArg === undefined || homeArg === undefined || awayArg === undefined) {
 
 const DATABASE_URL =
 	'https://ac-world-cup-2026-bet-default-rtdb.firebaseio.com';
+
+const PRED_DIR = new URL('../src/data/predictions/', import.meta.url);
 
 const credentialsPath =
 	process.env.GOOGLE_APPLICATION_CREDENTIALS ||
@@ -75,4 +80,24 @@ console.log(
 	`demo: #${game.id} ${game.homeTeam} ${game.homeScore}–${game.awayScore} ` +
 		`${game.awayTeam} (${statusArg})`
 );
+
+// Mirror the poller: regenerate the AI commentary into demo/commentary so the
+// blurb push can be tested in the UI too. Slack is off in demo. No-op without
+// ANTHROPIC_API_KEY (set it in your shell to exercise this).
+const players = parsePredictions(PRED_DIR);
+const snapshotCommentary = await db.ref('demo/commentary').once('value');
+const commentary = snapshotCommentary.val() || {byMatch: {}};
+
+const {changed: commentaryChanged} = await updateCommentary(
+	games,
+	players,
+	commentary,
+	{slack: false}
+);
+
+if (commentaryChanged) {
+	await db.ref('demo/commentary').set(commentary);
+	console.log('Updated demo/commentary');
+}
+
 process.exit(0);

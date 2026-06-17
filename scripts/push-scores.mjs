@@ -3,6 +3,8 @@ import {readFileSync} from 'node:fs';
 import {cert, initializeApp} from 'firebase-admin/app';
 import {getDatabase} from 'firebase-admin/database';
 
+import {parsePredictions} from './commentary-facts.mjs';
+import {updateCommentary} from './commentary-core.mjs';
 import {fetchEspnGames} from './sources/espn.mjs';
 import {fetchFifaGames} from './sources/fifa.mjs';
 import {fetchWorldcup26Games} from './sources/worldcup26.mjs';
@@ -20,6 +22,8 @@ const DEFAULT_ORDER = ['fifa', 'espn', 'worldcup26'];
 
 const DATABASE_URL =
 	'https://ac-world-cup-2026-bet-default-rtdb.firebaseio.com';
+
+const PRED_DIR = new URL('../src/data/predictions/', import.meta.url);
 
 const credentialsPath =
 	process.env.GOOGLE_APPLICATION_CREDENTIALS ||
@@ -108,4 +112,24 @@ await db.ref('games').set({
 });
 
 console.log(`Pushed ${games.length} games to RTDB (source: ${source})`);
+
+// Scores changed → refresh the AI commentary (and Slack digests). Gated by
+// ANTHROPIC_API_KEY: without it updateCommentary is a no-op, so the cron poller
+// stays scores-only until the key is added to its environment (the cutover that
+// also retires the GitHub Action, to avoid double-posting).
+const players = parsePredictions(PRED_DIR);
+const snapshotCommentary = await db.ref('commentary').once('value');
+const commentary = snapshotCommentary.val() || {byMatch: {}};
+
+const {changed: commentaryChanged} = await updateCommentary(
+	games,
+	players,
+	commentary
+);
+
+if (commentaryChanged) {
+	await db.ref('commentary').set(commentary);
+	console.log('Updated RTDB commentary');
+}
+
 process.exit(0);

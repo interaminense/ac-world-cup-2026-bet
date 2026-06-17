@@ -21,7 +21,7 @@ initializeApp({
 
 const db = getDatabase();
 
-const NODES = ['games', 'reactions', 'matches/reactions'];
+const NODES = ['games', 'commentary', 'reactions', 'matches/reactions'];
 
 for (const node of NODES) {
 	const snapshot = await db.ref(node).once('value');
