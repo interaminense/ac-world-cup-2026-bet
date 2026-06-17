@@ -99,73 +99,73 @@
 		},
 		"titles": {
 			"Rachael": {
-				"en": "Lone leader",
-				"es": "Líder en solitario",
-				"pt": "Líder isolada"
+				"en": "Holding the crown",
+				"es": "Aferrada a la cima",
+				"pt": "Segurando a coroa"
 			},
 			"Caio": {
-				"en": "Closing the gap",
-				"es": "Recortando distancias",
-				"pt": "Chegando por cima"
+				"en": "Exact score machine",
+				"es": "Máquina de plenos",
+				"pt": "Máquina de cheios"
 			},
 			"Nilton": {
-				"en": "Slipping back",
-				"es": "Perdiendo terreno",
-				"pt": "Perdendo espaço"
+				"en": "Slipping at the top",
+				"es": "Resbalando arriba",
+				"pt": "Escorregando no topo"
 			},
 			"Tiago": {
-				"en": "Steady in fourth",
-				"es": "Sólido en cuarto",
-				"pt": "Firme em quarto"
+				"en": "Chasing the leaders",
+				"es": "Persiguiendo al líder",
+				"pt": "Caçando os líderes"
 			},
 			"Marcio": {
-				"en": "Holding fifth firm",
-				"es": "Quinto resistente",
-				"pt": "Segurando o quinto"
+				"en": "Closing the gap",
+				"es": "Acortando distancias",
+				"pt": "Fechando a diferença"
 			},
 			"Bruna": {
-				"en": "Lucky no exactas",
-				"es": "Sin exactas pero puntúa",
-				"pt": "Sem exatas, mas pontua"
+				"en": "Steady but stalled",
+				"es": "Estable pero estancada",
+				"pt": "Firme mas parada"
 			},
 			"Joe": {
-				"en": "Consistent mid-pack",
-				"es": "Regular en el grupo",
-				"pt": "Consistente no meio"
+				"en": "Hanging tough",
+				"es": "Aguantando fuerte",
+				"pt": "Segurando firme"
 			},
 			"Rafaella": {
-				"en": "Tied for eighth",
-				"es": "Empatada en octavo",
-				"pt": "Empatada em oitavo"
+				"en": "Climbing up",
+				"es": "Escalando posiciones",
+				"pt": "Subindo na tabela"
 			},
 			"Renan": {
-				"en": "Tied for eighth",
-				"es": "Empatado en octavo",
-				"pt": "Empatado em oitavo"
+				"en": "Rising fast",
+				"es": "Subiendo rápido",
+				"pt": "Subindo rápido"
 			},
 			"Eudaldo": {
-				"en": "Stalled at tenth",
-				"es": "Frenado en décimo",
-				"pt": "Travado em décimo"
+				"en": "Dropping back down",
+				"es": "Bajando posiciones",
+				"pt": "Caindo na tabela"
 			},
 			"Adriano": {
-				"en": "Neck and neck",
-				"es": "Mano a mano",
-				"pt": "Disputando palmo a palmo"
+				"en": "Hanging in there",
+				"es": "Aguantando el tipo",
+				"pt": "Se segurando"
 			},
 			"Deborah": {
-				"en": "Neck and neck",
-				"es": "Mano a mano",
-				"pt": "Disputando palmo a palmo"
+				"en": "Staying alive",
+				"es": "Manteniéndose viva",
+				"pt": "Mantendo-se viva"
 			},
 			"Gabriel": {
-				"en": "Late charge coming",
-				"es": "Remontada en marcha",
-				"pt": "Arrancada tardia"
+				"en": "Long shot hero",
+				"es": "Héroe desde atrás",
+				"pt": "Herói do fim do grid"
 			}
 		},
-		"titlesSignature": "[[\"Rachael\",164],[\"Caio\",157],[\"Nilton\",150],[\"Tiago\",138],[\"Marcio\",113],[\"Bruna\",110],[\"Joe\",108],[\"Rafaella\",100],[\"Renan\",100],[\"Eudaldo\",88],[\"Adriano\",85],[\"Deborah\",85],[\"Gabriel\",70]]",
+		"titlesSignature": "[[\"Rachael\",174],[\"Caio\",172],[\"Nilton\",160],[\"Tiago\",148],[\"Marcio\",138],[\"Bruna\",120],[\"Joe\",118],[\"Rafaella\",110],[\"Renan\",110],[\"Eudaldo\",103],[\"Adriano\",95],[\"Deborah\",95],[\"Gabriel\",80]]",
 		"recapSignature": "[[\"Rachael\",164],[\"Caio\",157],[\"Nilton\",150],[\"Tiago\",138],[\"Marcio\",113],[\"Bruna\",110],[\"Joe\",108],[\"Rafaella\",100],[\"Renan\",100],[\"Eudaldo\",88],[\"Adriano\",85],[\"Deborah\",85],[\"Gabriel\",70]]"
 	},
-	"generatedAt": "2026-06-17T00:13:27.256Z"
+	"generatedAt": "2026-06-17T01:20:27.582Z"
 }
