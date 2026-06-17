@@ -103,74 +103,74 @@
 			"pt": "Nilton chega ao topo com uma rodada monstruosa de 25 pontos e abre apenas um pontinho de vantagem sobre Rachael numa briga pelo título que esta apertadissima. Caio e Tiago espreitam em terceiro e quarto, prontos para baguncar a festa se os lideres tropeçarem. Enquanto isso, Deborah e Gabriel sao as grandes surpresas positivas da rodada, subindo firme na tabela e deixando todo mundo de olho aberto."
 		},
 		"titles": {
-			"Nilton": {
-				"en": "Hanging on top",
-				"es": "Aferrado al liderato",
-				"pt": "Segurando a liderança"
-			},
-			"Rachael": {
-				"en": "Breathing down neck",
-				"es": "Pisándole los talones",
-				"pt": "No seu pescoço"
-			},
 			"Caio": {
-				"en": "Closing the gap",
-				"es": "Recortando distancias",
-				"pt": "Chegando por trás"
+				"en": "Alone at the top",
+				"es": "Solo en la cima",
+				"pt": "Sozinho no topo"
+			},
+			"Nilton": {
+				"en": "Storming the lead",
+				"es": "Asaltando el liderato",
+				"pt": "Avançando forte"
 			},
 			"Tiago": {
-				"en": "Chasing the podium",
-				"es": "A por el podio",
-				"pt": "De olho no pódio"
+				"en": "Tied, rising fast",
+				"es": "Empatado y subiendo",
+				"pt": "Empatado e voando"
+			},
+			"Rachael": {
+				"en": "Slipping from top",
+				"es": "Perdiendo terreno",
+				"pt": "Escorregando do topo"
 			},
 			"Bruna": {
-				"en": "Fading midpack",
-				"es": "Perdida en el grupo",
-				"pt": "Sumindo no pelotão"
-			},
-			"Joe": {
-				"en": "Steady climber",
-				"es": "Escalando con calma",
-				"pt": "Subindo firme"
-			},
-			"Rafaella": {
-				"en": "Keeping pace",
-				"es": "Mantiene el ritmo",
-				"pt": "Mantendo o ritmo"
+				"en": "Climbing with fire",
+				"es": "Subiendo con fuerza",
+				"pt": "Subindo com garra"
 			},
 			"Marcio": {
-				"en": "Lurking behind",
-				"es": "Acechando desde atrás",
-				"pt": "Espreitando por trás"
+				"en": "Holding steady mid",
+				"es": "Firme en el medio",
+				"pt": "Segurando posição"
+			},
+			"Joe": {
+				"en": "Knocking on door",
+				"es": "Llamando a la puerta",
+				"pt": "Batendo na porta"
+			},
+			"Rafaella": {
+				"en": "Consistent contender",
+				"es": "Contendiente constante",
+				"pt": "Consistente na briga"
 			},
 			"Deborah": {
-				"en": "Tied and hungry",
-				"es": "Empatadas y con hambre",
-				"pt": "Empatada e motivada"
+				"en": "Surging from behind",
+				"es": "Remontando con fuerza",
+				"pt": "Avançando por trás"
 			},
 			"Renan": {
-				"en": "Tied and hungry",
-				"es": "Empatado y con hambre",
-				"pt": "Empatado e motivado"
+				"en": "Treading water",
+				"es": "Sin avanzar",
+				"pt": "Patinando no lugar"
 			},
 			"Eudaldo": {
-				"en": "Left behind",
-				"es": "Quedándose rezagado",
-				"pt": "Ficando para trás"
+				"en": "Losing ground fast",
+				"es": "Cediendo posiciones",
+				"pt": "Perdendo terreno"
 			},
 			"Adriano": {
-				"en": "Still in the fight",
-				"es": "Todavía en la batalla",
-				"pt": "Ainda na luta"
+				"en": "Stuck in neutral",
+				"es": "Atascado sin avanzar",
+				"pt": "Travado no lugar"
 			},
 			"Gabriel": {
-				"en": "Still in the fight",
-				"es": "Todavía en la batalla",
-				"pt": "Ainda na luta"
+				"en": "Late charge incoming",
+				"es": "Remontada en marcha",
+				"pt": "Chegando por trás"
 			}
 		},
-		"titlesSignature": "[[\"Nilton\",175],[\"Rachael\",174],[\"Caio\",167],[\"Tiago\",163],[\"Bruna\",135],[\"Joe\",133],[\"Rafaella\",125],[\"Marcio\",123],[\"Deborah\",110],[\"Renan\",110],[\"Eudaldo\",98],[\"Adriano\",95],[\"Gabriel\",95]]",
+		"titlesSignature": "[[\"Caio\",192],[\"Nilton\",175],[\"Tiago\",175],[\"Rachael\",174],[\"Bruna\",135],[\"Marcio\",135],[\"Joe\",133],[\"Rafaella\",125],[\"Deborah\",110],[\"Renan\",110],[\"Eudaldo\",98],[\"Adriano\",95],[\"Gabriel\",95]]",
 		"recapSignature": "[[\"Nilton\",175],[\"Rachael\",174],[\"Caio\",167],[\"Tiago\",163],[\"Bruna\",135],[\"Joe\",133],[\"Rafaella\",125],[\"Marcio\",123],[\"Deborah\",110],[\"Renan\",110],[\"Eudaldo\",98],[\"Adriano\",95],[\"Gabriel\",95]]"
 	},
-	"generatedAt": "2026-06-17T03:00:44.383Z"
+	"generatedAt": "2026-06-17T04:05:29.232Z"
 }
