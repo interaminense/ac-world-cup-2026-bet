@@ -9,8 +9,9 @@ the page changes the instant a goal is scored, with no refresh.
 
 ## Views
 
-Each tab is a client-side route (`HashRouter`), so views are shareable and
-survive a refresh:
+Navigation is a right-side menu (the header's ☰ button) — each item is a
+client-side route (`HashRouter`), so views are shareable and survive a refresh,
+and the current page's name shows above its content:
 
 - **🏆 Leaderboard** (`/`) — totals, exact-score count, competition ranking
   (ties share a rank). Click a participant to open their bets.
@@ -19,7 +20,8 @@ survive a refresh:
   and the what-if panel while the match is live.
 - **🎯 Bets** (`/bets/:id`, e.g. `/bets/adriano`) — a participant's 72
   predictions with real scores, status, and per-match points color-coded by
-  tier. Deep-linkable.
+  tier. Pick a participant from the menu's **Bets** dropdown; each is
+  deep-linkable.
 - **⚔️ Head to Head** (`/h2h`) — pick two participants and compare them
   match by match (duel record, wins/ties).
 - **📊 Stats** (`/stats`) — the points race over the group stage: an animated
@@ -27,10 +29,12 @@ survive a refresh:
 - **📜 Rules** (`/rules`) — scoring tiers with examples, ranking rules, and how
   live matches are handled.
 
-Reactions (emoji) sit on every leaderboard player and match card, backed by
-Firebase with anonymous auth — no login needed. And when a tracked match's score
-goes up while it's **live**, a full-screen **“Goooooal”** celebration waves
-across the screen until you click it.
+A **live-scores bar** under the header shows every in-play match (a LIVE +
+minute badge, flags, and the score). Reactions (emoji) sit on every leaderboard
+player and match card, backed by Firebase with anonymous auth — no login needed
+(on mobile a row's reactions collapse into a single chip). And when a tracked
+match's score goes up while it's **live**, a full-screen **“Goooooal”**
+celebration waves across the screen until you click it.
 
 ## How It Works
 
@@ -39,8 +43,10 @@ across the screen until you click it.
   CSV). Drop a file in, rebuild, done. Predictions are frozen before kickoff.
 - **Kickoff times** — the sheet records them in Brasília time (UTC-3); the UI
   converts each kickoff to the viewer's local timezone at render time.
-- **What if…** — live match cards simulate one more goal for each side and
-  show who gains, who drops, and how the ranking reshuffles.
+- **What if…** — an interactive simulator on live match cards: nudge the
+  hypothetical scoreline with +/− per team and the standings impact recomputes
+  live — who gains/loses points, who moves rank, and who'd take the lead. Opens
+  with a one-goal scenario active by default.
 - **Realtime data (Firebase RTDB)** — the single source of truth. The frontend
   reads three nodes via `onValue` (`src/lib/useGames.ts`, `useCommentary.ts`,
   `useReactions.ts`): `games`, `commentary`, and the reaction trees. Any write
