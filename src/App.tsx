@@ -1,6 +1,5 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {
-	NavLink,
 	Navigate,
 	Route,
 	Routes,
@@ -13,7 +12,9 @@ import {GoalOverlay} from './components/GoalOverlay';
 import {HeadToHeadView} from './components/HeadToHeadView';
 import {Header} from './components/Header';
 import {Leaderboard} from './components/Leaderboard';
+import {LiveGames} from './components/LiveGames';
 import {MatchesView} from './components/MatchesView';
+import {NavDrawer} from './components/NavDrawer';
 import {ReactionBurst} from './components/ReactionBurst';
 import {RulesView} from './components/RulesView';
 import {StatsView} from './components/StatsView';
@@ -23,6 +24,7 @@ import {getMatchStatus} from './lib/games';
 import {detectLocale, localize, stripEmoji} from './lib/locale';
 import {buildStats} from './lib/stats';
 import {buildMatchCards} from './lib/matches';
+import {currentNavItem} from './lib/nav';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
@@ -44,13 +46,6 @@ const LOADING_MESSAGES = [
 	'Tallying the bets…',
 ];
 
-const tabClass = ({isActive}: {isActive: boolean}) =>
-	`whitespace-nowrap rounded-full px-4 py-2 text-center text-sm font-medium transition-colors sm:py-1.5 ${
-		isActive
-			? 'bg-emerald-500 text-emerald-950'
-			: 'bg-white/5 text-slate-300 hover:bg-white/10'
-	}`;
-
 export default function App() {
 	const participants = useMemo(loadParticipants, []);
 
@@ -60,6 +55,7 @@ export default function App() {
 
 	const navigate = useNavigate();
 	const location = useLocation();
+	const [menuOpen, setMenuOpen] = useState(false);
 
 	const {failed: fetchFailed, gamesFile} = useGames();
 	const {commentaryFile, ready: commentaryReady} = useCommentary();
@@ -251,10 +247,12 @@ export default function App() {
 			cards
 				.filter((card) => card.status === 'live')
 				.map((card) => ({
+					matchNo: card.matchNo,
 					r1: card.r1 ?? 0,
 					r2: card.r2 ?? 0,
 					team1: card.team1,
 					team2: card.team2,
+					timeElapsed: card.timeElapsed,
 				})),
 		[cards]
 	);
@@ -286,7 +284,18 @@ export default function App() {
 
 	return (
 		<div className="min-h-screen bg-slate-950 font-sans">
-			<Header liveGames={liveGames} statusText={statusText} />
+			<Header
+				onMenuClick={() => setMenuOpen(true)}
+				statusText={statusText}
+			/>
+
+			<NavDrawer
+				onClose={() => setMenuOpen(false)}
+				open={menuOpen}
+				participants={participants.map((participant) => participant.name)}
+			/>
+
+			<LiveGames games={liveGames} />
 
 			<ReactionBurst bursts={bursts} />
 
@@ -301,34 +310,13 @@ export default function App() {
 			)}
 
 			<main className="mx-auto max-w-5xl px-4 py-6">
-				<nav className="mb-6 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap">
-					<NavLink className={tabClass} end to="/">
-						🏆 Leaderboard
-					</NavLink>
+				<h2 className="mb-5 flex items-center gap-2 font-display text-2xl font-bold text-white">
+					<span aria-hidden>
+						{currentNavItem(location.pathname).icon}
+					</span>
 
-					<NavLink className={tabClass} to="/matches">
-						⚽ Matches
-					</NavLink>
-
-					<NavLink className={tabClass} to="/bets">
-						🎯 Bets
-					</NavLink>
-
-					<NavLink className={tabClass} to="/h2h">
-						⚔️ Head to Head
-						<span className="ml-1.5 inline-block rounded-full bg-amber-400 px-1.5 py-0.5 align-middle text-[9px] font-bold uppercase tracking-wide text-amber-950">
-							New
-						</span>
-					</NavLink>
-
-					<NavLink className={tabClass} to="/stats">
-						📊 Stats
-					</NavLink>
-
-					<NavLink className={tabClass} to="/rules">
-						📜 Rules
-					</NavLink>
-				</nav>
+					{currentNavItem(location.pathname).label}
+				</h2>
 
 				<Routes>
 					<Route

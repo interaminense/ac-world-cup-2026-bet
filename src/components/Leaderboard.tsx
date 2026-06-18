@@ -111,6 +111,7 @@ export function Leaderboard({
 
 										{onReact && (
 											<Reactions
+												collapsible
 												counts={reactions[row.name] ?? {}}
 												mine={myReactions[row.name] ?? []}
 												onReact={(emoji) =>

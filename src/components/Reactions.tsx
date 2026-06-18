@@ -39,10 +39,12 @@ const ALL_REACTIONS = [...REACTIONS, ...FLAG_REACTIONS];
 const PICKER_WIDTH = 208;
 
 export function Reactions({
+	collapsible = false,
 	counts,
 	mine,
 	onReact,
 }: {
+	collapsible?: boolean;
 	counts: Record<string, number>;
 	mine: string[];
 	onReact: (emoji: string) => void;
@@ -114,28 +116,51 @@ export function Reactions({
 		(reaction) => (counts[reaction.emoji] ?? 0) > 0
 	);
 
+	const total = active.reduce(
+		(sum, reaction) => sum + (counts[reaction.emoji] ?? 0),
+		0
+	);
+
 	return (
 		<div
 			className="flex flex-wrap items-center gap-1"
 			onClick={(event) => event.stopPropagation()}
 		>
-			{active.map((reaction) => (
-				<button
-					className={`flex items-center gap-1 rounded-full px-1.5 py-0.5 text-xs transition-colors ${
-						mine.includes(reaction.emoji)
-							? 'bg-emerald-400/20 ring-1 ring-inset ring-emerald-400/50'
-							: 'bg-white/5 hover:bg-white/10'
-					}`}
-					key={reaction.emoji}
-					onClick={() => onReact(reaction.emoji)}
-				>
-					<span>{reaction.emoji}</span>
-
-					<span className="font-medium text-slate-300">
-						{counts[reaction.emoji]}
+			{collapsible && active.length > 0 && (
+				<span className="flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-xs sm:hidden">
+					<span className="flex items-center">
+						{active.slice(0, 4).map((reaction) => (
+							<span key={reaction.emoji}>{reaction.emoji}</span>
+						))}
 					</span>
-				</button>
-			))}
+
+					<span className="font-medium text-slate-300">{total}</span>
+				</span>
+			)}
+
+			<div
+				className={`flex-wrap items-center gap-1 ${
+					collapsible ? 'hidden sm:flex' : 'flex'
+				}`}
+			>
+				{active.map((reaction) => (
+					<button
+						className={`flex items-center gap-1 rounded-full px-1.5 py-0.5 text-xs transition-colors ${
+							mine.includes(reaction.emoji)
+								? 'bg-emerald-400/20 ring-1 ring-inset ring-emerald-400/50'
+								: 'bg-white/5 hover:bg-white/10'
+						}`}
+						key={reaction.emoji}
+						onClick={() => onReact(reaction.emoji)}
+					>
+						<span>{reaction.emoji}</span>
+
+						<span className="font-medium text-slate-300">
+							{counts[reaction.emoji]}
+						</span>
+					</button>
+				))}
+			</div>
 
 			<button
 				aria-label="Add reaction"

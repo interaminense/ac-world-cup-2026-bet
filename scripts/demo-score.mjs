@@ -68,7 +68,7 @@ game.timeElapsed =
 		? 'finished'
 		: statusArg === 'notstarted'
 			? 'notstarted'
-			: "67'";
+			: '67';
 
 await db.ref('demo/games').set({
 	fetchedAt: new Date().toISOString(),
