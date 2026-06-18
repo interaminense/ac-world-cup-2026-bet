@@ -6,27 +6,23 @@ import {Avatar} from './Avatar';
 import {Flag} from './Flag';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
+const ROW_HEIGHT = 36;
 
-function StandingRow({mover}: {mover: WhatIfMover}) {
+// One standings row, absolutely positioned by its current rank so it slides
+// smoothly when the order changes (the DOM order stays fixed by name).
+function StandingRow({index, mover}: {index: number; mover: WhatIfMover}) {
 	const currentTotal = mover.totalAfter - mover.pointsDelta;
 	const moved = mover.rankAfter !== mover.rankBefore;
 	const up = mover.rankAfter < mover.rankBefore;
 	const gained = mover.pointsDelta > 0;
 
 	return (
-		<div className="flex items-center gap-2 px-2 py-1.5 text-xs odd:bg-white/5">
-			<span className="flex w-8 shrink-0 items-center justify-center gap-0.5 font-display font-bold text-slate-300">
+		<div
+			className="absolute inset-x-0 flex h-9 items-center gap-2 px-2 text-xs transition-transform duration-500 ease-out"
+			style={{transform: `translateY(${index * ROW_HEIGHT}px)`}}
+		>
+			<span className="w-8 shrink-0 text-center font-display font-bold text-slate-300">
 				{mover.rankAfter <= 3 ? MEDALS[mover.rankAfter - 1] : mover.rankAfter}
-
-				{moved && (
-					<span
-						className={`text-[9px] ${
-							up ? 'text-emerald-400' : 'text-rose-400'
-						}`}
-					>
-						{up ? '▲' : '▼'}
-					</span>
-				)}
 			</span>
 
 			<Avatar
@@ -34,8 +30,20 @@ function StandingRow({mover}: {mover: WhatIfMover}) {
 				name={mover.name}
 			/>
 
-			<span className="min-w-0 flex-1 truncate font-medium text-slate-200">
-				{mover.name}
+			<span className="flex min-w-0 flex-1 items-center gap-1.5">
+				<span className="truncate font-medium text-slate-200">
+					{mover.name}
+				</span>
+
+				{moved && (
+					<span
+						className={`shrink-0 whitespace-nowrap text-[10px] font-semibold ${
+							up ? 'text-emerald-400' : 'text-rose-400'
+						}`}
+					>
+						{mover.rankBefore} → {mover.rankAfter}
+					</span>
+				)}
 			</span>
 
 			<span className="w-8 shrink-0 text-right text-slate-500">
@@ -155,6 +163,18 @@ export function WhatIfPanel({
 		]
 	);
 
+	// Fixed DOM order (by name) so React keeps each node — positions come from
+	// the rank below, letting CSS animate the reordering.
+	const rows = useMemo(
+		() => [...standings].sort((a, b) => a.name.localeCompare(b.name)),
+		[standings]
+	);
+
+	const rankIndex = useMemo(
+		() => new Map(standings.map((mover, index) => [mover.name, index])),
+		[standings]
+	);
+
 	if (!ctx) {
 		return null;
 	}
@@ -224,9 +244,21 @@ export function WhatIfPanel({
 				</div>
 
 				<div className="overflow-hidden rounded-lg">
-					{standings.map((mover) => (
-						<StandingRow key={mover.name} mover={mover} />
-					))}
+					<div
+						className="relative"
+						style={{
+							backgroundImage: `repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) ${ROW_HEIGHT}px, transparent ${ROW_HEIGHT}px, transparent ${ROW_HEIGHT * 2}px)`,
+							height: `${rows.length * ROW_HEIGHT}px`,
+						}}
+					>
+						{rows.map((mover) => (
+							<StandingRow
+								index={rankIndex.get(mover.name) ?? 0}
+								key={mover.name}
+								mover={mover}
+							/>
+						))}
+					</div>
 				</div>
 			</div>
 		</div>
