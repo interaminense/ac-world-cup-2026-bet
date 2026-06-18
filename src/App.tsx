@@ -9,6 +9,7 @@ import {
 
 import {BetsView} from './components/BetsView';
 import {GoalOverlay} from './components/GoalOverlay';
+import {GroupsView} from './components/GroupsView';
 import {HeadToHeadView} from './components/HeadToHeadView';
 import {Header} from './components/Header';
 import {Leaderboard} from './components/Leaderboard';
@@ -344,6 +345,11 @@ export default function App() {
 							/>
 						}
 						path="/matches"
+					/>
+
+					<Route
+						element={<GroupsView games={games} />}
+						path="/groups"
 					/>
 
 					<Route
