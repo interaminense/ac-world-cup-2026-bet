@@ -6,7 +6,7 @@ interface HeaderProps {
 export function Header({onMenuClick, statusText}: HeaderProps) {
 	return (
 		<header className="border-b border-white/10 bg-gradient-to-r from-emerald-950 via-slate-950 to-emerald-950">
-			<div className="mx-auto flex max-w-5xl items-start justify-between gap-3 px-4 py-5">
+			<div className="mx-auto flex max-w-5xl items-start justify-between gap-3 px-4 py-8">
 				<div className="min-w-0">
 					<p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400">
 						Analytics Cloud
@@ -31,7 +31,7 @@ export function Header({onMenuClick, statusText}: HeaderProps) {
 
 				<button
 					aria-label="Open menu"
-					className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-200 transition hover:bg-white/10"
+					className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-200 transition hover:bg-white/10 sm:hidden"
 					onClick={onMenuClick}
 				>
 					<svg

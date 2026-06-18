@@ -84,10 +84,6 @@ export function NavDrawer({
 								className={`w-full ${itemClass(onBets)}`}
 								onClick={() => setBetsOpen((value) => !value)}
 							>
-								<span aria-hidden className="text-base">
-									{item.icon}
-								</span>
-
 								{item.label}
 
 								<span
@@ -131,10 +127,6 @@ export function NavDrawer({
 							onClick={onClose}
 							to={item.to}
 						>
-							<span aria-hidden className="text-base">
-								{item.icon}
-							</span>
-
 							{item.label}
 
 							{item.badge && (

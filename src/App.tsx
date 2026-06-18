@@ -14,6 +14,7 @@ import {Header} from './components/Header';
 import {Leaderboard} from './components/Leaderboard';
 import {LiveGames} from './components/LiveGames';
 import {MatchesView} from './components/MatchesView';
+import {NavBar} from './components/NavBar';
 import {NavDrawer} from './components/NavDrawer';
 import {ReactionBurst} from './components/ReactionBurst';
 import {RulesView} from './components/RulesView';
@@ -273,6 +274,10 @@ export default function App() {
 			<Header
 				onMenuClick={() => setMenuOpen(true)}
 				statusText={statusText}
+			/>
+
+			<NavBar
+				participants={participants.map((participant) => participant.name)}
 			/>
 
 			<NavDrawer

@@ -31,7 +31,7 @@ function MoverRow({mover}: {mover: WhatIfMover}) {
 	const newLeader = mover.rankAfter === 1 && mover.rankBefore !== 1;
 
 	return (
-		<div className="flex items-center gap-2">
+		<div className="flex items-center gap-2 px-2 py-1.5 odd:bg-white/5">
 			<Avatar
 				className="h-5 w-5 shrink-0 rounded-full text-[8px]"
 				name={mover.name}
@@ -220,7 +220,7 @@ export function WhatIfPanel({
 				{movers.length === 0 ? (
 					<p className="text-xs text-slate-500">Nobody moves 😴</p>
 				) : (
-					<div className="space-y-1.5">
+					<div className="overflow-hidden rounded-lg">
 						{movers.map((mover) => (
 							<MoverRow key={mover.name} mover={mover} />
 						))}

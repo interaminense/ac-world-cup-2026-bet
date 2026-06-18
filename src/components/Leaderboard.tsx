@@ -68,31 +68,25 @@ export function Leaderboard({
 
 								<td className="py-3 pl-2 pr-2">
 									<div className="flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-1">
-										<span className="flex min-w-0 items-center gap-2.5">
+										<div className="flex min-w-0 items-start gap-2.5 sm:items-center">
 											<Avatar
 												className="h-8 w-8 shrink-0 rounded-full"
 												name={row.name}
 											/>
 
-											<span className="min-w-0">
+											<div className="min-w-0">
 												<span className="flex items-center gap-1.5">
 													<span className="truncate font-medium text-white">
 														{row.name}
 													</span>
 
-													{!live &&
-														(row.movement ?? 0) > 0 && (
-															<span className="text-xs text-emerald-400">
-																▲
-															</span>
-														)}
+													{!live && (row.movement ?? 0) > 0 && (
+														<span className="text-xs text-emerald-400">▲</span>
+													)}
 
-													{!live &&
-														(row.movement ?? 0) < 0 && (
-															<span className="text-xs text-rose-400">
-																▼
-															</span>
-														)}
+													{!live && (row.movement ?? 0) < 0 && (
+														<span className="text-xs text-rose-400">▼</span>
+													)}
 
 													{!live && titles[row.name] && (
 														<span className="hidden truncate text-xs text-slate-500 sm:inline">
@@ -106,18 +100,29 @@ export function Leaderboard({
 														{titles[row.name]}
 													</span>
 												)}
-											</span>
-										</span>
+
+												{onReact && (
+													<div className="mt-1.5 sm:hidden">
+														<Reactions
+															collapsible
+															counts={reactions[row.name] ?? {}}
+															mine={myReactions[row.name] ?? []}
+															onReact={(emoji) => onReact(row.name, emoji)}
+														/>
+													</div>
+												)}
+											</div>
+										</div>
 
 										{onReact && (
-											<Reactions
-												collapsible
-												counts={reactions[row.name] ?? {}}
-												mine={myReactions[row.name] ?? []}
-												onReact={(emoji) =>
-													onReact(row.name, emoji)
-												}
-											/>
+											<div className="hidden sm:flex">
+												<Reactions
+													collapsible
+													counts={reactions[row.name] ?? {}}
+													mine={myReactions[row.name] ?? []}
+													onReact={(emoji) => onReact(row.name, emoji)}
+												/>
+											</div>
 										)}
 									</div>
 								</td>
