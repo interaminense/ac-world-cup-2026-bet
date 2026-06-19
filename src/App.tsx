@@ -64,6 +64,7 @@ export default function App() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [menuOpen, setMenuOpen] = useState(false);
+	const [identityOpen, setIdentityOpen] = useState(false);
 
 	const {failed: fetchFailed, gamesFile} = useGames();
 	const {commentaryFile, ready: commentaryReady} = useCommentary();
@@ -386,14 +387,20 @@ export default function App() {
 	return (
 		<div className="min-h-screen bg-slate-950 font-sans">
 			<Header
+				identityName={identity.name}
 				online={online}
+				onIdentify={() => setIdentityOpen(true)}
 				onMenuClick={() => setMenuOpen(true)}
 				statusText={statusText}
 			/>
 
-			{!identity.chosen && participants.length > 0 && (
+			{identityOpen && (
 				<IdentityPrompt
-					onChoose={identity.choose}
+					onChoose={(name) => {
+						identity.choose(name);
+						setIdentityOpen(false);
+					}}
+					onClose={() => setIdentityOpen(false)}
 					participants={participants}
 				/>
 			)}

@@ -1,13 +1,55 @@
 import type {OnlineUser} from '../lib/usePresence';
+import {Avatar} from './Avatar';
 import {PresenceBar} from './PresenceBar';
 
 interface HeaderProps {
+	identityName: string | null;
 	online: OnlineUser[];
+	onIdentify: () => void;
 	onMenuClick: () => void;
 	statusText: string;
 }
 
-export function Header({online, onMenuClick, statusText}: HeaderProps) {
+// The "you" control: avatar + name once identified, an invite to identify when
+// anonymous. Either way it opens the picker.
+function IdentityButton({
+	name,
+	onClick,
+}: {
+	name: string | null;
+	onClick: () => void;
+}) {
+	if (name) {
+		return (
+			<button
+				className="flex shrink-0 items-center gap-1.5 rounded-full bg-white/5 py-0.5 pl-0.5 pr-2.5 text-xs font-medium text-slate-200 transition hover:bg-white/10"
+				onClick={onClick}
+				title="Change who you are"
+			>
+				<Avatar className="h-6 w-6 rounded-full" name={name} />
+
+				{name}
+			</button>
+		);
+	}
+
+	return (
+		<button
+			className="shrink-0 rounded-full bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-white/10 hover:text-white"
+			onClick={onClick}
+		>
+			👋 Who are you?
+		</button>
+	);
+}
+
+export function Header({
+	identityName,
+	online,
+	onIdentify,
+	onMenuClick,
+	statusText,
+}: HeaderProps) {
 	return (
 		<header className="border-b border-white/10 bg-gradient-to-r from-emerald-950 via-slate-950 to-emerald-950">
 			<div className="mx-auto max-w-5xl px-4 py-8">
@@ -28,8 +70,13 @@ export function Header({online, onMenuClick, statusText}: HeaderProps) {
 					</div>
 
 					<div className="flex shrink-0 items-center gap-3">
-						{/* Desktop: presence inline at the top-right. */}
-						<div className="hidden sm:block">
+						{/* Desktop: identify + presence at the top-right. */}
+						<div className="hidden items-center gap-3 sm:flex">
+							<IdentityButton
+								name={identityName}
+								onClick={onIdentify}
+							/>
+
 							<PresenceBar online={online} />
 						</div>
 
@@ -56,8 +103,10 @@ export function Header({online, onMenuClick, statusText}: HeaderProps) {
 					</div>
 				</div>
 
-				{/* Mobile: presence on its own row at the bottom-right. */}
-				<div className="mt-4 flex justify-end sm:hidden">
+				{/* Mobile: identify + presence on their own row at the bottom. */}
+				<div className="mt-4 flex items-center justify-end gap-3 sm:hidden">
+					<IdentityButton name={identityName} onClick={onIdentify} />
+
 					<PresenceBar online={online} />
 				</div>
 			</div>

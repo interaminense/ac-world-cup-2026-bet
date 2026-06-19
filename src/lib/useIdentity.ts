@@ -1,17 +1,15 @@
 import {useState} from 'react';
 
 const KEY = 'wc2026:me';
-const GUEST = '__guest__';
 
-// Who the viewer says they are, persisted in localStorage. `name` is a
-// participant name, or null for a guest ("just watching"). `chosen` is false
-// until they answer the prompt the first time.
+// The viewer's identity: a participant name, or null for anonymous. Persisted
+// in localStorage so it sticks across sessions — they identify once (from the
+// header) and it's remembered; no name = browsing anonymously.
 export function useIdentity(): {
 	choose: (name: string | null) => void;
-	chosen: boolean;
 	name: string | null;
 } {
-	const [raw, setRaw] = useState<string | null>(() => {
+	const [name, setName] = useState<string | null>(() => {
 		try {
 			return localStorage.getItem(KEY);
 		}
@@ -20,22 +18,21 @@ export function useIdentity(): {
 		}
 	});
 
-	const choose = (name: string | null) => {
-		const stored = name ?? GUEST;
-
+	const choose = (value: string | null) => {
 		try {
-			localStorage.setItem(KEY, stored);
+			if (value) {
+				localStorage.setItem(KEY, value);
+			}
+			else {
+				localStorage.removeItem(KEY);
+			}
 		}
 		catch {
 			// Private mode / storage disabled — keep it in memory only.
 		}
 
-		setRaw(stored);
+		setName(value);
 	};
 
-	return {
-		choose,
-		chosen: raw !== null,
-		name: raw && raw !== GUEST ? raw : null,
-	};
+	return {choose, name};
 }
