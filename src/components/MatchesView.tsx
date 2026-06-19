@@ -3,8 +3,10 @@ import {useState} from 'react';
 import {kickoffDate} from '../lib/kickoff';
 import type {MatchCard} from '../lib/matches';
 import type {Game, Participant} from '../lib/types';
+import type {CheerCounts} from '../lib/useCheers';
 import type {ReactionsApi} from '../lib/useReactions';
 import {Avatar} from './Avatar';
+import {CheerCount} from './CheerCount';
 import {Flag} from './Flag';
 import {Reactions} from './Reactions';
 import {StatusChip, TIER_STYLES} from './StatusChip';
@@ -12,6 +14,7 @@ import {WhatIfPanel} from './WhatIfPanel';
 
 interface MatchesViewProps {
 	cards: MatchCard[];
+	cheers: CheerCounts;
 	commentary: Record<number, string>;
 	games: Game[];
 	matchReactions: ReactionsApi;
@@ -106,6 +109,7 @@ function predictionGroups(entries: MatchCard['entries']): PredictionGroup[] {
 
 function MatchCardArticle({
 	card,
+	cheers,
 	commentary,
 	games,
 	matchReactions,
@@ -113,12 +117,17 @@ function MatchCardArticle({
 	participants,
 }: {
 	card: MatchCard;
+	cheers: CheerCounts;
 	commentary: Record<number, string>;
 	games: Game[];
 	matchReactions: ReactionsApi;
 	onMatchReact: (matchNo: number, emoji: string) => void;
 	participants: Participant[];
 }) {
+	const tally = cheers[card.matchNo] ?? {};
+	const live = card.status === 'live';
+	const cheers1 = tally.team1 ?? 0;
+	const cheers2 = tally.team2 ?? 0;
 	return (
 		<article
 			className={`group flex flex-col rounded-2xl border bg-white/5 p-4 ${
@@ -140,6 +149,13 @@ function MatchCardArticle({
 					{card.team1}
 
 					<Flag team={card.team1} />
+
+					{cheers1 > 0 && (
+						<CheerCount
+							count={cheers1}
+							live={live && cheers1 > cheers2}
+						/>
+					)}
 				</span>
 
 				<span className="rounded-lg bg-white/10 px-3 py-1 font-display text-lg font-bold text-amber-300">
@@ -147,6 +163,13 @@ function MatchCardArticle({
 				</span>
 
 				<span className="flex flex-1 items-center justify-start gap-2 font-medium text-white">
+					{cheers2 > 0 && (
+						<CheerCount
+							count={cheers2}
+							live={live && cheers2 > cheers1}
+						/>
+					)}
+
 					<Flag team={card.team2} />
 
 					{card.team2}
@@ -248,6 +271,7 @@ function MatchCardArticle({
 }
 
 function MatchSection({
+	cheers,
 	commentary,
 	emptyLabel,
 	games,
@@ -256,6 +280,7 @@ function MatchSection({
 	onMatchReact,
 	participants,
 }: {
+	cheers: CheerCounts;
 	commentary: Record<number, string>;
 	emptyLabel: string;
 	games: Game[];
@@ -284,6 +309,7 @@ function MatchSection({
 						{group.cards.map((card) => (
 							<MatchCardArticle
 								card={card}
+								cheers={cheers}
 								commentary={commentary}
 								games={games}
 								key={card.matchNo}
@@ -345,6 +371,7 @@ function SubTab({
 
 export function MatchesView({
 	cards,
+	cheers,
 	commentary,
 	games,
 	matchReactions,
@@ -387,6 +414,7 @@ export function MatchesView({
 			</div>
 
 			<MatchSection
+				cheers={cheers}
 				commentary={commentary}
 				emptyLabel={
 					view === 'finished'
