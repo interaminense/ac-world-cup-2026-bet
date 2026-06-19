@@ -3,8 +3,10 @@ import {Avatar} from './Avatar';
 
 function Stat({label, value}: {label: string; value: string}) {
 	return (
-		<div className="rounded-xl bg-white/5 px-4 py-2 text-center">
-			<p className="font-display text-xl font-bold text-white">{value}</p>
+		<div className="rounded-xl bg-white/5 px-2 py-1.5 text-center sm:px-4 sm:py-2">
+			<p className="font-display text-base font-bold text-white sm:text-xl">
+				{value}
+			</p>
 
 			<p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
 				{label}
@@ -13,9 +15,24 @@ function Stat({label, value}: {label: string; value: string}) {
 	);
 }
 
-// The spotlight card above the ranking: the current leader's photo, name, and
-// how their points break down across the scoring tiers. On the web a richer
-// stat panel rides along; mobile keeps just the breakdown.
+function LeaderPhoto({className, name}: {className: string; name: string}) {
+	return (
+		<div className={`relative shrink-0 ${className}`}>
+			<Avatar
+				className="h-full w-full rounded-2xl object-cover ring-2 ring-amber-400/50"
+				name={name}
+			/>
+
+			<span className="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-xs shadow-lg sm:-right-2 sm:-top-2 sm:h-9 sm:w-9 sm:text-lg">
+				👑
+			</span>
+		</div>
+	);
+}
+
+// The spotlight card above the ranking. Desktop: big photo on the left, a rich
+// stat panel + scoring breakdown on the right. Mobile: compact — a small photo
+// sits beside the metric tiles, with the breakdown hidden.
 export function LeaderCard({
 	name,
 	stats,
@@ -28,60 +45,61 @@ export function LeaderCard({
 	const scored = stats.tierCounts.reduce((sum, count) => sum + count, 0);
 
 	return (
-		<div className="overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-400/10 via-white/5 to-transparent p-5">
-			<div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
-				<div className="relative shrink-0">
-					<Avatar
-						className="h-44 w-44 rounded-2xl object-cover ring-2 ring-amber-400/50 sm:h-[202px] sm:w-auto"
-						name={name}
-					/>
-
-					<span className="absolute -right-2 -top-2 flex h-9 w-9 items-center justify-center rounded-full bg-amber-400 text-lg shadow-lg">
-						👑
-					</span>
-				</div>
+		<div className="overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-400/10 via-white/5 to-transparent p-4 sm:p-5">
+			<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
+				<LeaderPhoto
+					className="hidden h-[202px] w-[202px] sm:block"
+					name={name}
+				/>
 
 				<div className="min-w-0 flex-1 text-center sm:text-left">
 					<p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">
 						Follow the leader!
 					</p>
 
-					<h3 className="mt-1 font-display text-3xl font-bold text-white">
+					<h3 className="mt-1 font-display text-2xl font-bold text-white sm:text-3xl">
 						{name}
 					</h3>
 
-					{/* Stat panel — shown on every viewport. */}
-					<div className="mt-4 flex flex-wrap justify-center gap-2.5 sm:justify-start">
-						<Stat
-							label="Hit rate"
-							value={hitRate !== null ? `${hitRate}%` : '—'}
+					<div className="mt-3 flex items-center gap-3 sm:mt-4">
+						<LeaderPhoto
+							className="h-24 w-24 sm:hidden"
+							name={name}
 						/>
 
-						<Stat
-							label="Streak"
-							value={stats.streak > 0 ? `🔥 ${stats.streak}` : '—'}
-						/>
+						<div className="grid flex-1 grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-start sm:gap-2.5">
+							<Stat
+								label="Hit rate"
+								value={hitRate !== null ? `${hitRate}%` : '—'}
+							/>
 
-						<Stat
-							label="Lead"
-							value={
-								stats.leadOverNext !== null
-									? `+${stats.leadOverNext}`
-									: '—'
-							}
-						/>
+							<Stat
+								label="Streak"
+								value={
+									stats.streak > 0 ? `🔥 ${stats.streak}` : '—'
+								}
+							/>
 
-						<Stat
-							label="Avg / match"
-							value={
-								stats.avgPerMatch !== null
-									? stats.avgPerMatch.toFixed(1)
-									: '—'
-							}
-						/>
+							<Stat
+								label="Lead"
+								value={
+									stats.leadOverNext !== null
+										? `+${stats.leadOverNext}`
+										: '—'
+								}
+							/>
+
+							<Stat
+								label="Avg / match"
+								value={
+									stats.avgPerMatch !== null
+										? stats.avgPerMatch.toFixed(1)
+										: '—'
+								}
+							/>
+						</div>
 					</div>
 
-					{/* Scoring breakdown — web only; mobile shows the metrics. */}
 					<div className="mt-4 hidden sm:block">
 						<p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
 							Scoring breakdown
