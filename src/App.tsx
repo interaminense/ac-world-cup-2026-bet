@@ -8,10 +8,12 @@ import {
 } from 'react-router-dom';
 
 import {BetsView} from './components/BetsView';
+import {CheerBurstLayer} from './components/CheerBurst';
 import {GoalOverlay} from './components/GoalOverlay';
 import {GroupsView} from './components/GroupsView';
 import {HeadToHeadView} from './components/HeadToHeadView';
 import {Header} from './components/Header';
+import {IdentityPrompt} from './components/IdentityPrompt';
 import {Leaderboard} from './components/Leaderboard';
 import {LiveGames} from './components/LiveGames';
 import {MatchesView} from './components/MatchesView';
@@ -27,11 +29,15 @@ import {detectLocale, localize, stripEmoji} from './lib/locale';
 import {buildStats} from './lib/stats';
 import {buildMatchCards} from './lib/matches';
 import {currentNavItem} from './lib/nav';
+import {buildParticipantStats} from './lib/participantStats';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
 import {useCommentary} from './lib/useCommentary';
+import {type CheerCounts, useCheers} from './lib/useCheers';
 import {useGames} from './lib/useGames';
+import {useIdentity} from './lib/useIdentity';
+import {usePresence} from './lib/usePresence';
 import {useMatchReactions, useReactions} from './lib/useReactions';
 
 const LOADING_MESSAGES = [
@@ -101,14 +107,23 @@ export default function App() {
 
 	const {counts, mine, toggle} = useReactions();
 	const matchReactions = useMatchReactions();
+	const {cheer, counts: cheerCounts} = useCheers();
+	const identity = useIdentity();
+	const online = usePresence(identity.name);
 	const [bursts, setBursts] = useState<Array<{emoji: string; id: number}>>(
 		[]
 	);
 	const burstId = useRef(0);
 
+	const [cheerBursts, setCheerBursts] = useState<
+		Array<{id: number; x: number; y: number}>
+	>([]);
+	const cheerBurstId = useRef(0);
+
 	const [goalKey, setGoalKey] = useState(0);
 	const [showGoal, setShowGoal] = useState(false);
 	const prevScores = useRef<Map<number, string> | null>(null);
+	const prevCheers = useRef<CheerCounts | null>(null);
 
 	// GA4 page_view per route — fires on the first view and every navigation.
 	useEffect(() => {
@@ -125,6 +140,21 @@ export default function App() {
 					current.filter((burst) => burst.id !== id)
 				),
 			2000
+		);
+	};
+
+	// A cheer explodes a small ring of random supported emoji outward from the
+	// flag at (x, y) — every online client sees its own little burst there.
+	const fireCheer = (x: number, y: number) => {
+		const id = (cheerBurstId.current += 1);
+
+		setCheerBursts((current) => [...current, {id, x, y}]);
+		setTimeout(
+			() =>
+				setCheerBursts((current) =>
+					current.filter((burst) => burst.id !== id)
+				),
+			1400
 		);
 	};
 
@@ -206,12 +236,68 @@ export default function App() {
 		prevScores.current = current;
 	}, [gamesFile]);
 
+	// A cheer from anyone bumps a team's count in the RTDB; every online client
+	// sees it rise here and fires its own random emoji shower. The first
+	// snapshot only seeds the baseline.
+	useEffect(() => {
+		const previous = prevCheers.current;
+
+		if (previous) {
+			for (const [matchNo, sides] of Object.entries(cheerCounts)) {
+				const before = previous[matchNo] ?? {team1: 0, team2: 0};
+
+				for (const side of ['team1', 'team2'] as const) {
+					if ((sides[side] ?? 0) <= (before[side] ?? 0)) {
+						continue;
+					}
+
+					// Anchor the burst on the flag that was cheered — wherever
+					// it sits in this client's live bar.
+					const flag = document.querySelector(
+						`[data-cheer="${matchNo}-${side}"]`
+					);
+
+					if (flag) {
+						const rect = flag.getBoundingClientRect();
+
+						fireCheer(
+							rect.left + rect.width / 2,
+							rect.top + rect.height / 2
+						);
+					}
+				}
+			}
+		}
+
+		prevCheers.current = cheerCounts;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [cheerCounts]);
+
 	const games = gamesFile?.games ?? [];
 
 	const rows = useMemo(
 		() => buildLeaderboardWithMovement(participants, games),
 		[participants, games]
 	);
+
+	const leaderName = rows[0]?.name;
+
+	const leader = useMemo(() => {
+		const participant = participants.find(
+			(item) => item.name === leaderName
+		);
+
+		return participant && leaderName
+			? {
+					name: leaderName,
+					stats: buildParticipantStats(
+						participant,
+						participants,
+						games
+					),
+				}
+			: undefined;
+	}, [leaderName, participants, games]);
 
 	const cards = useMemo(
 		() => buildMatchCards(participants, games),
@@ -273,9 +359,17 @@ export default function App() {
 	return (
 		<div className="min-h-screen bg-slate-950 font-sans">
 			<Header
+				online={online}
 				onMenuClick={() => setMenuOpen(true)}
 				statusText={statusText}
 			/>
+
+			{!identity.chosen && participants.length > 0 && (
+				<IdentityPrompt
+					onChoose={identity.choose}
+					participants={participants}
+				/>
+			)}
 
 			<NavBar
 				participants={participants.map((participant) => participant.name)}
@@ -287,9 +381,15 @@ export default function App() {
 				participants={participants.map((participant) => participant.name)}
 			/>
 
-			<LiveGames games={liveGames} />
+			<LiveGames
+				cheers={cheerCounts}
+				games={liveGames}
+				onCheer={cheer}
+			/>
 
 			<ReactionBurst bursts={bursts} />
+
+			<CheerBurstLayer bursts={cheerBursts} />
 
 			{showGoal && (
 				<GoalOverlay
@@ -314,6 +414,7 @@ export default function App() {
 					<Route
 						element={
 							<Leaderboard
+								leader={leader}
 								live={liveGames.length > 0}
 								myReactions={mine}
 								onReact={react}
@@ -337,6 +438,7 @@ export default function App() {
 						element={
 							<MatchesView
 								cards={cards}
+								cheers={cheerCounts}
 								commentary={commentary}
 								games={games}
 								matchReactions={matchReactions}
@@ -366,7 +468,10 @@ export default function App() {
 						element={
 							<BetsView
 								games={games}
+								myReactions={mine}
+								onReact={react}
 								participants={participants}
+								reactions={counts}
 							/>
 						}
 						path="/bets/:id"
