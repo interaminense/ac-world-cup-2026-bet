@@ -11,7 +11,7 @@ export const NAV_ITEMS: NavItem[] = [
 	{end: true, icon: '🏆', label: 'Leaderboard', to: '/'},
 	{icon: '⚽', label: 'Matches', to: '/matches'},
 	{icon: '🗂️', label: 'Groups', to: '/groups'},
-	{icon: '🎯', label: 'Bets', to: '/bets'},
+	{icon: '🎯', label: 'Participants', to: '/bets'},
 	{icon: '⚔️', label: 'Head to Head', to: '/h2h'},
 	{icon: '📊', label: 'Stats', to: '/stats'},
 	{icon: '📜', label: 'Rules', to: '/rules'},

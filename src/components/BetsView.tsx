@@ -5,13 +5,19 @@ import {ParticipantView} from './ParticipantView';
 
 // The /bets/:id route: resolves the participant from the URL (id = lowercased
 // name; unknown falls back to the first). Switching participants is done from
-// the menu's Bets dropdown.
+// the menu's Participants dropdown.
 export function BetsView({
 	games,
+	myReactions,
+	onReact,
 	participants,
+	reactions,
 }: {
 	games: Game[];
+	myReactions: Record<string, string[]>;
+	onReact: (name: string, emoji: string) => void;
 	participants: Participant[];
+	reactions: Record<string, Record<string, number>>;
 }) {
 	const {id} = useParams();
 
@@ -23,8 +29,11 @@ export function BetsView({
 	return (
 		<ParticipantView
 			games={games}
+			myReactions={myReactions[active.name] ?? []}
+			onReact={(emoji) => onReact(active.name, emoji)}
 			participant={active}
 			participants={participants}
+			reactions={reactions[active.name] ?? {}}
 		/>
 	);
 }

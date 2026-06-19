@@ -6,17 +6,24 @@ import type {Game, Participant} from '../lib/types';
 import {Avatar} from './Avatar';
 import {MatchRow} from './MatchRow';
 import {ParticipantStatsPanel} from './ParticipantStatsPanel';
+import {Reactions} from './Reactions';
 
 interface ParticipantViewProps {
 	games: Game[];
+	myReactions: string[];
+	onReact: (emoji: string) => void;
 	participant: Participant;
 	participants: Participant[];
+	reactions: Record<string, number>;
 }
 
 export function ParticipantView({
 	games,
+	myReactions,
+	onReact,
 	participant,
 	participants,
+	reactions,
 }: ParticipantViewProps) {
 	const {exactCount, scored, total} = scoreParticipant(participant, games);
 
@@ -60,6 +67,14 @@ export function ParticipantView({
 						<p className="mt-1 text-sm text-slate-400">
 							{exactCount} exact score{exactCount === 1 ? '' : 's'}
 						</p>
+
+						<div className="group mt-2">
+							<Reactions
+								counts={reactions}
+								mine={myReactions}
+								onReact={onReact}
+							/>
+						</div>
 					</div>
 				</div>
 
