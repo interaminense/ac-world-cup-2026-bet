@@ -431,7 +431,18 @@ export default function App() {
 			<LiveGames
 				cheers={cheerCounts}
 				games={liveGames}
-				onCheer={cheer}
+				onCheer={(matchNo, side) => {
+					cheer(matchNo, side);
+
+					const game = liveGames.find(
+						(item) => item.matchNo === matchNo
+					);
+
+					acTrack('cheer_sent', {
+						matchNo,
+						team: side === 'team1' ? game?.team1 : game?.team2,
+					});
+				}}
 			/>
 
 			<ReactionBurst bursts={bursts} />
