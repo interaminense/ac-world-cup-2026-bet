@@ -17,10 +17,11 @@ export interface OnlineUser {
 	uid: string;
 }
 
-// Realtime presence: each anonymous session writes itself to `presence/<uid>`
-// and registers an onDisconnect cleanup, so the list self-heals when tabs
-// close or connections drop. `name` (a participant or null for a guest) rides
-// along so the header can show faces.
+// Realtime presence. Each session announces itself at `presence/<uid>` and
+// registers an onDisconnect cleanup so the list self-heals when tabs close.
+// The write is driven by `.info/connected`, so presence is re-announced every
+// time the socket reconnects (e.g. after the tab is backgrounded) — otherwise
+// the disconnect cleanup would drop the entry and it would never come back.
 export function usePresence(name: string | null): OnlineUser[] {
 	const [uid, setUid] = useState<string | null>(null);
 	const [online, setOnline] = useState<OnlineUser[]>([]);
@@ -50,7 +51,6 @@ export function usePresence(name: string | null): OnlineUser[] {
 		[]
 	);
 
-	// Register the disconnect cleanup once per session and remove on unmount.
 	useEffect(() => {
 		if (!uid) {
 			return;
@@ -58,23 +58,25 @@ export function usePresence(name: string | null): OnlineUser[] {
 
 		const node = ref(db, `${dataPath('presence')}/${uid}`);
 
-		onDisconnect(node).remove();
+		// `.info/connected` lives at the root, not under the demo subtree.
+		const unsubscribe = onValue(ref(db, '.info/connected'), (snapshot) => {
+			if (snapshot.val() !== true) {
+				return;
+			}
+
+			// Re-arm the disconnect cleanup, then (re)announce presence.
+			onDisconnect(node)
+				.remove()
+				.then(() =>
+					set(node, {at: serverTimestamp(), name: name ?? null})
+				)
+				.catch(() => undefined);
+		});
 
 		return () => {
+			unsubscribe();
 			remove(node);
 		};
-	}, [uid]);
-
-	// Keep my entry (and name) fresh; overwrites without dropping presence.
-	useEffect(() => {
-		if (!uid) {
-			return;
-		}
-
-		set(ref(db, `${dataPath('presence')}/${uid}`), {
-			at: serverTimestamp(),
-			name: name ?? null,
-		});
 	}, [uid, name]);
 
 	return online;
