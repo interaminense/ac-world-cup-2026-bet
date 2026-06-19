@@ -23,6 +23,7 @@ import {ReactionBurst} from './components/ReactionBurst';
 import {RulesView} from './components/RulesView';
 import {StatsView} from './components/StatsView';
 import {trackEvent, trackPageView} from './lib/analytics';
+import {acPageView, initAnalyticsCloud} from './lib/analyticsCloud';
 import {buildEvolution} from './lib/evolution';
 import {getMatchStatus} from './lib/games';
 import {detectLocale, localize, stripEmoji} from './lib/locale';
@@ -129,9 +130,16 @@ export default function App() {
 	const prevCheers = useRef<CheerCounts | null>(null);
 	const prevHypeN = useRef<number | null>(null);
 
-	// GA4 page_view per route — fires on the first view and every navigation.
+	// Load the Analytics Cloud SDK once.
+	useEffect(() => {
+		initAnalyticsCloud();
+	}, []);
+
+	// A page view per route — GA4 and Analytics Cloud — on the first view and
+	// every navigation.
 	useEffect(() => {
 		trackPageView(location.pathname);
+		acPageView(location.pathname, document.title);
 	}, [location.pathname]);
 
 	const fireBurst = (emoji: string) => {
