@@ -6,6 +6,7 @@ import type {Game, Participant} from '../lib/types';
 import type {CheerCounts} from '../lib/useCheers';
 import type {ReactionsApi} from '../lib/useReactions';
 import {Avatar} from './Avatar';
+import {BetSplitBar} from './BetSplitBar';
 import {CheerCount} from './CheerCount';
 import {Flag} from './Flag';
 import {Reactions} from './Reactions';
@@ -259,7 +260,15 @@ function MatchCardArticle({
 				</div>
 			)}
 
-			<div className="mt-auto border-t border-white/5 pt-2.5">
+			<div className="mt-auto pt-4">
+				<BetSplitBar
+					entries={card.entries}
+					team1={card.team1}
+					team2={card.team2}
+				/>
+			</div>
+
+			<div className="mt-3 border-t border-white/5 pt-2.5">
 				<Reactions
 					counts={matchReactions.counts[String(card.matchNo)] ?? {}}
 					mine={matchReactions.mine[String(card.matchNo)] ?? []}
