@@ -10,6 +10,7 @@ interface LeaderboardProps {
 	leader?: {name: string; stats: ParticipantStats};
 	live?: boolean;
 	myReactions?: Record<string, string[]>;
+	onHype: (rx: number, ry: number) => void;
 	onReact?: (name: string, emoji: string) => void;
 	onSelect: (name: string) => void;
 	reactions?: Record<string, Record<string, number>>;
@@ -22,6 +23,7 @@ export function Leaderboard({
 	leader,
 	live = false,
 	myReactions = {},
+	onHype,
 	onReact,
 	onSelect,
 	reactions = {},
@@ -31,7 +33,13 @@ export function Leaderboard({
 }: LeaderboardProps) {
 	return (
 		<div className="space-y-4">
-			{leader && <LeaderCard name={leader.name} stats={leader.stats} />}
+			{leader && (
+				<LeaderCard
+					name={leader.name}
+					onHype={onHype}
+					stats={leader.stats}
+				/>
+			)}
 
 			{recap && (
 				<div className="flex gap-2 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 px-4 py-3">

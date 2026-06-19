@@ -1,3 +1,5 @@
+import type {MouseEvent} from 'react';
+
 import {type ParticipantStats, SCORE_TIERS} from '../lib/participantStats';
 import {Avatar} from './Avatar';
 
@@ -24,7 +26,7 @@ function LeaderPhoto({className, name}: {className: string; name: string}) {
 			/>
 
 			<span className="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-xs shadow-lg sm:-right-2 sm:-top-2 sm:h-9 sm:w-9 sm:text-lg">
-				👑
+				🏆
 			</span>
 		</div>
 	);
@@ -35,17 +37,35 @@ function LeaderPhoto({className, name}: {className: string; name: string}) {
 // sits beside the metric tiles, with the breakdown hidden.
 export function LeaderCard({
 	name,
+	onHype,
 	stats,
 }: {
 	name: string;
+	onHype: (rx: number, ry: number) => void;
 	stats: ParticipantStats;
 }) {
 	const hitRate =
 		stats.hitRate !== null ? Math.round(stats.hitRate * 100) : null;
 	const scored = stats.tierCounts.reduce((sum, count) => sum + count, 0);
 
+	// Tap anywhere on the card to throw trophies from that spot — broadcast to
+	// everyone online. Positions are stored as fractions so they map across
+	// screen sizes.
+	const handleHype = (event: MouseEvent<HTMLDivElement>) => {
+		const rect = event.currentTarget.getBoundingClientRect();
+
+		onHype(
+			(event.clientX - rect.left) / rect.width,
+			(event.clientY - rect.top) / rect.height
+		);
+	};
+
 	return (
-		<div className="overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-400/10 via-white/5 to-transparent p-4 sm:p-5">
+		<div
+			className="cursor-pointer select-none overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-400/10 via-white/5 to-transparent p-4 sm:p-5"
+			data-leader-card
+			onClick={handleHype}
+		>
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
 				<LeaderPhoto
 					className="hidden h-[202px] w-[202px] sm:block"

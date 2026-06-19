@@ -17,7 +17,15 @@ interface Particle {
 // A cheer explosion anchored at the flag: a small ring of random supported
 // emoji that bursts outward from (x, y) and fades. SMIL drives each particle;
 // the parent unmounts the burst when it's done.
-export function CheerBurst({x, y}: {x: number; y: number}) {
+export function CheerBurst({
+	emoji,
+	x,
+	y,
+}: {
+	emoji?: string;
+	x: number;
+	y: number;
+}) {
 	const particles = useMemo<Particle[]>(
 		() =>
 			Array.from({length: PARTICLES}, (_, index) => {
@@ -30,14 +38,16 @@ export function CheerBurst({x, y}: {x: number; y: number}) {
 					dur: 0.85 + Math.random() * 0.4,
 					dx: Math.cos(angle) * distance,
 					dy: Math.sin(angle) * distance,
-					emoji: REACTIONS[
-						Math.floor(Math.random() * REACTIONS.length)
-					].emoji,
+					emoji:
+						emoji ??
+						REACTIONS[
+							Math.floor(Math.random() * REACTIONS.length)
+						].emoji,
 					rot: Math.random() * 120 - 60,
 					size: 18 + Math.random() * 14,
 				};
 			}),
-		[]
+		[emoji]
 	);
 
 	return (
@@ -92,12 +102,17 @@ export function CheerBurst({x, y}: {x: number; y: number}) {
 export function CheerBurstLayer({
 	bursts,
 }: {
-	bursts: Array<{id: number; x: number; y: number}>;
+	bursts: Array<{emoji?: string; id: number; x: number; y: number}>;
 }) {
 	return (
 		<div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
 			{bursts.map((burst) => (
-				<CheerBurst key={burst.id} x={burst.x} y={burst.y} />
+				<CheerBurst
+					emoji={burst.emoji}
+					key={burst.id}
+					x={burst.x}
+					y={burst.y}
+				/>
 			))}
 		</div>
 	);

@@ -37,6 +37,7 @@ import {useCommentary} from './lib/useCommentary';
 import {type CheerCounts, useCheers} from './lib/useCheers';
 import {useGames} from './lib/useGames';
 import {useIdentity} from './lib/useIdentity';
+import {useLeaderHype} from './lib/useLeaderHype';
 import {usePresence} from './lib/usePresence';
 import {useMatchReactions, useReactions} from './lib/useReactions';
 
@@ -110,13 +111,14 @@ export default function App() {
 	const {cheer, counts: cheerCounts} = useCheers();
 	const identity = useIdentity();
 	const online = usePresence(identity.name);
+	const {hype, last: leaderHype} = useLeaderHype();
 	const [bursts, setBursts] = useState<Array<{emoji: string; id: number}>>(
 		[]
 	);
 	const burstId = useRef(0);
 
 	const [cheerBursts, setCheerBursts] = useState<
-		Array<{id: number; x: number; y: number}>
+		Array<{emoji?: string; id: number; x: number; y: number}>
 	>([]);
 	const cheerBurstId = useRef(0);
 
@@ -124,6 +126,7 @@ export default function App() {
 	const [showGoal, setShowGoal] = useState(false);
 	const prevScores = useRef<Map<number, string> | null>(null);
 	const prevCheers = useRef<CheerCounts | null>(null);
+	const prevHypeN = useRef<number | null>(null);
 
 	// GA4 page_view per route — fires on the first view and every navigation.
 	useEffect(() => {
@@ -143,12 +146,13 @@ export default function App() {
 		);
 	};
 
-	// A cheer explodes a small ring of random supported emoji outward from the
-	// flag at (x, y) — every online client sees its own little burst there.
-	const fireCheer = (x: number, y: number) => {
+	// A radial burst at (x, y) — every online client sees its own. With no
+	// emoji it's a random shower (live-bar cheers); with one it's that emoji
+	// (the leader card's trophies).
+	const fireCheer = (x: number, y: number, emoji?: string) => {
 		const id = (cheerBurstId.current += 1);
 
-		setCheerBursts((current) => [...current, {id, x, y}]);
+		setCheerBursts((current) => [...current, {emoji, id, x, y}]);
 		setTimeout(
 			() =>
 				setCheerBursts((current) =>
@@ -272,6 +276,29 @@ export default function App() {
 		prevCheers.current = cheerCounts;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cheerCounts]);
+
+	// Someone tapped the leader card: explode trophies at the same relative spot
+	// on this client's card. Only clients showing the card (the home) react.
+	useEffect(() => {
+		const prev = prevHypeN.current;
+
+		if (prev !== null && leaderHype.n > prev) {
+			const card = document.querySelector('[data-leader-card]');
+
+			if (card) {
+				const rect = card.getBoundingClientRect();
+
+				fireCheer(
+					rect.left + leaderHype.rx * rect.width,
+					rect.top + leaderHype.ry * rect.height,
+					'🏆'
+				);
+			}
+		}
+
+		prevHypeN.current = leaderHype.n;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [leaderHype]);
 
 	const games = gamesFile?.games ?? [];
 
@@ -417,6 +444,7 @@ export default function App() {
 								leader={leader}
 								live={liveGames.length > 0}
 								myReactions={mine}
+								onHype={hype}
 								onReact={react}
 								onSelect={(name) =>
 									navigate(`/bets/${name.toLowerCase()}`)
