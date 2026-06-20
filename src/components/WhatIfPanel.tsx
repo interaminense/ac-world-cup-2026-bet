@@ -94,7 +94,7 @@ function ScoreStepper({
 				▲
 			</button>
 
-			<span className="w-8 text-center font-display text-3xl font-bold text-amber-300">
+			<span className="w-8 text-center font-display text-lg font-bold text-amber-300">
 				{score}
 			</span>
 
@@ -204,7 +204,7 @@ export function WhatIfPanel({
 			</div>
 
 			<div className="flex items-center justify-center gap-4">
-				<Flag className="h-8 w-12 shrink-0" team={ctx.team1} />
+				<Flag className="h-3.5 w-5 shrink-0" team={ctx.team1} />
 
 				<ScoreStepper
 					canSubtract={add1 > 0}
@@ -234,7 +234,7 @@ export function WhatIfPanel({
 					team={ctx.team2}
 				/>
 
-				<Flag className="h-8 w-12 shrink-0" team={ctx.team2} />
+				<Flag className="h-3.5 w-5 shrink-0" team={ctx.team2} />
 			</div>
 
 			<div
