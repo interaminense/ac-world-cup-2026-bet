@@ -50,6 +50,7 @@ export function Reactions({
 	onReact: (emoji: string) => void;
 }) {
 	const [open, setOpen] = useState(false);
+	const [expanded, setExpanded] = useState(false);
 	const [pos, setPos] = useState({left: 0, top: 0});
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const popoverRef = useRef<HTMLDivElement>(null);
@@ -121,15 +122,26 @@ export function Reactions({
 		0
 	);
 
+	// Most-reacted first, for the mobile circle stack (top 3 + grouped rest).
+	const ranked = [...active].sort(
+		(a, b) => (counts[b.emoji] ?? 0) - (counts[a.emoji] ?? 0)
+	);
+	const COLLAPSED = 3;
+	const mobileShown = expanded ? ranked : ranked.slice(0, COLLAPSED);
+	const hidden = ranked.length - mobileShown.length;
+
 	return (
 		<div
 			className="flex flex-wrap items-center gap-1"
 			onClick={(event) => event.stopPropagation()}
 		>
 			{collapsible && active.length > 0 && (
-				<span className="flex items-center gap-1.5 sm:hidden">
+				<button
+					className="flex items-center gap-1.5 sm:hidden"
+					onClick={() => setExpanded((value) => !value)}
+				>
 					<span className="flex -space-x-1.5">
-						{active.slice(0, 5).map((reaction) => (
+						{mobileShown.map((reaction) => (
 							<span
 								className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[11px] ring-2 ring-slate-900"
 								key={reaction.emoji}
@@ -138,9 +150,9 @@ export function Reactions({
 							</span>
 						))}
 
-						{active.length > 5 && (
+						{hidden > 0 && (
 							<span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[9px] font-bold text-slate-300 ring-2 ring-slate-900">
-								+{active.length - 5}
+								+{hidden}
 							</span>
 						)}
 					</span>
@@ -148,7 +160,7 @@ export function Reactions({
 					<span className="text-xs font-medium text-slate-400">
 						{total}
 					</span>
-				</span>
+				</button>
 			)}
 
 			<div
