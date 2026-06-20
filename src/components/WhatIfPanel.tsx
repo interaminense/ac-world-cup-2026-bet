@@ -71,7 +71,7 @@ function StandingRow({index, mover}: {index: number; mover: WhatIfMover}) {
 	);
 }
 
-function TeamControl({
+function ScoreStepper({
 	canSubtract,
 	onAdd,
 	onSubtract,
@@ -85,32 +85,26 @@ function TeamControl({
 	team: string;
 }) {
 	return (
-		<div className="flex items-center gap-2">
-			<Flag className="h-4 w-6 shrink-0" team={team} />
-
-			<span className="min-w-0 flex-1 truncate text-xs font-medium text-white">
-				{team}
-			</span>
-
+		<div className="flex flex-col items-center gap-1.5">
 			<button
-				aria-label={`Remove a goal for ${team}`}
-				className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-sm text-slate-300 transition enabled:hover:bg-white/20 disabled:opacity-30"
-				disabled={!canSubtract}
-				onClick={onSubtract}
+				aria-label={`Add a goal for ${team}`}
+				className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] text-slate-300 transition hover:bg-white/20"
+				onClick={onAdd}
 			>
-				−
+				▲
 			</button>
 
-			<span className="w-5 text-center font-display text-base font-bold text-amber-300">
+			<span className="w-8 text-center font-display text-3xl font-bold text-amber-300">
 				{score}
 			</span>
 
 			<button
-				aria-label={`Add a goal for ${team}`}
-				className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-sm text-slate-300 transition hover:bg-white/20"
-				onClick={onAdd}
+				aria-label={`Remove a goal for ${team}`}
+				className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] text-slate-300 transition enabled:hover:bg-white/20 disabled:opacity-30"
+				disabled={!canSubtract}
+				onClick={onSubtract}
 			>
-				+
+				▼
 			</button>
 		</div>
 	);
@@ -209,8 +203,10 @@ export function WhatIfPanel({
 				)}
 			</div>
 
-			<div className="space-y-1.5">
-				<TeamControl
+			<div className="flex items-center justify-center gap-4">
+				<Flag className="h-8 w-12 shrink-0" team={ctx.team1} />
+
+				<ScoreStepper
 					canSubtract={add1 > 0}
 					onAdd={() => {
 						setAdd1((value) => value + 1);
@@ -224,7 +220,7 @@ export function WhatIfPanel({
 					team={ctx.team1}
 				/>
 
-				<TeamControl
+				<ScoreStepper
 					canSubtract={add2 > 0}
 					onAdd={() => {
 						setAdd2((value) => value + 1);
@@ -237,6 +233,8 @@ export function WhatIfPanel({
 					score={ctx.r2 + add2}
 					team={ctx.team2}
 				/>
+
+				<Flag className="h-8 w-12 shrink-0" team={ctx.team2} />
 			</div>
 
 			<div
