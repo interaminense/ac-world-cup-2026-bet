@@ -57,9 +57,9 @@ export function Leaderboard({
 				<table className="w-full text-left">
 					<thead>
 						<tr className="border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-slate-400">
-							<th className="w-14 py-3 pl-4 pr-2 sm:w-20">Rank</th>
+							<th className="w-10 py-3 pl-3 pr-0 sm:w-12">#</th>
 
-							<th className="py-3 pl-2 pr-2">Participant</th>
+							<th className="py-3 pl-1 pr-2">Participant</th>
 
 							<th className="hidden px-4 py-3 text-right sm:table-cell">
 								Exact scores
@@ -76,11 +76,11 @@ export function Leaderboard({
 								key={row.name}
 								onClick={() => onSelect(row.name)}
 							>
-								<td className="w-14 py-3 pl-4 pr-2 font-display text-lg font-bold text-slate-300 sm:w-20">
+								<td className="w-10 py-3 pl-3 pr-0 font-display text-lg font-bold text-slate-300 sm:w-12">
 									{row.rank <= 3 ? MEDALS[row.rank - 1] : row.rank}
 								</td>
 
-								<td className="py-3 pl-2 pr-2">
+								<td className="py-3 pl-1 pr-2">
 									<div className="flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-1">
 										<div className="flex min-w-0 items-start gap-2.5 sm:items-center">
 											<Avatar
