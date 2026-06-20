@@ -140,10 +140,12 @@ export function Reactions({
 					className="flex items-center gap-1.5 sm:hidden"
 					onClick={() => setExpanded((value) => !value)}
 				>
-					<span className="flex -space-x-1.5">
+					<span className={`flex ${expanded ? 'gap-0.5' : '-space-x-1.5'}`}>
 						{mobileShown.map((reaction) => (
 							<span
-								className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[11px] ring-2 ring-slate-900"
+								className={`flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[11px] ${
+									expanded ? '' : 'ring-2 ring-slate-900'
+								}`}
 								key={reaction.emoji}
 							>
 								{reaction.emoji}
