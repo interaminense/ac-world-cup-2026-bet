@@ -21,6 +21,7 @@ interface MatchesViewProps {
 	commentary: Record<number, string>;
 	games: Game[];
 	matchReactions: ReactionsApi;
+	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
 	onMatchReact: (matchNo: number, emoji: string) => void;
 	participants: Participant[];
@@ -117,6 +118,7 @@ function MatchCardArticle({
 	commentary,
 	games,
 	matchReactions,
+	onClearCommentary,
 	onClearMatchReaction,
 	onMatchReact,
 	participants,
@@ -126,6 +128,7 @@ function MatchCardArticle({
 	commentary: Record<number, string>;
 	games: Game[];
 	matchReactions: ReactionsApi;
+	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
 	onMatchReact: (matchNo: number, emoji: string) => void;
 	participants: Participant[];
@@ -254,14 +257,24 @@ function MatchCardArticle({
 			)}
 
 			{commentary[card.matchNo] && (
-				<div className="mt-3 flex gap-2 rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-3 py-2.5">
+				<div className="mt-3 flex items-start gap-2 rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-3 py-2.5">
 					<span aria-hidden className="text-sm">
 						🎙️
 					</span>
 
-					<p className="text-xs italic leading-relaxed text-slate-300">
+					<p className="flex-1 text-xs italic leading-relaxed text-slate-300">
 						{commentary[card.matchNo]}
 					</p>
+
+					{onClearCommentary && (
+						<button
+							aria-label="Remove this commentary"
+							className="shrink-0 rounded-full bg-rose-500/20 px-1.5 text-[10px] text-rose-300 transition hover:bg-rose-500/40"
+							onClick={() => onClearCommentary(card.matchNo)}
+						>
+							✕
+						</button>
+					)}
 				</div>
 			)}
 
@@ -296,6 +309,7 @@ function MatchSection({
 	games,
 	groups,
 	matchReactions,
+	onClearCommentary,
 	onClearMatchReaction,
 	onMatchReact,
 	participants,
@@ -306,6 +320,7 @@ function MatchSection({
 	games: Game[];
 	groups: DayGroup[];
 	matchReactions: ReactionsApi;
+	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
 	onMatchReact: (matchNo: number, emoji: string) => void;
 	participants: Participant[];
@@ -335,6 +350,7 @@ function MatchSection({
 								games={games}
 								key={card.matchNo}
 								matchReactions={matchReactions}
+								onClearCommentary={onClearCommentary}
 								onClearMatchReaction={onClearMatchReaction}
 								onMatchReact={onMatchReact}
 								participants={participants}
@@ -397,6 +413,7 @@ export function MatchesView({
 	commentary,
 	games,
 	matchReactions,
+	onClearCommentary,
 	onClearMatchReaction,
 	onMatchReact,
 	participants,
@@ -461,6 +478,7 @@ export function MatchesView({
 					games={games}
 					groups={groups}
 					matchReactions={matchReactions}
+					onClearCommentary={onClearCommentary}
 					onClearMatchReaction={onClearMatchReaction}
 					onMatchReact={onMatchReact}
 					participants={participants}

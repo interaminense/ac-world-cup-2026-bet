@@ -260,6 +260,14 @@ export default function App() {
 		remove(ref(db, `${dataPath('matches/reactions')}/${matchNo}/${emoji}`));
 	};
 
+	const clearMatchCommentary = (matchNo: number) => {
+		remove(ref(db, `${dataPath('commentary')}/byMatch/${matchNo}`));
+	};
+
+	const clearRecap = () => {
+		remove(ref(db, `${dataPath('commentary')}/leaderboard/recap`));
+	};
+
 	useEffect(() => {
 		if (!loading) {
 			return undefined;
@@ -597,6 +605,7 @@ export default function App() {
 								live={liveGames.length > 0}
 								myReactions={mine}
 								onClearReaction={auth.isOwner ? clearPlayerReaction : undefined}
+								onClearRecap={auth.isOwner ? clearRecap : undefined}
 								onHype={(rx, ry) => {
 									hype(rx, ry);
 									acTrack('leader_trophy', {leader: leaderName});
@@ -627,6 +636,7 @@ export default function App() {
 								commentary={commentary}
 								games={games}
 								matchReactions={matchReactions}
+								onClearCommentary={auth.isOwner ? clearMatchCommentary : undefined}
 								onClearMatchReaction={auth.isOwner ? clearMatchReaction : undefined}
 								onMatchReact={reactMatch}
 								participants={participants}

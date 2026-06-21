@@ -11,6 +11,7 @@ interface LeaderboardProps {
 	live?: boolean;
 	myReactions?: Record<string, string[]>;
 	onClearReaction?: (name: string, emoji: string) => void;
+	onClearRecap?: () => void;
 	onHype: (rx: number, ry: number) => void;
 	onReact?: (name: string, emoji: string) => void;
 	onSelect: (name: string) => void;
@@ -26,6 +27,7 @@ export function Leaderboard({
 	live = false,
 	myReactions = {},
 	onClearReaction,
+	onClearRecap,
 	onHype,
 	onReact,
 	onSelect,
@@ -46,14 +48,24 @@ export function Leaderboard({
 			)}
 
 			{recap && (
-				<div className="flex gap-2 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 px-4 py-3">
+				<div className="flex items-start gap-2 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 px-4 py-3">
 					<span aria-hidden className="text-sm">
 						🎙️
 					</span>
 
-					<p className="text-sm italic leading-relaxed text-slate-300">
+					<p className="flex-1 text-sm italic leading-relaxed text-slate-300">
 						{recap}
 					</p>
+
+					{onClearRecap && (
+						<button
+							aria-label="Remove the recap"
+							className="shrink-0 rounded-full bg-rose-500/20 px-1.5 text-[10px] text-rose-300 transition hover:bg-rose-500/40"
+							onClick={onClearRecap}
+						>
+							✕
+						</button>
+					)}
 				</div>
 			)}
 
