@@ -42,11 +42,13 @@ export function Reactions({
 	collapsible = false,
 	counts,
 	mine,
+	onClear,
 	onReact,
 }: {
 	collapsible?: boolean;
 	counts: Record<string, number>;
 	mine: string[];
+	onClear?: (emoji: string) => void;
 	onReact: (emoji: string) => void;
 }) {
 	const [open, setOpen] = useState(false);
@@ -171,21 +173,32 @@ export function Reactions({
 				}`}
 			>
 				{active.map((reaction) => (
-					<button
-						className={`flex items-center gap-1 rounded-full px-1.5 py-0.5 text-xs transition-colors ${
-							mine.includes(reaction.emoji)
-								? 'bg-emerald-400/20 ring-1 ring-inset ring-emerald-400/50'
-								: 'bg-white/5 hover:bg-white/10'
-						}`}
-						key={reaction.emoji}
-						onClick={() => onReact(reaction.emoji)}
-					>
-						<span>{reaction.emoji}</span>
+					<span className="flex items-center" key={reaction.emoji}>
+						<button
+							className={`flex items-center gap-1 rounded-full px-1.5 py-0.5 text-xs transition-colors ${
+								mine.includes(reaction.emoji)
+									? 'bg-emerald-400/20 ring-1 ring-inset ring-emerald-400/50'
+									: 'bg-white/5 hover:bg-white/10'
+							}`}
+							onClick={() => onReact(reaction.emoji)}
+						>
+							<span>{reaction.emoji}</span>
 
-						<span className="font-medium text-slate-300">
-							{counts[reaction.emoji]}
-						</span>
-					</button>
+							<span className="font-medium text-slate-300">
+								{counts[reaction.emoji]}
+							</span>
+						</button>
+
+						{onClear && (
+							<button
+								aria-label={`Clear ${reaction.emoji} reactions`}
+								className="ml-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500/20 text-[9px] text-rose-300 transition hover:bg-rose-500/40"
+								onClick={() => onClear(reaction.emoji)}
+							>
+								✕
+							</button>
+						)}
+					</span>
 				))}
 			</div>
 
