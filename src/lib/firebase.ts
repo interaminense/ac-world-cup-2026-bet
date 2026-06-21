@@ -1,5 +1,12 @@
 import {initializeApp} from 'firebase/app';
-import {getAuth, signInAnonymously} from 'firebase/auth';
+import {
+	getAuth,
+	GoogleAuthProvider,
+	signInAnonymously,
+	signInWithPopup,
+	signInWithRedirect,
+	signOut,
+} from 'firebase/auth';
 import {getDatabase} from 'firebase/database';
 
 // Public web config — security comes from the Realtime Database rules and the
@@ -19,5 +26,26 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getDatabase(app);
 
-// No login screen: each browser gets a stable anonymous uid.
+export const googleProvider = new GoogleAuthProvider();
+
+// Each browser keeps a stable anonymous uid so logged-out reactions/cheers/
+// presence keep working.
+export function ensureAnonymous() {
+	return signInAnonymously(auth);
+}
+
+// Popup on desktop; redirect on mobile/PWA where popups are unreliable.
+export function signInWithGoogle() {
+	const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+	return isMobile
+		? signInWithRedirect(auth, googleProvider)
+		: signInWithPopup(auth, googleProvider);
+}
+
+export function signOutUser() {
+	return signOut(auth);
+}
+
+// Sign in anonymously on first load (no-op once a session exists).
 export const signedIn = signInAnonymously(auth);
