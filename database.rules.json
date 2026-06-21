@@ -2,6 +2,7 @@
 	"rules": {
 		"reactions": {
 			".read": true,
+			".write": "auth.token.email === 'adriano.interaminense@gmail.com' && auth.token.email_verified === true",
 			"$player": {
 				"$emoji": {
 					"$uid": {
@@ -14,6 +15,7 @@
 		"matches": {
 			"reactions": {
 				".read": true,
+				".write": "auth.token.email === 'adriano.interaminense@gmail.com' && auth.token.email_verified === true",
 				"$matchId": {
 					"$emoji": {
 						"$uid": {
@@ -29,7 +31,10 @@
 			".read": true,
 			".write": true
 		},
-		"commentary": {".read": true},
+		"commentary": {
+			".read": true,
+			".write": "auth.token.email === 'adriano.interaminense@gmail.com' && auth.token.email_verified === true"
+		},
 		"cheers": {".read": true, ".write": true},
 		"presence": {".read": true, ".write": true},
 		"leaderHype": {".read": true, ".write": true},
