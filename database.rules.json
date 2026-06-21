@@ -1,0 +1,22 @@
+{
+	"rules": {
+		"profiles": {
+			".read": true,
+			"$uid": {
+				".write": "auth != null && (auth.uid === $uid || (auth.token.email === 'adriano.interaminense@gmail.com' && auth.token.email_verified === true))",
+				"email": {".validate": "newData.isString()"},
+				"name": {".validate": "newData.isString()"},
+				"photoURL": {".validate": "newData.isString()"},
+				"lastSeenAt": {".validate": "newData.isNumber() || newData.isString()"},
+				"claim": {".validate": "newData.isString() || !newData.exists()"},
+				"$other": {".validate": false}
+			}
+		},
+		"approvals": {
+			".read": true,
+			"$uid": {
+				".write": "auth.token.email === 'adriano.interaminense@gmail.com' && auth.token.email_verified === true"
+			}
+		}
+	}
+}
