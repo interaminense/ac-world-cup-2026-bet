@@ -2,6 +2,7 @@ import {initializeApp} from 'firebase/app';
 import {
 	getAuth,
 	GoogleAuthProvider,
+	onAuthStateChanged,
 	signInAnonymously,
 	signInWithPopup,
 	signInWithRedirect,
@@ -28,12 +29,6 @@ export const db = getDatabase(app);
 
 export const googleProvider = new GoogleAuthProvider();
 
-// Each browser keeps a stable anonymous uid so logged-out reactions/cheers/
-// presence keep working.
-export function ensureAnonymous() {
-	return signInAnonymously(auth);
-}
-
 // Popup on desktop; redirect on mobile/PWA where popups are unreliable.
 export function signInWithGoogle() {
 	const isMobile = /Mobi|Android/i.test(navigator.userAgent);
@@ -47,5 +42,27 @@ export function signOutUser() {
 	return signOut(auth);
 }
 
-// Sign in anonymously on first load (no-op once a session exists).
-export const signedIn = signInAnonymously(auth);
+// Keep a session alive at all times WITHOUT clobbering a real sign-in: sign in
+// anonymously only when nobody is signed in (first visit, or after a Google
+// sign-out). A persisted Google session is left untouched on reload — calling
+// signInAnonymously unconditionally would replace it and silently log the user
+// out.
+let ensuringAnonymous = false;
+
+onAuthStateChanged(auth, (user) => {
+	if (user || ensuringAnonymous) {
+		return;
+	}
+
+	ensuringAnonymous = true;
+
+	signInAnonymously(auth)
+		.catch(() => undefined)
+		.finally(() => {
+			ensuringAnonymous = false;
+		});
+});
+
+// Back-compat for hooks that import this; auth is established by the listener
+// above, so there's nothing to await.
+export const signedIn = Promise.resolve();

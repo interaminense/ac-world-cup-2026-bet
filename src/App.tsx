@@ -688,7 +688,11 @@ export default function App() {
 
 					<Route
 						element={
-							auth.isOwner ? <AdminView /> : <Navigate replace to="/" />
+							auth.loading ? null : auth.isOwner ? (
+								<AdminView />
+							) : (
+								<Navigate replace to="/" />
+							)
 						}
 						path="/admin"
 					/>

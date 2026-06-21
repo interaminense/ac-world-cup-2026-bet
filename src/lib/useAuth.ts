@@ -4,12 +4,13 @@ import {onValue, ref, serverTimestamp, set, update} from 'firebase/database';
 import {useEffect, useState} from 'react';
 
 import {isOwner as checkOwner} from './auth';
-import {auth, db, ensureAnonymous, signInWithGoogle, signOutUser} from './firebase';
+import {auth, db, signInWithGoogle, signOutUser} from './firebase';
 import {buildProfileUpdate, type Profile} from './profiles';
 
 export interface AuthState {
 	isAnonymous: boolean;
 	isOwner: boolean;
+	loading: boolean;
 	profile: Profile | null;
 	setClaim: (slug: string | null) => void;
 	signIn: () => void;
@@ -21,16 +22,16 @@ export function useAuth(): AuthState {
 	const [user, setUser] = useState<User | null>(null);
 	const [profile, setProfile] = useState<Profile | null>(null);
 
+	// True until Firebase restores the persisted session, so route guards don't
+	// redirect before the owner's session is known. The anonymous fallback lives
+	// in firebase.ts, so it never clobbers a real Google login.
+	const [loading, setLoading] = useState(true);
+
 	useEffect(
 		() =>
 			onAuthStateChanged(auth, (next) => {
 				setUser(next);
-
-				// Signed all the way out → fall back to anonymous so the open
-				// features keep working.
-				if (!next) {
-					ensureAnonymous().catch(() => undefined);
-				}
+				setLoading(false);
 			}),
 		[]
 	);
@@ -69,6 +70,7 @@ export function useAuth(): AuthState {
 	return {
 		isAnonymous: user?.isAnonymous ?? true,
 		isOwner: checkOwner(user?.email, user?.emailVerified),
+		loading,
 		profile,
 		setClaim,
 		signIn: () => {
