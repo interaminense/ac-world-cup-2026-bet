@@ -1245,10 +1245,200 @@ git commit --no-gpg-sign -m "Add RTDB rules for profiles and owner approvals"
 
 ---
 
+### Task 11: Real Google photo in the presence bar
+
+**Files:**
+- Modify: `src/lib/usePresence.ts`
+- Modify: `src/components/PresenceBar.tsx`
+- Modify: `src/App.tsx`
+
+**Interfaces:**
+- Consumes: `auth.profile` (Task 4/9).
+- Produces: `OnlineUser` gains `photoURL: string | null`; `usePresence(name: string | null, photoURL: string | null): OnlineUser[]`.
+
+This supersedes the `const online = usePresence(myParticipantName)` line added in
+Task 9.
+
+- [ ] **Step 1: usePresence — carry name + photo**
+
+In `src/lib/usePresence.ts`: add `photoURL` to `OnlineUser`; change the signature
+to `usePresence(name: string | null, photoURL: string | null)`; write the photo
+into the presence record and read it back. The presence write becomes:
+
+```ts
+set(ref(db, `${dataPath('presence')}/${uid}`), {
+	at: serverTimestamp(),
+	name: name ?? null,
+	photoURL: photoURL ?? null,
+});
+```
+
+The snapshot mapper becomes:
+
+```ts
+setOnline(
+	Object.entries(value).map(([id, entry]) => ({
+		name: entry?.name ?? null,
+		photoURL: entry?.photoURL ?? null,
+		uid: id,
+	}))
+);
+```
+
+Update the `OnlineUser` interface to `{ name: string | null; photoURL: string | null; uid: string }`,
+the inner snapshot type to `Record<string, {name?: string | null; photoURL?: string | null}>`,
+and add `photoURL` to the `[uid, name]` effect dependency list (`[uid, name, photoURL]`).
+
+- [ ] **Step 2: PresenceBar — render the real photo**
+
+Replace `src/components/PresenceBar.tsx` with:
+
+```tsx
+import type {OnlineUser} from '../lib/usePresence';
+import {Avatar} from './Avatar';
+
+const MAX_AVATARS = 5;
+
+// The "who's online" cluster: real Google photos (falling back to a name-based
+// avatar) for identified viewers, a "+N" for anonymous guests/overflow, and a
+// pulsing live count.
+export function PresenceBar({online}: {online: OnlineUser[]}) {
+	const identified = online.filter((user) => user.name);
+	const guests = online.length - identified.length;
+	const total = online.length;
+
+	if (total === 0) {
+		return null;
+	}
+
+	const shown = identified.slice(0, MAX_AVATARS);
+	const overflow = identified.length - shown.length + guests;
+
+	return (
+		<div className="flex items-center gap-2">
+			<div className="flex -space-x-2">
+				{shown.map((user) => (
+					<span key={user.uid} title={user.name ?? undefined}>
+						{user.photoURL ? (
+							<img
+								alt=""
+								className="h-7 w-7 rounded-full object-cover ring-2 ring-emerald-500/70"
+								referrerPolicy="no-referrer"
+								src={user.photoURL}
+							/>
+						) : (
+							<Avatar
+								className="h-7 w-7 rounded-full ring-2 ring-emerald-500/70"
+								name={user.name as string}
+							/>
+						)}
+					</span>
+				))}
+
+				{overflow > 0 && (
+					<span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-[10px] font-bold text-slate-200 ring-2 ring-slate-900">
+						+{overflow}
+					</span>
+				)}
+			</div>
+
+			<span className="flex items-center gap-1 whitespace-nowrap text-xs font-medium text-slate-300">
+				<span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+				{total} online
+			</span>
+		</div>
+	);
+}
+```
+
+- [ ] **Step 3: App — pass name + photo to usePresence**
+
+In `src/App.tsx`, replace the `const online = usePresence(myParticipantName);`
+line (from Task 9) with:
+
+```tsx
+// Identified presence: pool name when claimed, else Google name; real photo
+// when signed in.
+const presenceName = myParticipantName ?? auth.profile?.name ?? null;
+const presencePhoto = auth.profile?.photoURL ?? null;
+const online = usePresence(presenceName, presencePhoto);
+```
+
+- [ ] **Step 4: Build + tests**
+
+Run: `npm run build && npx vitest run`
+Expected: `✓ built`; all tests pass.
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/lib/usePresence.ts src/components/PresenceBar.tsx src/App.tsx
+git commit --no-gpg-sign -m "Show real Google photos in the presence bar"
+```
+
+---
+
+### Task 12: Highlight "you" in the leaderboard
+
+**Files:**
+- Modify: `src/components/Leaderboard.tsx`
+- Modify: `src/App.tsx`
+
+**Interfaces:**
+- Consumes: `myParticipantName` (Task 9).
+- Produces: `Leaderboard` gains an optional `youName?: string | null` prop.
+
+- [ ] **Step 1: Leaderboard — accept and mark the viewer's row**
+
+In `src/components/Leaderboard.tsx`: add `youName?: string | null` to
+`LeaderboardProps` and the destructured params (default `null`). On the row
+`<tr>`, add a highlight class when the row is the viewer, and a "you" tag by the
+name.
+
+The row class becomes (compute `const isYou = row.name === youName;` inside the
+`.map`):
+
+```tsx
+<tr
+	className={`group cursor-pointer border-b border-white/5 transition-colors last:border-0 hover:bg-white/10 ${
+		isYou ? 'bg-emerald-400/10' : ''
+	}`}
+	key={row.name}
+	onClick={() => onSelect(row.name)}
+>
+```
+
+Right after the participant name span, add:
+
+```tsx
+{isYou && (
+	<span className="rounded-full bg-emerald-400/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-300">
+		you
+	</span>
+)}
+```
+
+- [ ] **Step 2: App — pass youName**
+
+In `src/App.tsx`, add `youName={myParticipantName}` to the `<Leaderboard ... />`
+render.
+
+- [ ] **Step 3: Build + tests**
+
+Run: `npm run build && npx vitest run`
+Expected: `✓ built`; all tests pass.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/components/Leaderboard.tsx src/App.tsx
+git commit --no-gpg-sign -m "Highlight the signed-in viewer's row in the leaderboard"
+```
+
+---
+
 ## Notes
 
-- Phase 1 keeps presence/reactions keyed on the **approved participant name**
-  (replacing the old localStorage name). Showing real Google photos in the
-  presence bar and a "you" row highlight are deliberately deferred — small
-  follow-ups, not required for the foundation.
+- Presence is keyed on the signed-in identity (claimed pool name, else Google
+  name) with the real Google photo; anonymous viewers count toward "+N".
 - No Cloud Functions, no Blaze plan in this phase. Everything is client + rules.
