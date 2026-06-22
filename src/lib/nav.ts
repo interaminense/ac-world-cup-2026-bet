@@ -1,5 +1,6 @@
 export interface NavItem {
 	badge?: string;
+	desktopOnly?: boolean;
 	end?: boolean;
 	icon: string;
 	label: string;
@@ -14,6 +15,7 @@ export const NAV_ITEMS: NavItem[] = [
 	{icon: '🎯', label: 'Participants', to: '/bets'},
 	{icon: '⚔️', label: 'Head to Head', to: '/h2h'},
 	{icon: '📊', label: 'Stats', to: '/stats'},
+	{desktopOnly: true, icon: '🎮', label: 'Arena', to: '/arena'},
 	{icon: '📜', label: 'Rules', to: '/rules'},
 ];
 

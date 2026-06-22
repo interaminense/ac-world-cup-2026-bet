@@ -76,7 +76,7 @@ export function NavDrawer({
 					</button>
 				</div>
 
-				{NAV_ITEMS.map((item) =>
+				{NAV_ITEMS.filter((item) => !item.desktopOnly).map((item) =>
 					item.to === '/bets' ? (
 						<div key={item.to}>
 							<button

@@ -7,6 +7,7 @@ import {
 	useNavigate,
 } from 'react-router-dom';
 
+import {ArenaView} from './components/ArenaView';
 import {BetsView} from './components/BetsView';
 import {CheerBurstLayer} from './components/CheerBurst';
 import {GoalOverlay} from './components/GoalOverlay';
@@ -583,6 +584,16 @@ export default function App() {
 							/>
 						}
 						path="/stats"
+					/>
+
+					<Route
+						element={
+							<ArenaView
+								identity={identity.name}
+								onRequestIdentify={() => setIdentityOpen(true)}
+							/>
+						}
+						path="/arena"
 					/>
 
 					<Route element={<RulesView />} path="/rules" />
