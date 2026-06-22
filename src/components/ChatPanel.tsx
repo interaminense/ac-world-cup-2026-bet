@@ -4,7 +4,9 @@ import {runChatCommand} from '../lib/chatCommands';
 import type {MatchCard} from '../lib/matches';
 import type {Game, Participant} from '../lib/types';
 import {useChat} from '../lib/useChat';
+import {useChatReactions} from '../lib/useReactions';
 import {Avatar} from './Avatar';
+import {Reactions} from './Reactions';
 
 function formatMessageTime(at: number, now: number): string {
 	if (!at) return '';
@@ -51,6 +53,7 @@ export function ChatPanel({
 	participants,
 }: Props) {
 	const {messages, send} = useChat();
+	const chatReactions = useChatReactions();
 	const [draft, setDraft] = useState('');
 	const [ephemeral, setEphemeral] = useState<{id: number; text: string}[]>(
 		[]
@@ -132,7 +135,7 @@ export function ChatPanel({
 
 						return (
 							<div
-								className={`flex gap-2 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}
+								className={`group flex gap-2 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}
 								key={msg.id}
 							>
 								<Avatar
@@ -164,6 +167,14 @@ export function ChatPanel({
 											{timeLabel}
 										</span>
 									)}
+
+									<Reactions
+										counts={chatReactions.counts[msg.id] ?? {}}
+										mine={chatReactions.mine[msg.id] ?? []}
+										onReact={(emoji) =>
+											chatReactions.toggle(msg.id, emoji)
+										}
+									/>
 								</div>
 							</div>
 						);

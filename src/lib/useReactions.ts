@@ -80,3 +80,8 @@ export function useReactions(): ReactionsApi {
 export function useMatchReactions(): ReactionsApi {
 	return useReactionTree(dataPath('matches/reactions'));
 }
+
+// Reactions on each chat message (keyed by chatRoom push id).
+export function useChatReactions(): ReactionsApi {
+	return useReactionTree(dataPath('chatReactions'));
+}
