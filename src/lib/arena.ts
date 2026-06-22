@@ -163,3 +163,8 @@ export function cursorColor(name: string): string {
 
 	return `hsl(${hash}, 70%, 60%)`;
 }
+
+// Linear interpolation, for easing rendered cursor positions between updates.
+export function lerp(a: number, b: number, t: number): number {
+	return a + (b - a) * t;
+}

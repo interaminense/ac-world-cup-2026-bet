@@ -8,6 +8,7 @@ import {
 	cursorColor,
 	formatCountdown,
 	isBallHit,
+	lerp,
 	nextBall,
 	pickBallKind,
 	randomBallPosition,
@@ -177,5 +178,14 @@ describe('cursorColor', () => {
 	it('is deterministic and returns an hsl color', () => {
 		expect(cursorColor('Adriano')).toBe(cursorColor('Adriano'));
 		expect(cursorColor('Adriano')).toMatch(/^hsl\(\d+, 70%, 60%\)$/);
+	});
+});
+
+describe('lerp', () => {
+	it('interpolates between endpoints', () => {
+		expect(lerp(0, 10, 0)).toBe(0);
+		expect(lerp(0, 10, 1)).toBe(10);
+		expect(lerp(0, 10, 0.5)).toBe(5);
+		expect(lerp(2, 4, 0.25)).toBe(2.5);
 	});
 });
