@@ -13,13 +13,16 @@ export type CheerCounts = Record<string, Record<CheerSide, number>>;
 export function useCheers(): {
 	cheer: (matchNo: number, side: CheerSide) => void;
 	counts: CheerCounts;
+	loaded: boolean;
 } {
 	const [counts, setCounts] = useState<CheerCounts>({});
+	const [loaded, setLoaded] = useState(false);
 
 	useEffect(
 		() =>
 			onValue(ref(db, dataPath('cheers')), (snapshot) => {
 				setCounts((snapshot.val() as CheerCounts) ?? {});
+				setLoaded(true);
 			}),
 		[]
 	);
@@ -30,5 +33,5 @@ export function useCheers(): {
 		});
 	};
 
-	return {cheer, counts};
+	return {cheer, counts, loaded};
 }

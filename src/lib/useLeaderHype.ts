@@ -17,8 +17,10 @@ export interface LeaderHype {
 export function useLeaderHype(): {
 	hype: (rx: number, ry: number) => void;
 	last: LeaderHype;
+	loaded: boolean;
 } {
 	const [last, setLast] = useState<LeaderHype>({n: 0, rx: 0.5, ry: 0.5});
+	const [loaded, setLoaded] = useState(false);
 
 	useEffect(
 		() =>
@@ -32,6 +34,8 @@ export function useLeaderHype(): {
 						ry: value.ry ?? 0.5,
 					});
 				}
+
+				setLoaded(true);
 			}),
 		[]
 	);
@@ -40,5 +44,5 @@ export function useLeaderHype(): {
 		update(ref(db, dataPath('leaderHype')), {n: increment(1), rx, ry});
 	};
 
-	return {hype, last};
+	return {hype, last, loaded};
 }

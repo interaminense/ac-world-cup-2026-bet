@@ -15,8 +15,10 @@ export interface CelebrateEvent {
 export function useCelebrate(): {
 	celebrate: (name: string) => void;
 	last: CelebrateEvent;
+	loaded: boolean;
 } {
 	const [last, setLast] = useState<CelebrateEvent>({n: 0, name: ''});
+	const [loaded, setLoaded] = useState(false);
 
 	useEffect(
 		() =>
@@ -26,6 +28,8 @@ export function useCelebrate(): {
 				if (value) {
 					setLast({n: value.n ?? 0, name: value.name ?? ''});
 				}
+
+				setLoaded(true);
 			}),
 		[]
 	);
@@ -34,5 +38,5 @@ export function useCelebrate(): {
 		update(ref(db, dataPath('celebrate')), {n: increment(1), name});
 	};
 
-	return {celebrate, last};
+	return {celebrate, last, loaded};
 }

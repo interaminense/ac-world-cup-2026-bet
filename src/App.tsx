@@ -115,11 +115,12 @@ export default function App() {
 
 	const {counts, mine, toggle} = useReactions();
 	const matchReactions = useMatchReactions();
-	const {cheer, counts: cheerCounts} = useCheers();
+	const {cheer, counts: cheerCounts, loaded: cheersLoaded} = useCheers();
 	const identity = useIdentity();
 	const online = usePresence(identity.name);
-	const {hype, last: leaderHype} = useLeaderHype();
-	const {celebrate, last: celebrateEvent} = useCelebrate();
+	const {hype, last: leaderHype, loaded: hypeLoaded} = useLeaderHype();
+	const {celebrate, last: celebrateEvent, loaded: celebrateLoaded} =
+		useCelebrate();
 	const prevCelebrateN = useRef<number | null>(null);
 	const [celebrating, setCelebrating] = useState<string | null>(null);
 	const [bursts, setBursts] = useState<Array<{emoji: string; id: number}>>(
@@ -281,6 +282,10 @@ export default function App() {
 	// sees it rise here and fires its own random emoji shower. The first
 	// snapshot only seeds the baseline.
 	useEffect(() => {
+		if (!cheersLoaded) {
+			return;
+		}
+
 		const previous = prevCheers.current;
 
 		if (previous) {
@@ -312,11 +317,15 @@ export default function App() {
 
 		prevCheers.current = cheerCounts;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cheerCounts]);
+	}, [cheerCounts, cheersLoaded]);
 
 	// Someone tapped the leader card: explode trophies at the same relative spot
 	// on this client's card. Only clients showing the card (the home) react.
 	useEffect(() => {
+		if (!hypeLoaded) {
+			return;
+		}
+
 		const prev = prevHypeN.current;
 
 		if (prev !== null && leaderHype.n > prev) {
@@ -335,10 +344,14 @@ export default function App() {
 
 		prevHypeN.current = leaderHype.n;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [leaderHype]);
+	}, [leaderHype, hypeLoaded]);
 
 	// A celebrate event bumped — show the overlay for everyone, briefly.
 	useEffect(() => {
+		if (!celebrateLoaded) {
+			return;
+		}
+
 		const prev = prevCelebrateN.current;
 
 		prevCelebrateN.current = celebrateEvent.n;
@@ -352,7 +365,7 @@ export default function App() {
 		const timer = setTimeout(() => setCelebrating(null), 2600);
 
 		return () => clearTimeout(timer);
-	}, [celebrateEvent]);
+	}, [celebrateEvent, celebrateLoaded]);
 
 	const games = gamesFile?.games ?? [];
 
