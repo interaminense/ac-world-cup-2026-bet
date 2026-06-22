@@ -564,6 +564,400 @@ git commit --no-gpg-sign -m "Wire slash commands into the live chat panel"
 
 ---
 
+### Task 3: Add `/celebrate` to the command engine
+
+**Files:**
+- Modify: `src/lib/chatCommands.ts`
+- Modify: `src/lib/chatCommands.test.ts`
+
+**Interfaces:**
+- Consumes: `parseChatInput`, `runChatCommand`, `ChatCommandContext` (Task 1).
+- Produces: `resolveCelebrateTarget(arg: string, participants: Participant[]): {name: string} | null`; `runChatCommand` result gains an optional `celebrate?: string`; `HELP_TEXT` gains a `/celebrate` line; the kind `'celebrate'`.
+
+- [ ] **Step 1: Add the failing tests**
+
+Append to `src/lib/chatCommands.test.ts`:
+
+```ts
+import {resolveCelebrateTarget} from './chatCommands';
+import type {Participant} from './types';
+
+const participants = [
+	{name: 'Rachael', predictions: []},
+	{name: 'Caio', predictions: []},
+] as Participant[];
+
+describe('resolveCelebrateTarget', () => {
+	it('matches case-insensitively', () => {
+		expect(resolveCelebrateTarget('rachael', participants)).toEqual({
+			name: 'Rachael',
+		});
+	});
+
+	it('matches a prefix', () => {
+		expect(resolveCelebrateTarget('cai', participants)).toEqual({
+			name: 'Caio',
+		});
+	});
+
+	it('returns null for no match', () => {
+		expect(resolveCelebrateTarget('zzz', participants)).toBeNull();
+	});
+});
+
+describe('runChatCommand /celebrate', () => {
+	const cctx = {...ctx, participants};
+
+	it('returns a celebrate effect when the name resolves', () => {
+		expect(runChatCommand('/celebrate rachael', cctx)).toEqual({
+			celebrate: 'Rachael',
+		});
+	});
+
+	it('is ephemeral when the name does not resolve', () => {
+		expect(runChatCommand('/celebrate zzz', cctx).ephemeral).toBe(
+			'No one named "zzz" in the pool'
+		);
+	});
+
+	it('gives a usage hint when empty', () => {
+		expect(runChatCommand('/celebrate', cctx).ephemeral).toBe(
+			'Usage: /celebrate <name>'
+		);
+	});
+
+	it('lists /celebrate in help as public', () => {
+		expect(HELP_TEXT).toContain('/celebrate');
+	});
+});
+```
+
+- [ ] **Step 2: Run to verify it fails**
+
+Run: `npx vitest run src/lib/chatCommands.test.ts`
+Expected: FAIL — `resolveCelebrateTarget` not exported / `/celebrate` not handled.
+
+- [ ] **Step 3: Implement**
+
+In `src/lib/chatCommands.ts`:
+
+Add `'celebrate'` to the `ChatCommandKind` union and to `COMMANDS`:
+
+```ts
+const COMMANDS: Record<string, ChatCommandKind> = {
+	celebrate: 'celebrate',
+	help: 'help',
+	me: 'me',
+	picks: 'picks',
+	score: 'score',
+	whatif: 'whatif',
+};
+```
+
+(Add `| 'celebrate'` to the `ChatCommandKind` type.)
+
+Add the resolver:
+
+```ts
+export function resolveCelebrateTarget(
+	arg: string,
+	participants: Participant[]
+): {name: string} | null {
+	const needle = arg.trim().toLowerCase();
+
+	if (!needle) {
+		return null;
+	}
+
+	const exact = participants.find(
+		(participant) => participant.name.toLowerCase() === needle
+	);
+	const prefix = participants.find((participant) =>
+		participant.name.toLowerCase().startsWith(needle)
+	);
+	const match = exact ?? prefix;
+
+	return match ? {name: match.name} : null;
+}
+```
+
+Add the `/celebrate` line to `HELP_TEXT` (insert before the `/me` line):
+
+```ts
+	'/celebrate <name> — celebrate someone (public — everyone sees)',
+```
+
+Extend the `runChatCommand` return type to include `celebrate?: string` and add the case:
+
+```ts
+export function runChatCommand(
+	text: string,
+	ctx: ChatCommandContext
+): {broadcast?: string; celebrate?: string; ephemeral?: string} {
+	const {arg, kind} = parseChatInput(text);
+
+	switch (kind) {
+		case 'celebrate': {
+			if (!arg) {
+				return {ephemeral: 'Usage: /celebrate <name>'};
+			}
+
+			const target = resolveCelebrateTarget(arg, ctx.participants);
+
+			return target
+				? {celebrate: target.name}
+				: {ephemeral: `No one named "${arg}" in the pool`};
+		}
+		case 'help':
+			return {ephemeral: HELP_TEXT};
+		case 'me':
+			return arg
+				? {broadcast: formatMe(ctx.name, arg)}
+				: {ephemeral: 'Usage: /me <action>'};
+		case 'picks':
+			return {ephemeral: formatPicks(ctx.card)};
+		case 'score':
+			return {ephemeral: formatScore(ctx.card)};
+		case 'unknown':
+			return {ephemeral: 'Unknown command. Try /help'};
+		case 'whatif':
+			return {ephemeral: formatWhatIf(ctx, arg)};
+		default:
+			return {broadcast: text.trim()};
+	}
+}
+```
+
+Make sure `Participant` is imported (it already is, from `./types`).
+
+- [ ] **Step 4: Run to verify it passes**
+
+Run: `npx vitest run src/lib/chatCommands.test.ts`
+Expected: PASS (Task 1 tests + the new celebrate tests).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add src/lib/chatCommands.ts src/lib/chatCommands.test.ts
+git commit --no-gpg-sign -m "Add /celebrate to the chat command engine"
+```
+
+---
+
+### Task 4: Realtime celebrate broadcast — hook, overlay, wiring
+
+**Files:**
+- Create: `src/lib/useCelebrate.ts`
+- Create: `src/components/CelebrateOverlay.tsx`
+- Modify: `src/index.css`
+- Modify: `src/App.tsx`
+- Modify: `src/components/LiveChatPanel.tsx`
+
+**Interfaces:**
+- Consumes: `dataPath` (`./dataRoot`), `db` (`./firebase`); `Avatar` (`./Avatar`); `runChatCommand` result `celebrate` (Task 3).
+- Produces: `useCelebrate(): {celebrate: (name: string) => void; last: {n: number; name: string}}`; `CelebrateOverlay({name}: {name: string})`; `LiveChatPanel` prop `onCelebrate: (name: string) => void`.
+
+- [ ] **Step 1: useCelebrate hook (mirror useLeaderHype)**
+
+Create `src/lib/useCelebrate.ts`:
+
+```ts
+import {increment, onValue, ref, update} from 'firebase/database';
+import {useEffect, useState} from 'react';
+
+import {dataPath} from './dataRoot';
+import {db} from './firebase';
+
+// A shared, everyone-sees-it celebration. `/celebrate <name>` bumps a counter
+// plus the celebrated participant's name; every online client detects the bump
+// and renders a full-screen burst — same broadcast pattern as the leader hype.
+export interface CelebrateEvent {
+	n: number;
+	name: string;
+}
+
+export function useCelebrate(): {
+	celebrate: (name: string) => void;
+	last: CelebrateEvent;
+} {
+	const [last, setLast] = useState<CelebrateEvent>({n: 0, name: ''});
+
+	useEffect(
+		() =>
+			onValue(ref(db, dataPath('celebrate')), (snapshot) => {
+				const value = snapshot.val() as CelebrateEvent | null;
+
+				if (value) {
+					setLast({n: value.n ?? 0, name: value.name ?? ''});
+				}
+			}),
+		[]
+	);
+
+	const celebrate = (name: string) => {
+		update(ref(db, dataPath('celebrate')), {n: increment(1), name});
+	};
+
+	return {celebrate, last};
+}
+```
+
+- [ ] **Step 2: The burst keyframe in index.css**
+
+In `src/index.css`, add to the `@theme` block (next to the existing `--animate-flame`):
+
+```css
+	--animate-celebrate-pop: celebrate-pop 1.6s ease-out forwards;
+```
+
+And add the keyframe (next to the `flame` keyframe):
+
+```css
+/* Emoji flying outward from the celebrated avatar. */
+@keyframes celebrate-pop {
+	0% {
+		transform: translate(-50%, -50%) scale(0.4);
+		opacity: 0;
+	}
+	15% {
+		opacity: 1;
+	}
+	100% {
+		transform: translate(
+				calc(-50% + var(--dx)),
+				calc(-50% + var(--dy))
+			)
+			scale(1.2);
+		opacity: 0;
+	}
+}
+```
+
+- [ ] **Step 3: CelebrateOverlay component**
+
+Create `src/components/CelebrateOverlay.tsx`:
+
+```tsx
+import {Avatar} from './Avatar';
+
+const EMOJIS = ['🎉', '🥳', '🎊', '⭐', '🔥', '👏', '🙌', '💥', '✨', '🏆', '⚽', '💚'];
+
+// Full-screen, everyone-sees-it celebration: the participant's avatar with a
+// ring of emojis flying outward. Presentational — the parent mounts it for the
+// duration and unmounts it.
+export function CelebrateOverlay({name}: {name: string}) {
+	return (
+		<div className="pointer-events-none fixed inset-0 z-[70] flex items-center justify-center">
+			<div className="flex flex-col items-center gap-3">
+				<div className="relative">
+					<Avatar
+						className="h-28 w-28 animate-bounce rounded-full shadow-2xl ring-4 ring-emerald-400/60"
+						name={name}
+					/>
+
+					{EMOJIS.map((emoji, index) => {
+						const angle = (index / EMOJIS.length) * Math.PI * 2;
+
+						return (
+							<span
+								className="animate-celebrate-pop absolute left-1/2 top-1/2 text-3xl"
+								key={index}
+								style={{
+									['--dx' as string]: `${Math.cos(angle) * 150}px`,
+									['--dy' as string]: `${Math.sin(angle) * 150}px`,
+								}}
+							>
+								{emoji}
+							</span>
+						);
+					})}
+				</div>
+
+				<span className="rounded-full bg-black/60 px-4 py-1.5 text-lg font-bold text-white shadow-lg">
+					🎉 {name}!
+				</span>
+			</div>
+		</div>
+	);
+}
+```
+
+- [ ] **Step 4: LiveChatPanel — trigger the celebrate effect**
+
+In `src/components/LiveChatPanel.tsx`, add `onCelebrate: (name: string) => void` to the `Props` interface and the destructured params. In the `submit` function, after the `result` is computed, add (alongside the broadcast/ephemeral handling):
+
+```tsx
+		if (result.celebrate) {
+			onCelebrate(result.celebrate);
+		}
+```
+
+- [ ] **Step 5: App — wire the hook, overlay, and panel prop**
+
+In `src/App.tsx`:
+
+Add imports:
+
+```tsx
+import {CelebrateOverlay} from './components/CelebrateOverlay';
+import {useCelebrate} from './lib/useCelebrate';
+```
+
+Near the other hooks (next to `useLeaderHype`):
+
+```tsx
+	const {celebrate, last: celebrateEvent} = useCelebrate();
+	const prevCelebrateN = useRef<number | null>(null);
+	const [celebrating, setCelebrating] = useState<string | null>(null);
+```
+
+Add an effect (mirroring the leader-hype de-dupe) that shows the overlay on a bump:
+
+```tsx
+	// A celebrate event bumped — show the overlay for everyone, briefly.
+	useEffect(() => {
+		const prev = prevCelebrateN.current;
+
+		prevCelebrateN.current = celebrateEvent.n;
+
+		if (prev === null || celebrateEvent.n <= prev || !celebrateEvent.name) {
+			return;
+		}
+
+		setCelebrating(celebrateEvent.name);
+
+		const timer = setTimeout(() => setCelebrating(null), 2600);
+
+		return () => clearTimeout(timer);
+	}, [celebrateEvent]);
+```
+
+Render the overlay near `<CheerBurstLayer ... />`:
+
+```tsx
+			{celebrating && <CelebrateOverlay name={celebrating} />}
+```
+
+Pass `onCelebrate` to `<LiveChatPanel ... />` (alongside the props from Task 2):
+
+```tsx
+							onCelebrate={celebrate}
+```
+
+- [ ] **Step 6: Build + full suite**
+
+Run: `npm run build && npx vitest run`
+Expected: `✓ built`; all tests pass.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add src/lib/useCelebrate.ts src/components/CelebrateOverlay.tsx src/index.css src/App.tsx src/components/LiveChatPanel.tsx
+git commit --no-gpg-sign -m "Add realtime /celebrate broadcast with avatar burst"
+```
+
+---
+
 ## Notes
 
 - Ephemeral lines are local React state — they are not persisted and clear when
@@ -571,4 +965,7 @@ git commit --no-gpg-sign -m "Wire slash commands into the live chat panel"
 - Manual test on `?demo` (a live match exists): `/score`, `/picks`, `/whatif 2-1`,
   `/help` show only-you lines; `/me dança` posts `* <name> dança` for everyone; a
   second device confirms the split.
-- `/celebrate` is a deferred follow-up — not in this plan.
+- `/celebrate` (Tasks 3–4) broadcasts via the `celebrate` RTDB node and shows on
+  every online client; on `?demo` it writes `demo/celebrate` (open, no rule). For
+  production a `"celebrate": {".read": true, ".write": "auth != null"}` rule is
+  needed — deferred until publish, not required for demo testing.
