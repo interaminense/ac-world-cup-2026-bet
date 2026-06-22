@@ -3,13 +3,18 @@ import {describe, expect, it} from 'vitest';
 import {
 	type Ball,
 	BALL_SPEED,
+	BALL_VALUES,
 	ballPositionAt,
+	cursorColor,
+	formatCountdown,
 	isBallHit,
 	nextBall,
+	pickBallKind,
 	randomBallPosition,
 	randomVelocity,
 	reflect,
 	sortScores,
+	topScorer,
 } from './arena';
 
 describe('randomBallPosition', () => {
@@ -129,14 +134,6 @@ describe('sortScores', () => {
 		expect(sortScores({})).toEqual([]);
 	});
 });
-
-import {
-	BALL_VALUES,
-	cursorColor,
-	formatCountdown,
-	pickBallKind,
-	topScorer,
-} from './arena';
 
 describe('pickBallKind', () => {
 	it('maps the weight bands', () => {
