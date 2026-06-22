@@ -9,6 +9,7 @@ import {
 
 import {ArenaView} from './components/ArenaView';
 import {BetsView} from './components/BetsView';
+import {CelebrateOverlay} from './components/CelebrateOverlay';
 import {CheerBurstLayer} from './components/CheerBurst';
 import {GoalOverlay} from './components/GoalOverlay';
 import {GroupsView} from './components/GroupsView';
@@ -40,6 +41,7 @@ import {useCommentary} from './lib/useCommentary';
 import {type CheerCounts, useCheers} from './lib/useCheers';
 import {useGames} from './lib/useGames';
 import {useIdentity} from './lib/useIdentity';
+import {useCelebrate} from './lib/useCelebrate';
 import {useLeaderHype} from './lib/useLeaderHype';
 import {usePresence} from './lib/usePresence';
 import {useMatchReactions, useReactions} from './lib/useReactions';
@@ -117,6 +119,9 @@ export default function App() {
 	const identity = useIdentity();
 	const online = usePresence(identity.name);
 	const {hype, last: leaderHype} = useLeaderHype();
+	const {celebrate, last: celebrateEvent} = useCelebrate();
+	const prevCelebrateN = useRef<number | null>(null);
+	const [celebrating, setCelebrating] = useState<string | null>(null);
 	const [bursts, setBursts] = useState<Array<{emoji: string; id: number}>>(
 		[]
 	);
@@ -332,6 +337,23 @@ export default function App() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [leaderHype]);
 
+	// A celebrate event bumped — show the overlay for everyone, briefly.
+	useEffect(() => {
+		const prev = prevCelebrateN.current;
+
+		prevCelebrateN.current = celebrateEvent.n;
+
+		if (prev === null || celebrateEvent.n <= prev || !celebrateEvent.name) {
+			return;
+		}
+
+		setCelebrating(celebrateEvent.name);
+
+		const timer = setTimeout(() => setCelebrating(null), 2600);
+
+		return () => clearTimeout(timer);
+	}, [celebrateEvent]);
+
 	const games = gamesFile?.games ?? [];
 
 	const rows = useMemo(
@@ -473,6 +495,8 @@ export default function App() {
 
 			<CheerBurstLayer bursts={cheerBursts} />
 
+			{celebrating && <CelebrateOverlay name={celebrating} />}
+
 			{showGoal && (
 				<GoalOverlay
 					key={goalKey}
@@ -613,14 +637,18 @@ export default function App() {
 						/>
 
 						<LiveChatPanel
+							card={chatCard}
+							games={games}
 							identity={identity.name}
 							matchLabel={`${chatCard.team1} vs ${chatCard.team2}`}
 							matchNo={chatMatchNo}
+							onCelebrate={celebrate}
 							onClose={() => setChatMatchNo(null)}
 							onRequestIdentify={() => {
 								setChatMatchNo(null);
 								setIdentityOpen(true);
 							}}
+							participants={participants}
 						/>
 					</>
 				) : null;
