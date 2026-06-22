@@ -229,3 +229,19 @@ describe('runChatCommand /celebrate', () => {
 		expect(HELP_TEXT).toContain('/celebrate');
 	});
 });
+
+describe('runChatCommand match commands without a single live match', () => {
+	const noLive = {...ctx, card: null};
+
+	it('hints for /score, /picks, /whatif when no single live match', () => {
+		const hint = 'No single live match right now — check the Matches tab.';
+
+		expect(runChatCommand('/score', noLive).ephemeral).toBe(hint);
+		expect(runChatCommand('/picks', noLive).ephemeral).toBe(hint);
+		expect(runChatCommand('/whatif 2-1', noLive).ephemeral).toBe(hint);
+	});
+
+	it('still scores against a live card when present', () => {
+		expect(runChatCommand('/score', ctx).ephemeral).toContain('Mexico');
+	});
+});

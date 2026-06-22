@@ -56,6 +56,8 @@ export function parseScoreArg(arg: string): {r1: number; r2: number} | null {
 	return match ? {r1: Number(match[1]), r2: Number(match[2])} : null;
 }
 
+const NO_LIVE_MATCH = 'No single live match right now — check the Matches tab.';
+
 export const HELP_TEXT = [
 	'Commands:',
 	'/score — current score (only you)',
@@ -204,13 +206,19 @@ export function runChatCommand(
 				? {broadcast: formatMe(ctx.name, arg)}
 				: {ephemeral: 'Usage: /me <action>'};
 		case 'picks':
-			return {ephemeral: formatPicks(ctx.card)};
+			return ctx.card
+				? {ephemeral: formatPicks(ctx.card)}
+				: {ephemeral: NO_LIVE_MATCH};
 		case 'score':
-			return {ephemeral: formatScore(ctx.card)};
+			return ctx.card
+				? {ephemeral: formatScore(ctx.card)}
+				: {ephemeral: NO_LIVE_MATCH};
 		case 'unknown':
 			return {ephemeral: 'Unknown command. Try /help'};
 		case 'whatif':
-			return {ephemeral: formatWhatIf(ctx, arg)};
+			return ctx.card
+				? {ephemeral: formatWhatIf(ctx, arg)}
+				: {ephemeral: NO_LIVE_MATCH};
 		default:
 			return {broadcast: text.trim()};
 	}
