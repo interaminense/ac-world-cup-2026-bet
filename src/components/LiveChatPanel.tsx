@@ -1,25 +1,38 @@
 import {useEffect, useRef, useState} from 'react';
 
+import {runChatCommand} from '../lib/chatCommands';
+import type {MatchCard} from '../lib/matches';
+import type {Game, Participant} from '../lib/types';
 import {useMatchChat} from '../lib/useMatchChat';
 import {Avatar} from './Avatar';
 
 interface Props {
+	card: MatchCard | null;
+	games: Game[];
 	identity: string | null;
 	matchLabel: string;
 	matchNo: number;
 	onClose: () => void;
 	onRequestIdentify: () => void;
+	participants: Participant[];
 }
 
 export function LiveChatPanel({
+	card,
+	games,
 	identity,
 	matchLabel,
 	matchNo,
 	onClose,
 	onRequestIdentify,
+	participants,
 }: Props) {
 	const {messages, send} = useMatchChat(matchNo);
 	const [draft, setDraft] = useState('');
+	const [ephemeral, setEphemeral] = useState<{id: number; text: string}[]>(
+		[]
+	);
+	const ephemeralId = useRef(0);
 	const bottomRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
@@ -32,8 +45,29 @@ export function LiveChatPanel({
 	}, []);
 
 	const submit = () => {
-		if (!identity || !draft.trim()) return;
-		send(identity, draft);
+		if (!identity || !draft.trim()) {
+			return;
+		}
+
+		const result = runChatCommand(draft, {
+			card,
+			games,
+			matchNo,
+			name: identity,
+			participants,
+		});
+
+		if (result.broadcast) {
+			send(identity, result.broadcast);
+		}
+
+		if (result.ephemeral) {
+			setEphemeral((current) => [
+				...current,
+				{id: (ephemeralId.current += 1), text: result.ephemeral as string},
+			]);
+		}
+
 		setDraft('');
 	};
 
@@ -104,6 +138,22 @@ export function LiveChatPanel({
 					})
 				)}
 
+				{ephemeral.map((line) => (
+					<div className="flex justify-center" key={line.id}>
+						<div className="max-w-[85%] rounded-xl bg-white/5 px-3 py-1.5 text-xs text-slate-400">
+							<span className="mr-1" aria-hidden>
+								🤖
+							</span>
+
+							<span className="whitespace-pre-line">{line.text}</span>
+
+							<span className="ml-1 text-[9px] uppercase tracking-wide text-slate-600">
+								only you
+							</span>
+						</div>
+					</div>
+				))}
+
 				<div ref={bottomRef} />
 			</div>
 
@@ -120,7 +170,7 @@ export function LiveChatPanel({
 								submit();
 							}
 						}}
-						placeholder="Type a message…"
+						placeholder="Message or /help"
 						ref={inputRef}
 						value={draft}
 					/>

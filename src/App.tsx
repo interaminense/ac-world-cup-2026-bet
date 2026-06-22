@@ -602,6 +602,8 @@ export default function App() {
 						/>
 
 						<LiveChatPanel
+							card={chatCard}
+							games={games}
 							identity={identity.name}
 							matchLabel={`${chatCard.team1} vs ${chatCard.team2}`}
 							matchNo={chatMatchNo}
@@ -610,6 +612,7 @@ export default function App() {
 								setChatMatchNo(null);
 								setIdentityOpen(true);
 							}}
+							participants={participants}
 						/>
 					</>
 				) : null;
