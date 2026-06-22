@@ -3,6 +3,7 @@ import type {Game, Participant} from './types';
 import {simulateWhatIf, type WhatIfMover} from './whatif';
 
 export type ChatCommandKind =
+	| 'celebrate'
 	| 'help'
 	| 'me'
 	| 'message'
@@ -20,6 +21,7 @@ export interface ChatCommandContext {
 }
 
 const COMMANDS: Record<string, ChatCommandKind> = {
+	celebrate: 'celebrate',
 	help: 'help',
 	me: 'me',
 	picks: 'picks',
@@ -59,9 +61,31 @@ export const HELP_TEXT = [
 	'/score — current score (only you)',
 	'/picks — pool picks for this match (only you)',
 	'/whatif 2-1 — projected standings (only you)',
+	'/celebrate <name> — celebrate someone (public — everyone sees)',
 	'/me <action> — emote (public — everyone sees)',
 	'/help — this list (only you)',
 ].join('\n');
+
+export function resolveCelebrateTarget(
+	arg: string,
+	participants: Participant[]
+): {name: string} | null {
+	const needle = arg.trim().toLowerCase();
+
+	if (!needle) {
+		return null;
+	}
+
+	const exact = participants.find(
+		(participant) => participant.name.toLowerCase() === needle
+	);
+	const prefix = participants.find((participant) =>
+		participant.name.toLowerCase().startsWith(needle)
+	);
+	const match = exact ?? prefix;
+
+	return match ? {name: match.name} : null;
+}
 
 export function formatScore(card: MatchCard | null): string {
 	if (
@@ -158,10 +182,21 @@ export function formatMe(name: string, arg: string): string {
 export function runChatCommand(
 	text: string,
 	ctx: ChatCommandContext
-): {broadcast?: string; ephemeral?: string} {
+): {broadcast?: string; celebrate?: string; ephemeral?: string} {
 	const {arg, kind} = parseChatInput(text);
 
 	switch (kind) {
+		case 'celebrate': {
+			if (!arg) {
+				return {ephemeral: 'Usage: /celebrate <name>'};
+			}
+
+			const target = resolveCelebrateTarget(arg, ctx.participants);
+
+			return target
+				? {celebrate: target.name}
+				: {ephemeral: `No one named "${arg}" in the pool`};
+		}
 		case 'help':
 			return {ephemeral: HELP_TEXT};
 		case 'me':

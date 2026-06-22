@@ -177,3 +177,55 @@ describe('runChatCommand', () => {
 		);
 	});
 });
+
+import {resolveCelebrateTarget} from './chatCommands';
+import type {Participant} from './types';
+
+const participants = [
+	{name: 'Rachael', predictions: []},
+	{name: 'Caio', predictions: []},
+] as Participant[];
+
+describe('resolveCelebrateTarget', () => {
+	it('matches case-insensitively', () => {
+		expect(resolveCelebrateTarget('rachael', participants)).toEqual({
+			name: 'Rachael',
+		});
+	});
+
+	it('matches a prefix', () => {
+		expect(resolveCelebrateTarget('cai', participants)).toEqual({
+			name: 'Caio',
+		});
+	});
+
+	it('returns null for no match', () => {
+		expect(resolveCelebrateTarget('zzz', participants)).toBeNull();
+	});
+});
+
+describe('runChatCommand /celebrate', () => {
+	const cctx = {...ctx, participants};
+
+	it('returns a celebrate effect when the name resolves', () => {
+		expect(runChatCommand('/celebrate rachael', cctx)).toEqual({
+			celebrate: 'Rachael',
+		});
+	});
+
+	it('is ephemeral when the name does not resolve', () => {
+		expect(runChatCommand('/celebrate zzz', cctx).ephemeral).toBe(
+			'No one named "zzz" in the pool'
+		);
+	});
+
+	it('gives a usage hint when empty', () => {
+		expect(runChatCommand('/celebrate', cctx).ephemeral).toBe(
+			'Usage: /celebrate <name>'
+		);
+	});
+
+	it('lists /celebrate in help as public', () => {
+		expect(HELP_TEXT).toContain('/celebrate');
+	});
+});
