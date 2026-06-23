@@ -19,9 +19,16 @@ export function Avatar({className, name}: AvatarProps) {
 		);
 	}
 
+	// The match bot gets its own look: a ⚽ on the brand emerald.
+	const isBot = name === '⚽ Match Bot';
+
 	return (
 		<span
-			className={`flex shrink-0 items-center justify-center bg-white/10 font-display font-bold text-slate-300 ${className}`}
+			className={`flex shrink-0 items-center justify-center font-display font-bold ${
+				isBot
+					? 'bg-emerald-500/30 text-emerald-100'
+					: 'bg-white/10 text-slate-300'
+			} ${className}`}
 		>
 			{name.charAt(0)}
 		</span>
