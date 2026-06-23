@@ -109,7 +109,7 @@ function Half({
 			className="grid flex-1 gap-x-6"
 			style={{
 				gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-				gridTemplateRows: 'repeat(8, minmax(2.25rem, 1fr))',
+				gridTemplateRows: 'repeat(8, minmax(3.25rem, 1fr))',
 			}}
 		>
 			{rounds.flatMap((nums, round) =>

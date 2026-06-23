@@ -351,7 +351,7 @@ function SubTab({
 }) {
 	return (
 		<button
-			className={`flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+			className={`flex w-full items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors sm:w-auto sm:py-1.5 ${
 				active
 					? 'bg-emerald-500 text-emerald-950'
 					: 'bg-white/5 text-slate-300 hover:bg-white/10'
@@ -368,7 +368,7 @@ function SubTab({
 			{children}
 
 			<span
-				className={`rounded-full px-1.5 text-xs font-bold ${
+				className={`ml-auto shrink-0 rounded-full px-1.5 text-xs font-bold sm:ml-0 ${
 					active
 						? 'bg-emerald-950/15 text-emerald-950'
 						: 'bg-white/10 text-slate-400'
@@ -405,7 +405,7 @@ export function MatchesView({
 
 	return (
 		<div className="space-y-6">
-			<div className="flex gap-1.5">
+			<div className="flex flex-col gap-1.5 sm:flex-row">
 				<SubTab
 					active={view === 'upcoming'}
 					count={upcoming.length}
@@ -429,7 +429,7 @@ export function MatchesView({
 					onClick={() => setView('bracket')}
 				>
 					Knockout Stage
-					<span className="rounded bg-amber-400/20 px-1 text-[8px] font-bold uppercase text-amber-300">
+					<span className="shrink-0 rounded bg-amber-400/20 px-1 text-[8px] font-bold uppercase text-amber-300">
 						new
 					</span>
 				</SubTab>
