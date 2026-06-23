@@ -60,11 +60,18 @@ export function ChatPanel({
 		[]
 	);
 	const ephemeralId = useRef(0);
-	const bottomRef = useRef<HTMLDivElement>(null);
+	const listRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
-		bottomRef.current?.scrollIntoView({behavior: 'smooth'});
+		// Scroll only the message list — not scrollIntoView, which bubbles up and
+		// scrolls the whole window on mobile, pushing the fixed header (and its
+		// close button) out of reach on long conversations.
+		const list = listRef.current;
+
+		if (list) {
+			list.scrollTo({behavior: 'smooth', top: list.scrollHeight});
+		}
 	}, [messages.length]);
 
 	useEffect(() => {
@@ -138,7 +145,10 @@ export function ChatPanel({
 				</button>
 			</div>
 
-			<div className="flex-1 space-y-3 overflow-y-auto overflow-x-hidden p-4">
+			<div
+				className="flex-1 space-y-3 overflow-y-auto overflow-x-hidden p-4"
+				ref={listRef}
+			>
 				{messages.length === 0 ? (
 					<p className="pt-8 text-center text-sm text-slate-500">
 						No messages yet — be the first!
@@ -221,8 +231,6 @@ export function ChatPanel({
 						</div>
 					</div>
 				))}
-
-				<div ref={bottomRef} />
 			</div>
 
 			{identity ? (
