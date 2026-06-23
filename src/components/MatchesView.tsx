@@ -1,5 +1,6 @@
 import {useState} from 'react';
 
+import knockoutData from '../data/knockout.json';
 import {kickoffDate} from '../lib/kickoff';
 import type {MatchCard} from '../lib/matches';
 import type {Game, Participant} from '../lib/types';
@@ -9,6 +10,7 @@ import {Avatar} from './Avatar';
 import {BetSplitBar} from './BetSplitBar';
 import {CheerCount} from './CheerCount';
 import {Flag} from './Flag';
+import {KnockoutBracket} from './KnockoutBracket';
 import {Reactions} from './Reactions';
 import {StatusChip, TIER_STYLES} from './StatusChip';
 import {WhatIfPanel} from './WhatIfPanel';
@@ -392,7 +394,7 @@ export function MatchesView({
 
 	const hasLive = upcoming.some((card) => card.status === 'live');
 
-	const [view, setView] = useState<'finished' | 'upcoming'>(() =>
+	const [view, setView] = useState<'bracket' | 'finished' | 'upcoming'>(() =>
 		upcoming.length === 0 && finished.length > 0 ? 'finished' : 'upcoming'
 	);
 
@@ -420,22 +422,37 @@ export function MatchesView({
 				>
 					Finished
 				</SubTab>
+
+				<SubTab
+					active={view === 'bracket'}
+					count={knockoutData.length}
+					onClick={() => setView('bracket')}
+				>
+					Knockout Stage
+					<span className="rounded bg-amber-400/20 px-1 text-[8px] font-bold uppercase text-amber-300">
+						new
+					</span>
+				</SubTab>
 			</div>
 
-			<MatchSection
-				cheers={cheers}
-				commentary={commentary}
-				emptyLabel={
-					view === 'finished'
-						? 'No finished matches yet — results show up here.'
-						: 'No upcoming matches.'
-				}
-				games={games}
-				groups={groups}
-				matchReactions={matchReactions}
-				onMatchReact={onMatchReact}
-				participants={participants}
-			/>
+			{view === 'bracket' ? (
+				<KnockoutBracket />
+			) : (
+				<MatchSection
+					cheers={cheers}
+					commentary={commentary}
+					emptyLabel={
+						view === 'finished'
+							? 'No finished matches yet — results show up here.'
+							: 'No upcoming matches.'
+					}
+					games={games}
+					groups={groups}
+					matchReactions={matchReactions}
+					onMatchReact={onMatchReact}
+					participants={participants}
+				/>
+			)}
 		</div>
 	);
 }

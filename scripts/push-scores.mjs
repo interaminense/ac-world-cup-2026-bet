@@ -6,6 +6,7 @@ import {getDatabase} from 'firebase-admin/database';
 import {parsePredictions} from './commentary-facts.mjs';
 import {updateCommentary} from './commentary-core.mjs';
 import {postMatchEvents} from './match-bot.mjs';
+import {pushKnockout} from './knockout.mjs';
 import {fetchEspnGames} from './sources/espn.mjs';
 import {fetchFifaGames} from './sources/fifa.mjs';
 import {fetchWorldcup26Games} from './sources/worldcup26.mjs';
@@ -96,6 +97,19 @@ function canonical(value) {
 // Diff against the current RTDB state — push only when something changed.
 const snapshot = await db.ref('games').once('value');
 const previous = snapshot.val();
+
+// Keep the knockout bracket fresh independently of the group-stage diff, so it
+// updates even on a tick where no group score changed.
+try {
+	const pushed = await pushKnockout(db);
+
+	if (pushed) {
+		console.log(`Pushed knockout bracket (${pushed} matches) to RTDB`);
+	}
+}
+catch (knockoutError) {
+	console.error(`Knockout push failed: ${knockoutError.message}`);
+}
 
 if (
 	previous &&
