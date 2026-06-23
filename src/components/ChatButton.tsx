@@ -1,5 +1,11 @@
 // Floating button that opens the global chat from any page.
-export function ChatButton({onClick}: {onClick: () => void}) {
+export function ChatButton({
+	onClick,
+	unread = 0,
+}: {
+	onClick: () => void;
+	unread?: number;
+}) {
 	return (
 		<button
 			aria-label="Open chat"
@@ -7,6 +13,11 @@ export function ChatButton({onClick}: {onClick: () => void}) {
 			onClick={onClick}
 		>
 			💬
+			{unread > 0 && (
+				<span className="absolute -right-1 -top-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
+					{unread > 9 ? '9+' : unread}
+				</span>
+			)}
 		</button>
 	);
 }

@@ -38,6 +38,7 @@ import {buildParticipantStats} from './lib/participantStats';
 import {loadParticipants} from './lib/predictions';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
+import {useChatUnread} from './lib/useChatUnread';
 import {useCommentary} from './lib/useCommentary';
 import {type CheerCounts, useCheers} from './lib/useCheers';
 import {useGames} from './lib/useGames';
@@ -118,6 +119,9 @@ export default function App() {
 	const matchReactions = useMatchReactions();
 	const {cheer, counts: cheerCounts, loaded: cheersLoaded} = useCheers();
 	const identity = useIdentity();
+	const {markRead: markChatRead, unread: chatUnread} = useChatUnread(
+		identity.name
+	);
 	const online = usePresence(identity.name);
 	const {hype, last: leaderHype, loaded: hypeLoaded} = useLeaderHype();
 	const {celebrate, last: celebrateEvent, loaded: celebrateLoaded} =
@@ -647,8 +651,10 @@ export default function App() {
 				<ChatButton
 					onClick={() => {
 						setChatOpen(true);
+						markChatRead();
 						acTrack('chat_opened');
 					}}
+					unread={chatUnread}
 				/>
 			)}
 
