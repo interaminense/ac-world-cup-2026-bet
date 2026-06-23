@@ -124,8 +124,8 @@ export function ChatPanel({
 	};
 
 	return (
-		<div className="fixed inset-y-0 right-0 z-50 flex w-full flex-col overflow-hidden border-l border-white/10 bg-slate-900 shadow-2xl sm:w-80 md:w-96">
-			<div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+		<div className="fixed bottom-0 right-0 top-14 z-50 flex w-full flex-col overflow-hidden border-l border-white/10 bg-slate-900 shadow-2xl sm:top-0 sm:w-80 md:w-96">
+			<div className="flex shrink-0 items-center justify-between border-b border-white/10 px-4 py-3">
 				<div className="min-w-0">
 					<p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-400">
 						Chat
@@ -234,7 +234,7 @@ export function ChatPanel({
 			</div>
 
 			{identity ? (
-				<div className="flex gap-2 border-t border-white/10 p-3">
+				<div className="flex shrink-0 gap-2 border-t border-white/10 p-3">
 					<input
 						autoComplete="off"
 						autoCorrect="off"
@@ -262,7 +262,7 @@ export function ChatPanel({
 					</button>
 				</div>
 			) : (
-				<div className="border-t border-white/10 px-4 py-5 text-center">
+				<div className="shrink-0 border-t border-white/10 px-4 py-5 text-center">
 					<p className="mb-3 text-xs text-slate-400">
 						Identify yourself to join the chat
 					</p>
