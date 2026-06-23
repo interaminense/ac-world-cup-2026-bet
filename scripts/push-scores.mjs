@@ -5,6 +5,7 @@ import {getDatabase} from 'firebase-admin/database';
 
 import {parsePredictions} from './commentary-facts.mjs';
 import {updateCommentary} from './commentary-core.mjs';
+import {postMatchEvents} from './match-bot.mjs';
 import {fetchEspnGames} from './sources/espn.mjs';
 import {fetchFifaGames} from './sources/fifa.mjs';
 import {fetchWorldcup26Games} from './sources/worldcup26.mjs';
@@ -103,6 +104,20 @@ if (
 ) {
 	console.log(`Games unchanged (source: ${source}); skipping write`);
 	process.exit(0);
+}
+
+// Announce kickoffs, goals and full time in the chat (against the prior state,
+// before we overwrite it). On the first run `previous` is null, so the bot
+// no-ops rather than backfilling history.
+try {
+	const posted = await postMatchEvents(db, previous?.games ?? null, games);
+
+	if (posted) {
+		console.log(`Match bot posted ${posted} chat event(s)`);
+	}
+}
+catch (botError) {
+	console.error(`Match bot failed: ${botError.message}`);
 }
 
 await db.ref('games').set({
