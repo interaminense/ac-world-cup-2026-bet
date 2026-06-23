@@ -230,7 +230,7 @@ export function ChatPanel({
 					<input
 						autoComplete="off"
 						autoCorrect="off"
-						className="min-w-0 flex-1 rounded-xl bg-white/10 px-3 py-2 text-sm text-white placeholder-slate-500 outline-none focus:ring-1 focus:ring-emerald-400"
+						className="min-w-0 flex-1 rounded-xl bg-white/10 px-3 py-2 text-base text-white placeholder-slate-500 outline-none focus:ring-1 focus:ring-emerald-400 sm:text-sm"
 						maxLength={200}
 						onChange={(e) => setDraft(e.target.value)}
 						onKeyDown={(e) => {
