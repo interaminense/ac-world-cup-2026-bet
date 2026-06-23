@@ -19,6 +19,7 @@ import {GoalOverlay} from './components/GoalOverlay';
 import {GroupsView} from './components/GroupsView';
 import {HeadToHeadView} from './components/HeadToHeadView';
 import {Header} from './components/Header';
+import {IdentityPrompt} from './components/IdentityPrompt';
 import {Leaderboard} from './components/Leaderboard';
 import {ChatButton} from './components/ChatButton';
 import {ChatPanel} from './components/ChatPanel';
@@ -542,6 +543,22 @@ export default function App() {
 						setClaimOpen(false);
 					}}
 					onClose={() => setClaimOpen(false)}
+					participants={participants}
+				/>
+			)}
+
+			{identityOpen && (
+				<IdentityPrompt
+					onChoose={(name) => {
+						identity.choose(name);
+
+						if (name) {
+							acTrack('identified', {name});
+						}
+
+						setIdentityOpen(false);
+					}}
+					onClose={() => setIdentityOpen(false)}
 					participants={participants}
 				/>
 			)}
