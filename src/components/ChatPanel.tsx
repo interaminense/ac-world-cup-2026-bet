@@ -117,7 +117,7 @@ export function ChatPanel({
 	};
 
 	return (
-		<div className="fixed inset-y-0 right-0 z-50 flex w-full flex-col border-l border-white/10 bg-slate-900 shadow-2xl sm:w-80 md:w-96">
+		<div className="fixed inset-y-0 right-0 z-50 flex w-full flex-col overflow-hidden border-l border-white/10 bg-slate-900 shadow-2xl sm:w-80 md:w-96">
 			<div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
 				<div className="min-w-0">
 					<p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-400">
@@ -138,7 +138,7 @@ export function ChatPanel({
 				</button>
 			</div>
 
-			<div className="flex-1 space-y-3 overflow-y-auto p-4">
+			<div className="flex-1 space-y-3 overflow-y-auto overflow-x-hidden p-4">
 				{messages.length === 0 ? (
 					<p className="pt-8 text-center text-sm text-slate-500">
 						No messages yet — be the first!
@@ -159,7 +159,7 @@ export function ChatPanel({
 								/>
 
 								<div
-									className={`flex max-w-[75%] flex-col gap-0.5 ${isMe ? 'items-end' : 'items-start'}`}
+									className={`flex min-w-0 max-w-[75%] flex-col gap-0.5 ${isMe ? 'items-end' : 'items-start'}`}
 								>
 									{!isMe && (
 										<span className="text-[10px] font-medium text-sky-300">
@@ -168,7 +168,7 @@ export function ChatPanel({
 									)}
 
 									<div
-										className={`rounded-2xl px-3 py-1.5 text-sm leading-relaxed ${
+										className={`break-words rounded-2xl px-3 py-1.5 text-sm leading-relaxed ${
 											isMe
 												? 'rounded-tr-sm bg-emerald-500/25 text-white'
 												: 'rounded-tl-sm bg-white/10 text-slate-200'
