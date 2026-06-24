@@ -7,14 +7,22 @@ import {Leaderboard} from './Leaderboard';
 // main group-stage leaderboard. Picks score on the in-app knockout predictions.
 export function KnockoutLeaderboard({
 	leader,
+	myReactions,
+	onClearReaction,
 	onHype,
+	onReact,
 	onSelect,
+	reactions,
 	rows,
 	youName,
 }: {
 	leader: {name: string; stats: ParticipantStats} | null;
+	myReactions?: Record<string, string[]>;
+	onClearReaction?: (name: string, emoji: string) => void;
 	onHype: (rx: number, ry: number) => void;
+	onReact?: (name: string, emoji: string) => void;
 	onSelect: (name: string) => void;
+	reactions?: Record<string, Record<string, number>>;
 	rows: KnockoutStandingRow[];
 	youName: string | null;
 }) {
@@ -39,8 +47,12 @@ export function KnockoutLeaderboard({
 	return (
 		<Leaderboard
 			leader={leader ?? undefined}
+			myReactions={myReactions}
+			onClearReaction={onClearReaction}
 			onHype={onHype}
+			onReact={onReact}
 			onSelect={onSelect}
+			reactions={reactions}
 			rows={leaderboardRows}
 			youName={youName}
 		/>

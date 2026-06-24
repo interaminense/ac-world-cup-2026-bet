@@ -858,10 +858,16 @@ export default function App() {
 						element={
 							<KnockoutView
 								leader={knockoutLeader}
+								myReactions={mine}
+								onClearReaction={
+									auth.isOwner ? clearPlayerReaction : undefined
+								}
 								onHype={hype}
+								onReact={react}
 								onSelect={(name) =>
 									navigate(`/bets/${name.toLowerCase()}`)
 								}
+								reactions={counts}
 								rows={knockoutStandings}
 								youName={presenceName}
 							/>
