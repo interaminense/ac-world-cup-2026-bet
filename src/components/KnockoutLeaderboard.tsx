@@ -29,6 +29,7 @@ export function KnockoutLeaderboard({
 		exactCount: row.exact,
 		livePoints: 0,
 		name: row.name,
+		photoURL: row.photoURL,
 		rank: row.rank,
 		total: row.points,
 	}));

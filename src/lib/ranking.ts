@@ -65,6 +65,7 @@ export interface LeaderboardRow {
 	livePoints: number;
 	movement?: number;
 	name: string;
+	photoURL?: string | null;
 	rank: number;
 	total: number;
 }

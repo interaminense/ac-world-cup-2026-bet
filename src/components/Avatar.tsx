@@ -3,10 +3,13 @@ import {getAvatarUrl} from '../lib/avatars';
 interface AvatarProps {
 	className: string;
 	name: string;
+	photoURL?: string | null;
 }
 
-export function Avatar({className, name}: AvatarProps) {
-	const url = getAvatarUrl(name);
+export function Avatar({className, name, photoURL}: AvatarProps) {
+	// Known pool member → their Slack photo; else the profile photo (e.g. a new
+	// Google participant); else the initial below.
+	const url = getAvatarUrl(name) ?? photoURL ?? undefined;
 
 	if (url) {
 		return (
@@ -14,6 +17,7 @@ export function Avatar({className, name}: AvatarProps) {
 				alt={name}
 				className={`shrink-0 object-cover ${className}`}
 				loading="lazy"
+				referrerPolicy="no-referrer"
 				src={url}
 			/>
 		);

@@ -50,8 +50,8 @@ describe('knockoutRoster', () => {
 		const roster = knockoutRoster(profiles, approvals, PARTICIPANTS);
 
 		expect(roster).toEqual([
-			{name: 'Adriano', uid: 'u2'},
-			{name: 'Newbie', uid: 'u1'},
+			{name: 'Adriano', photoURL: null, uid: 'u2'},
+			{name: 'Newbie', photoURL: null, uid: 'u1'},
 		]);
 	});
 
@@ -62,7 +62,7 @@ describe('knockoutRoster', () => {
 			[]
 		);
 
-		expect(roster).toEqual([{name: 'Plain Name', uid: 'u1'}]);
+		expect(roster).toEqual([{name: 'Plain Name', photoURL: null, uid: 'u1'}]);
 	});
 });
 

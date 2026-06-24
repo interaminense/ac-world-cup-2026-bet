@@ -107,6 +107,7 @@ export function Leaderboard({
 											<Avatar
 												className="h-8 w-8 shrink-0 rounded-full"
 												name={row.name}
+												photoURL={row.photoURL}
 											/>
 
 											<div className="min-w-0">

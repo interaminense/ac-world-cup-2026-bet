@@ -9,6 +9,7 @@ const TIER_POINTS = [25, 18, 15, 12, 10, 0];
 
 export interface KnockoutRosterRow {
 	name: string;
+	photoURL?: string | null;
 	uid: string;
 }
 
@@ -55,7 +56,7 @@ export function knockoutRoster(
 			? slugToName.get(claimed) ?? displayName(profile, claimed)
 			: displayName(profile, uid);
 
-		rows.push({name, uid});
+		rows.push({name, photoURL: profile?.photoURL ?? null, uid});
 	}
 
 	return rows.sort((a, b) => a.name.localeCompare(b.name));
@@ -93,6 +94,7 @@ export function pendingKnockout(
 export interface KnockoutStandingRow {
 	exact: number;
 	name: string;
+	photoURL?: string | null;
 	played: number;
 	points: number;
 	rank: number;
@@ -111,7 +113,7 @@ export function buildKnockoutStandings(
 	);
 
 	const scored = roster
-		.map(({name, uid}) => {
+		.map(({name, photoURL, uid}) => {
 			const picks = picksByUid[uid] ?? {};
 
 			let exact = 0;
@@ -141,7 +143,7 @@ export function buildKnockoutStandings(
 				}
 			}
 
-			return {exact, name, played, points, uid};
+			return {exact, name, photoURL, played, points, uid};
 		})
 		.sort(
 			(a, b) =>
