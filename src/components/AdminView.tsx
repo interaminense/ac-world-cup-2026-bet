@@ -1,5 +1,7 @@
 // src/components/AdminView.tsx
 import {pendingKnockout} from '../lib/knockoutStandings';
+import {NAV_ITEMS, orderMenu} from '../lib/nav';
+import {useMenu} from '../lib/useMenu';
 import {useProfiles} from '../lib/useProfiles';
 import {Avatar} from './Avatar';
 
@@ -17,6 +19,10 @@ export function AdminView() {
 		setBlocked,
 		unlink,
 	} = useProfiles();
+
+	const {config: menuConfig, move, setHidden} = useMenu();
+	const menuRows = orderMenu(NAV_ITEMS, menuConfig);
+	const menuHidden = menuConfig.hidden ?? {};
 
 	const pending = rows.filter((row) => row.pending);
 	const knockoutSignups = pendingKnockout(profiles, approvals);
@@ -175,6 +181,60 @@ export function AdminView() {
 							</button>
 						</li>
 					))}
+				</ul>
+			</section>
+
+			<section>
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+					Menu
+				</h3>
+
+				<ul className="space-y-2">
+					{menuRows.map((item, index) => {
+						const isHidden = Boolean(menuHidden[item.id]);
+
+						return (
+							<li
+								className={`flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 ${
+									isHidden ? 'opacity-50' : ''
+								}`}
+								key={item.id}
+							>
+								<span aria-hidden className="text-lg">
+									{item.icon}
+								</span>
+
+								<span className="min-w-0 flex-1 truncate text-sm font-medium text-white">
+									{item.label}
+								</span>
+
+								<button
+									aria-label="Move up"
+									className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-slate-300 transition hover:bg-white/20 disabled:opacity-30"
+									disabled={index === 0}
+									onClick={() => move(item.id, -1)}
+								>
+									↑
+								</button>
+
+								<button
+									aria-label="Move down"
+									className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-slate-300 transition hover:bg-white/20 disabled:opacity-30"
+									disabled={index === menuRows.length - 1}
+									onClick={() => move(item.id, 1)}
+								>
+									↓
+								</button>
+
+								<button
+									className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-slate-300 transition hover:bg-white/20"
+									onClick={() => setHidden(item.id, !isHidden)}
+								>
+									{isHidden ? 'Show' : 'Hide'}
+								</button>
+							</li>
+						);
+					})}
 				</ul>
 			</section>
 		</div>

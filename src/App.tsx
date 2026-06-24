@@ -43,7 +43,7 @@ import {detectLocale, localize, stripEmoji} from './lib/locale';
 import {buildStats} from './lib/stats';
 import {buildKnockoutCards, isKnockoutPickable} from './lib/knockoutCards';
 import {buildMatchCards} from './lib/matches';
-import {currentNavItem} from './lib/nav';
+import {currentNavItem, NAV_ITEMS, visibleMenu} from './lib/nav';
 import {buildParticipantStats} from './lib/participantStats';
 import {loadParticipants} from './lib/predictions';
 import {buildKnockoutStandings, knockoutRoster} from './lib/knockoutStandings';
@@ -60,6 +60,7 @@ import {type KnockoutIdentity, useKnockoutPicks} from './lib/useKnockoutPicks';
 import {useIdentity} from './lib/useIdentity';
 import {useCelebrate} from './lib/useCelebrate';
 import {useLeaderHype} from './lib/useLeaderHype';
+import {useMenu} from './lib/useMenu';
 import {usePresence} from './lib/usePresence';
 import {useMatchReactions, useReactions} from './lib/useReactions';
 
@@ -139,6 +140,12 @@ export default function App() {
 		identity.name
 	);
 	const auth = useAuth();
+
+	const {config: menuConfig} = useMenu();
+	const menuItems = useMemo(
+		() => visibleMenu(NAV_ITEMS, menuConfig),
+		[menuConfig]
+	);
 
 	// All approvals (small) so the signed-in viewer knows their linked participant.
 	const [approvals, setApprovals] = useState<Record<string, Approval>>({});
@@ -649,11 +656,13 @@ export default function App() {
 
 			<NavBar
 				isOwner={auth.isOwner}
+				items={menuItems}
 				participants={participants.map((participant) => participant.name)}
 			/>
 
 			<NavDrawer
 				isOwner={auth.isOwner}
+				items={menuItems}
 				onClose={() => setMenuOpen(false)}
 				open={menuOpen}
 				participants={participants.map((participant) => participant.name)}

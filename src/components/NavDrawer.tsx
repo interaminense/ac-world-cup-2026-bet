@@ -1,18 +1,20 @@
 import {useEffect, useState} from 'react';
 import {NavLink, useLocation} from 'react-router-dom';
 
-import {NAV_ITEMS} from '../lib/nav';
+import type {NavItem} from '../lib/nav';
 
 // Right-side slide-in menu. Lists every nav item (current one highlighted);
 // "Bets" expands into the participant list. Picking an item navigates and
 // closes the drawer.
 export function NavDrawer({
 	isOwner,
+	items,
 	onClose,
 	open,
 	participants,
 }: {
 	isOwner: boolean;
+	items: NavItem[];
 	onClose: () => void;
 	open: boolean;
 	participants: string[];
@@ -78,7 +80,7 @@ export function NavDrawer({
 					</button>
 				</div>
 
-				{NAV_ITEMS.filter((item) => !item.desktopOnly).map((item) =>
+				{items.filter((item) => !item.desktopOnly).map((item) =>
 					item.to === '/bets' ? (
 						<div key={item.to}>
 							<button

@@ -1,6 +1,6 @@
 import {NavLink} from 'react-router-dom';
 
-import {NAV_ITEMS} from '../lib/nav';
+import type {NavItem} from '../lib/nav';
 
 const itemClass = ({isActive}: {isActive: boolean}) =>
 	`flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
@@ -13,15 +13,17 @@ const itemClass = ({isActive}: {isActive: boolean}) =>
 // opens the drawer instead). Hovering "Bets" reveals the participant list.
 export function NavBar({
 	isOwner,
+	items,
 	participants,
 }: {
 	isOwner: boolean;
+	items: NavItem[];
 	participants: string[];
 }) {
 	return (
 		<nav className="hidden border-b border-white/10 bg-slate-950 sm:block">
 			<div className="mx-auto flex max-w-5xl items-center gap-1 px-4">
-				{NAV_ITEMS.map((item) =>
+				{items.map((item) =>
 					item.to === '/bets' ? (
 						<div className="group relative" key={item.to}>
 							<NavLink className={itemClass} to={item.to}>

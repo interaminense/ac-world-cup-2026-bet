@@ -3,28 +3,72 @@ export interface NavItem {
 	desktopOnly?: boolean;
 	end?: boolean;
 	icon: string;
+	id: string;
 	label: string;
 	to: string;
 }
 
-// Single source for the menu — used by the sidebar drawer and the page title.
+// Single source for the menu — used by the top nav, the sidebar drawer, and the
+// page title. `id` is the stable key the owner's menu manager orders/hides by.
 export const NAV_ITEMS: NavItem[] = [
-	{end: true, icon: '🏆', label: 'Leaderboard', to: '/'},
-	{icon: '🥇', label: 'Knockout Stage', to: '/knockout'},
-	{icon: '⚽', label: 'Matches', to: '/matches'},
-	{icon: '🗂️', label: 'Groups', to: '/groups'},
-	{icon: '🎯', label: 'Participants', to: '/bets'},
-	{icon: '⚔️', label: 'Head to Head', to: '/h2h'},
-	{icon: '📊', label: 'Stats', to: '/stats'},
-	{desktopOnly: true, icon: '🎮', label: 'Arena', to: '/arena'},
-	{icon: '📜', label: 'Rules', to: '/rules'},
+	{end: true, icon: '🏆', id: 'leaderboard', label: 'Leaderboard', to: '/'},
+	{icon: '🥇', id: 'knockout', label: 'Knockout Stage', to: '/knockout'},
+	{icon: '⚽', id: 'matches', label: 'Matches', to: '/matches'},
+	{icon: '🗂️', id: 'groups', label: 'Groups', to: '/groups'},
+	{icon: '🎯', id: 'bets', label: 'Participants', to: '/bets'},
+	{icon: '⚔️', id: 'h2h', label: 'Head to Head', to: '/h2h'},
+	{icon: '📊', id: 'stats', label: 'Stats', to: '/stats'},
+	{desktopOnly: true, icon: '🎮', id: 'arena', label: 'Arena', to: '/arena'},
+	{icon: '📜', id: 'rules', label: 'Rules', to: '/rules'},
 ];
 
+// menu/{order,hidden} — written by the owner via the admin menu manager.
+export interface MenuConfig {
+	hidden?: Record<string, boolean>;
+	order?: string[];
+}
+
+// All items in the owner's configured order: ids listed in `order` first (in
+// that order), then any items not listed, in their original order. Unknown ids
+// in `order` are ignored, so renaming/removing a NAV_ITEM never breaks.
+export function orderMenu(items: NavItem[], config: MenuConfig): NavItem[] {
+	const byId = new Map(items.map((item) => [item.id, item]));
+	const seen = new Set<string>();
+	const result: NavItem[] = [];
+
+	for (const id of config.order ?? []) {
+		const item = byId.get(id);
+
+		if (item && !seen.has(id)) {
+			result.push(item);
+			seen.add(id);
+		}
+	}
+
+	for (const item of items) {
+		if (!seen.has(item.id)) {
+			result.push(item);
+			seen.add(item.id);
+		}
+	}
+
+	return result;
+}
+
+// The visible menu, ordered — what the nav renders.
+export function visibleMenu(items: NavItem[], config: MenuConfig): NavItem[] {
+	const hidden = config.hidden ?? {};
+
+	return orderMenu(items, config).filter((item) => !hidden[item.id]);
+}
+
 // The item matching the current route — exact for "/", prefix for the rest, so
-// /bets/adriano still resolves to "Bets".
-// Profile is reachable from the header avatar, not the menu, so it has no
-// NAV_ITEM — give it a title here instead of falling back to "Leaderboard".
-const OFF_MENU: NavItem[] = [{icon: '👤', label: 'Profile', to: '/profile'}];
+// /bets/adriano still resolves to "Participants". Profile is reachable from the
+// header avatar, not the menu, so it has no NAV_ITEM — give it a title here
+// instead of falling back to "Leaderboard".
+const OFF_MENU: NavItem[] = [
+	{icon: '👤', id: 'profile', label: 'Profile', to: '/profile'},
+];
 
 export function currentNavItem(pathname: string): NavItem {
 	return (
