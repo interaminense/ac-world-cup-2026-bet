@@ -859,6 +859,9 @@ export default function App() {
 							<KnockoutView
 								leader={knockoutLeader}
 								onHype={hype}
+								onSelect={(name) =>
+									navigate(`/bets/${name.toLowerCase()}`)
+								}
 								rows={knockoutStandings}
 								youName={presenceName}
 							/>

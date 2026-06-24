@@ -11,6 +11,7 @@ export interface MatchEntry {
 	name: string;
 	p1: number;
 	p2: number;
+	photoURL?: string | null;
 	points: number | null;
 }
 

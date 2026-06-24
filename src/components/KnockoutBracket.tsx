@@ -79,6 +79,7 @@ function PicksPopover({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
 		name: pick.name,
 		p1: pick.p1,
 		p2: pick.p2,
+		photoURL: pick.photoURL,
 		points: resolved
 			? scorePrediction(
 					pick.p1,

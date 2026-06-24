@@ -8,11 +8,13 @@ import {KnockoutLeaderboard} from './KnockoutLeaderboard';
 export function KnockoutView({
 	leader,
 	onHype,
+	onSelect,
 	rows,
 	youName,
 }: {
 	leader: {name: string; stats: ParticipantStats} | null;
 	onHype: (rx: number, ry: number) => void;
+	onSelect: (name: string) => void;
 	rows: KnockoutStandingRow[];
 	youName: string | null;
 }) {
@@ -34,6 +36,7 @@ export function KnockoutView({
 				<KnockoutLeaderboard
 					leader={leader}
 					onHype={onHype}
+					onSelect={onSelect}
 					rows={rows}
 					youName={youName}
 				/>

@@ -2,10 +2,15 @@ import type {MatchEntry} from '../lib/matches';
 import {Avatar} from './Avatar';
 import {TIER_STYLES} from './StatusChip';
 
+interface Player {
+	name: string;
+	photoURL?: string | null;
+}
+
 interface PredictionGroup {
-	names: string[];
 	p1: number;
 	p2: number;
+	players: Player[];
 	points: number | null;
 }
 
@@ -18,15 +23,16 @@ function predictionGroups(entries: MatchEntry[]): PredictionGroup[] {
 	for (const entry of entries) {
 		const key = `${entry.p1}-${entry.p2}`;
 		const group = groups.get(key);
+		const player: Player = {name: entry.name, photoURL: entry.photoURL};
 
 		if (group) {
-			group.names.push(entry.name);
+			group.players.push(player);
 		}
 		else {
 			groups.set(key, {
-				names: [entry.name],
 				p1: entry.p1,
 				p2: entry.p2,
+				players: [player],
 				points: entry.points,
 			});
 		}
@@ -35,7 +41,7 @@ function predictionGroups(entries: MatchEntry[]): PredictionGroup[] {
 	return [...groups.values()].sort(
 		(a, b) =>
 			(b.points ?? -1) - (a.points ?? -1) ||
-			b.names.length - a.names.length ||
+			b.players.length - a.players.length ||
 			a.p1 - b.p1 ||
 			a.p2 - b.p2
 	);
@@ -70,17 +76,18 @@ export function MatchPicks({
 					>
 						<td className="py-1.5 pr-2">
 							<div className="flex flex-wrap gap-1">
-								{group.names.map((name) => (
+								{group.players.map((player) => (
 									<span
 										className="inline-flex items-center gap-1 rounded-full bg-white/10 py-0.5 pl-0.5 pr-2 text-xs text-slate-200"
-										key={name}
+										key={player.name}
 									>
 										<Avatar
 											className="h-4 w-4 rounded-full text-[8px]"
-											name={name}
+											name={player.name}
+											photoURL={player.photoURL}
 										/>
 
-										{name}
+										{player.name}
 									</span>
 								))}
 							</div>
