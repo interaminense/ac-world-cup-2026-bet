@@ -5,7 +5,6 @@ import {
 	onAuthStateChanged,
 	signInAnonymously,
 	signInWithPopup,
-	signInWithRedirect,
 	signOut,
 } from 'firebase/auth';
 import {getDatabase} from 'firebase/database';
@@ -29,13 +28,11 @@ export const db = getDatabase(app);
 
 export const googleProvider = new GoogleAuthProvider();
 
-// Popup on desktop; redirect on mobile/PWA where popups are unreliable.
+// Popup everywhere. The redirect flow loses its session on the deployed domain
+// (the cross-origin authDomain's storage gets partitioned by Safari/Chrome on
+// mobile), so the user came back signed out. The popup keeps the session.
 export function signInWithGoogle() {
-	const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-
-	return isMobile
-		? signInWithRedirect(auth, googleProvider)
-		: signInWithPopup(auth, googleProvider);
+	return signInWithPopup(auth, googleProvider);
 }
 
 export function signOutUser() {
