@@ -50,6 +50,7 @@ import {
 	buildKnockoutLeaderStats,
 	buildKnockoutStandings,
 	knockoutRoster,
+	mergeKnockoutParticipants,
 } from './lib/knockoutStandings';
 import {approvedParticipant, type Approval, type Profile} from './lib/profiles';
 import {buildLeaderboardWithMovement} from './lib/ranking';
@@ -533,14 +534,26 @@ export default function App() {
 		[knockoutMatches, knockoutPicksByMatch]
 	);
 
+	const knockoutRosterRows = useMemo(
+		() => knockoutRoster(profiles, approvals, participants),
+		[profiles, approvals, participants]
+	);
+
 	const knockoutStandings = useMemo(
 		() =>
 			buildKnockoutStandings(
-				knockoutRoster(profiles, approvals, participants),
+				knockoutRosterRows,
 				knockoutPicksByUid,
 				knockoutMatches
 			),
-		[profiles, approvals, participants, knockoutPicksByUid, knockoutMatches]
+		[knockoutRosterRows, knockoutPicksByUid, knockoutMatches]
+	);
+
+	// CSV players plus approved knockout newcomers, for the Participants menu and
+	// their profile pages (the group-stage computations keep using `participants`).
+	const menuParticipants = useMemo(
+		() => mergeKnockoutParticipants(participants, knockoutRosterRows),
+		[participants, knockoutRosterRows]
 	);
 
 	const knockoutLeader = useMemo(
@@ -671,7 +684,9 @@ export default function App() {
 			<NavBar
 				isOwner={auth.isOwner}
 				items={menuItems}
-				participants={participants.map((participant) => participant.name)}
+				participants={menuParticipants.map(
+					(participant) => participant.name
+				)}
 			/>
 
 			<NavDrawer
@@ -679,7 +694,9 @@ export default function App() {
 				items={menuItems}
 				onClose={() => setMenuOpen(false)}
 				open={menuOpen}
-				participants={participants.map((participant) => participant.name)}
+				participants={menuParticipants.map(
+					(participant) => participant.name
+				)}
 			/>
 
 			<LiveGames
@@ -802,7 +819,7 @@ export default function App() {
 								games={games}
 								myReactions={mine}
 								onReact={react}
-								participants={participants}
+								participants={menuParticipants}
 								reactions={counts}
 							/>
 						}

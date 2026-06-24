@@ -5,6 +5,7 @@ import {
 	buildKnockoutLeaderStats,
 	buildKnockoutStandings,
 	knockoutRoster,
+	mergeKnockoutParticipants,
 	pendingKnockout,
 } from './knockoutStandings';
 import type {Approval, Profile} from './profiles';
@@ -118,6 +119,20 @@ describe('buildKnockoutStandings', () => {
 		]);
 
 		expect(rows.every((r) => r.points === 0 && r.rank === 1)).toBe(true);
+	});
+});
+
+describe('mergeKnockoutParticipants', () => {
+	it('adds approved newcomers as empty-prediction participants, sorted, no dupes', () => {
+		const merged = mergeKnockoutParticipants(PARTICIPANTS, [
+			{name: 'Adriano', uid: 'u1'},
+			{name: 'Newbie', uid: 'u2'},
+		]);
+
+		expect(merged.map((p) => p.name)).toEqual(['Adriano', 'Newbie']);
+		expect(merged.find((p) => p.name === 'Newbie')?.predictions).toEqual([]);
+		// the CSV Adriano (with its predictions) is kept, not duplicated.
+		expect(merged.filter((p) => p.name === 'Adriano')).toHaveLength(1);
 	});
 });
 

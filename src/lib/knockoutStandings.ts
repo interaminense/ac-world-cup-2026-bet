@@ -62,6 +62,26 @@ export function knockoutRoster(
 	return rows.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+// CSV participants plus the approved knockout newcomers (who have no group-stage
+// CSV) as empty-prediction participants, so they show up in the Participants
+// menu and get a profile page. Sorted by name; existing names aren't duplicated.
+export function mergeKnockoutParticipants(
+	participants: Participant[],
+	roster: KnockoutRosterRow[]
+): Participant[] {
+	const known = new Set(
+		participants.map((participant) => participant.name.toLowerCase())
+	);
+
+	const newcomers: Participant[] = roster
+		.filter((row) => !known.has(row.name.toLowerCase()))
+		.map((row) => ({name: row.name, predictions: []}));
+
+	return [...participants, ...newcomers].sort((a, b) =>
+		a.name.localeCompare(b.name)
+	);
+}
+
 // Users who asked to join the knockout but the owner hasn't approved (and who
 // aren't blocked) — the admin sign-up queue.
 export function pendingKnockout(
