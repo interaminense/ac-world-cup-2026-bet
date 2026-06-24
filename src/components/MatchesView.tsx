@@ -15,11 +15,30 @@ import {Reactions} from './Reactions';
 import {StatusChip, TIER_STYLES} from './StatusChip';
 import {WhatIfPanel} from './WhatIfPanel';
 
+// Per-knockout-card pick state handed to a match card so a signed-in user can
+// predict the scoreline inline (group-stage cards have no in-app entry).
+interface KnockoutEntry {
+	myPick?: {p1: number; p2: number};
+	onPick: (p1: number, p2: number) => void;
+	onSignIn?: () => void;
+	pickable: boolean;
+	signedIn: boolean;
+}
+
+interface KnockoutSection {
+	info: Record<number, {myPick?: {p1: number; p2: number}; pickable: boolean}>;
+	onPick: (matchNo: number, p1: number, p2: number) => void;
+	onSignIn?: () => void;
+	signedIn: boolean;
+}
+
 interface MatchesViewProps {
 	cards: MatchCard[];
 	cheers: CheerCounts;
 	commentary: Record<number, string>;
 	games: Game[];
+	knockoutCards: MatchCard[];
+	knockoutPick: KnockoutSection;
 	matchReactions: ReactionsApi;
 	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
@@ -112,11 +131,94 @@ function predictionGroups(entries: MatchCard['entries']): PredictionGroup[] {
 	);
 }
 
+function Stepper({
+	onChange,
+	value,
+}: {
+	onChange: (next: number) => void;
+	value: number;
+}) {
+	return (
+		<span className="flex items-center gap-1">
+			<button
+				aria-label="menos"
+				className="flex h-6 w-6 items-center justify-center rounded bg-white/10 text-sm leading-none text-slate-300 hover:bg-white/20"
+				onClick={() => onChange(Math.max(0, value - 1))}
+			>
+				−
+			</button>
+
+			<span className="w-5 text-center font-display text-base font-bold text-white">
+				{value}
+			</span>
+
+			<button
+				aria-label="mais"
+				className="flex h-6 w-6 items-center justify-center rounded bg-white/10 text-sm leading-none text-slate-300 hover:bg-white/20"
+				onClick={() => onChange(Math.min(20, value + 1))}
+			>
+				+
+			</button>
+		</span>
+	);
+}
+
+function KnockoutPickRow({
+	entry,
+	team1,
+	team2,
+}: {
+	entry: KnockoutEntry;
+	team1: string;
+	team2: string;
+}) {
+	if (!entry.pickable) {
+		return (
+			<div className="mb-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-xs text-slate-500">
+				Aguardando os times
+			</div>
+		);
+	}
+
+	if (!entry.signedIn) {
+		return (
+			<button
+				className="mb-3 w-full rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-4 py-2 text-sm font-medium text-emerald-300"
+				onClick={entry.onSignIn}
+			>
+				👋 Entre com Google para palpitar
+			</button>
+		);
+	}
+
+	const p1 = entry.myPick?.p1 ?? 0;
+	const p2 = entry.myPick?.p2 ?? 0;
+
+	return (
+		<div className="mb-3 flex flex-wrap items-center justify-center gap-2 rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-3 py-2">
+			<span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
+				Seu palpite
+			</span>
+
+			<Flag team={team1} />
+
+			<Stepper onChange={(n) => entry.onPick(n, p2)} value={p1} />
+
+			<span className="text-slate-500">×</span>
+
+			<Stepper onChange={(n) => entry.onPick(p1, n)} value={p2} />
+
+			<Flag team={team2} />
+		</div>
+	);
+}
+
 function MatchCardArticle({
 	card,
 	cheers,
 	commentary,
 	games,
+	knockoutEntry,
 	matchReactions,
 	onClearCommentary,
 	onClearMatchReaction,
@@ -127,6 +229,7 @@ function MatchCardArticle({
 	cheers: CheerCounts;
 	commentary: Record<number, string>;
 	games: Game[];
+	knockoutEntry?: KnockoutEntry;
 	matchReactions: ReactionsApi;
 	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
@@ -184,6 +287,14 @@ function MatchCardArticle({
 					{card.team2}
 				</span>
 			</div>
+
+			{knockoutEntry && (
+				<KnockoutPickRow
+					entry={knockoutEntry}
+					team1={card.team1}
+					team2={card.team2}
+				/>
+			)}
 
 			<table className="w-full text-left text-sm">
 				<thead>
@@ -248,7 +359,7 @@ function MatchCardArticle({
 				</tbody>
 			</table>
 
-			{card.status === 'live' && (
+			{card.status === 'live' && !knockoutEntry && (
 				<WhatIfPanel
 					games={games}
 					matchNo={card.matchNo}
@@ -308,6 +419,7 @@ function MatchSection({
 	emptyLabel,
 	games,
 	groups,
+	knockout,
 	matchReactions,
 	onClearCommentary,
 	onClearMatchReaction,
@@ -319,6 +431,7 @@ function MatchSection({
 	emptyLabel: string;
 	games: Game[];
 	groups: DayGroup[];
+	knockout: KnockoutSection;
 	matchReactions: ReactionsApi;
 	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
@@ -342,20 +455,36 @@ function MatchSection({
 					</h3>
 
 					<div className="grid gap-3 lg:grid-cols-2">
-						{group.cards.map((card) => (
-							<MatchCardArticle
-								card={card}
-								cheers={cheers}
-								commentary={commentary}
-								games={games}
-								key={card.matchNo}
-								matchReactions={matchReactions}
-								onClearCommentary={onClearCommentary}
-								onClearMatchReaction={onClearMatchReaction}
-								onMatchReact={onMatchReact}
-								participants={participants}
-							/>
-						))}
+						{group.cards.map((card) => {
+							const info = knockout.info[card.matchNo];
+
+							const knockoutEntry: KnockoutEntry | undefined = info
+								? {
+										myPick: info.myPick,
+										onPick: (p1, p2) =>
+											knockout.onPick(card.matchNo, p1, p2),
+										onSignIn: knockout.onSignIn,
+										pickable: info.pickable,
+										signedIn: knockout.signedIn,
+									}
+								: undefined;
+
+							return (
+								<MatchCardArticle
+									card={card}
+									cheers={cheers}
+									commentary={commentary}
+									games={games}
+									key={card.matchNo}
+									knockoutEntry={knockoutEntry}
+									matchReactions={matchReactions}
+									onClearCommentary={onClearCommentary}
+									onClearMatchReaction={onClearMatchReaction}
+									onMatchReact={onMatchReact}
+									participants={participants}
+								/>
+							);
+						})}
 					</div>
 				</div>
 			))}
@@ -412,14 +541,23 @@ export function MatchesView({
 	cheers,
 	commentary,
 	games,
+	knockoutCards,
+	knockoutPick,
 	matchReactions,
 	onClearCommentary,
 	onClearMatchReaction,
 	onMatchReact,
 	participants,
 }: MatchesViewProps) {
-	const upcoming = cards.filter((card) => card.status !== 'finished');
-	const finished = cards.filter((card) => card.status === 'finished');
+	// Optimistic layer over the round-tripped picks: the steppers read the draft
+	// immediately so rapid taps never read a stale score before Firebase echoes.
+	const [draft, setDraft] = useState<Record<number, {p1: number; p2: number}>>(
+		{}
+	);
+
+	const allCards = [...cards, ...knockoutCards];
+	const upcoming = allCards.filter((card) => card.status !== 'finished');
+	const finished = allCards.filter((card) => card.status === 'finished');
 
 	const hasLive = upcoming.some((card) => card.status === 'live');
 
@@ -431,6 +569,25 @@ export function MatchesView({
 		view === 'finished'
 			? groupByLocalDay([...finished].reverse())
 			: groupByLocalDay(upcoming);
+
+	const knockout: KnockoutSection = {
+		info: Object.fromEntries(
+			Object.entries(knockoutPick.info).map(([key, value]) => {
+				const num = Number(key);
+
+				return [
+					num,
+					{myPick: draft[num] ?? value.myPick, pickable: value.pickable},
+				];
+			})
+		),
+		onPick: (matchNo, p1, p2) => {
+			setDraft((previous) => ({...previous, [matchNo]: {p1, p2}}));
+			knockoutPick.onPick(matchNo, p1, p2);
+		},
+		onSignIn: knockoutPick.onSignIn,
+		signedIn: knockoutPick.signedIn,
+	};
 
 	return (
 		<div className="space-y-6">
@@ -477,6 +634,7 @@ export function MatchesView({
 					}
 					games={games}
 					groups={groups}
+					knockout={knockout}
 					matchReactions={matchReactions}
 					onClearCommentary={onClearCommentary}
 					onClearMatchReaction={onClearMatchReaction}

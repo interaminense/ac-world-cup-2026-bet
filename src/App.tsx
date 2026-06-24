@@ -39,6 +39,7 @@ import {db} from './lib/firebase';
 import {getMatchStatus} from './lib/games';
 import {detectLocale, localize, stripEmoji} from './lib/locale';
 import {buildStats} from './lib/stats';
+import {buildKnockoutCards, isKnockoutPickable} from './lib/knockoutCards';
 import {buildMatchCards} from './lib/matches';
 import {currentNavItem} from './lib/nav';
 import {buildParticipantStats} from './lib/participantStats';
@@ -51,6 +52,8 @@ import {useChatUnread} from './lib/useChatUnread';
 import {useCommentary} from './lib/useCommentary';
 import {type CheerCounts, useCheers} from './lib/useCheers';
 import {useGames} from './lib/useGames';
+import {useKnockout} from './lib/useKnockout';
+import {type KnockoutIdentity, useKnockoutPicks} from './lib/useKnockoutPicks';
 import {useIdentity} from './lib/useIdentity';
 import {useCelebrate} from './lib/useCelebrate';
 import {useLeaderHype} from './lib/useLeaderHype';
@@ -154,6 +157,26 @@ export default function App() {
 	const presenceName = myParticipantName ?? auth.profile?.name ?? null;
 	const presencePhoto = auth.profile?.photoURL ?? null;
 	const online = usePresence(presenceName, presencePhoto);
+
+	// Knockout picks: signed-in users predict the bracket games from the
+	// Upcoming tab. Identity carries the pool name when claimed, else the Google
+	// name, so picks read consistently with the rest of the app.
+	const knockoutMatches = useKnockout();
+
+	const knockoutIdentity: KnockoutIdentity | null =
+		!auth.isAnonymous && auth.user
+			? {
+					name: presenceName ?? 'Player',
+					photoURL: presencePhoto,
+					uid: auth.user.uid,
+				}
+			: null;
+
+	const {
+		byMatch: knockoutPicksByMatch,
+		mine: myKnockoutPicks,
+		setPick: setKnockoutPick,
+	} = useKnockoutPicks(knockoutIdentity);
 	const {hype, last: leaderHype, loaded: hypeLoaded} = useLeaderHype();
 	const {celebrate, last: celebrateEvent, loaded: celebrateLoaded} =
 		useCelebrate();
@@ -468,6 +491,31 @@ export default function App() {
 		[participants, games]
 	);
 
+	const knockoutCards = useMemo(
+		() =>
+			buildKnockoutCards(knockoutMatches, knockoutPicksByMatch, Date.now()),
+		[knockoutMatches, knockoutPicksByMatch]
+	);
+
+	const knockoutInfo = useMemo(
+		() =>
+			Object.fromEntries(
+				knockoutMatches.map((match) => [
+					match.matchNumber,
+					{
+						myPick: myKnockoutPicks[match.matchNumber]
+							? {
+									p1: myKnockoutPicks[match.matchNumber].p1,
+									p2: myKnockoutPicks[match.matchNumber].p2,
+								}
+							: undefined,
+						pickable: isKnockoutPickable(match, Date.now()),
+					},
+				])
+			),
+		[knockoutMatches, myKnockoutPicks]
+	);
+
 	const liveCards = cards.filter((card) => card.status === 'live');
 	const liveCard = liveCards.length === 1 ? liveCards[0] : null;
 
@@ -657,6 +705,13 @@ export default function App() {
 								cheers={cheerCounts}
 								commentary={commentary}
 								games={games}
+								knockoutCards={knockoutCards}
+								knockoutPick={{
+									info: knockoutInfo,
+									onPick: setKnockoutPick,
+									onSignIn: auth.signIn,
+									signedIn: !auth.isAnonymous && !!auth.user,
+								}}
 								matchReactions={matchReactions}
 								onClearCommentary={auth.isOwner ? clearMatchCommentary : undefined}
 								onClearMatchReaction={auth.isOwner ? clearMatchReaction : undefined}
