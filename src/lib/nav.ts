@@ -10,6 +10,7 @@ export interface NavItem {
 // Single source for the menu — used by the sidebar drawer and the page title.
 export const NAV_ITEMS: NavItem[] = [
 	{end: true, icon: '🏆', label: 'Leaderboard', to: '/'},
+	{icon: '🥇', label: 'Knockout Stage', to: '/knockout'},
 	{icon: '⚽', label: 'Matches', to: '/matches'},
 	{icon: '🗂️', label: 'Groups', to: '/groups'},
 	{icon: '🎯', label: 'Participants', to: '/bets'},

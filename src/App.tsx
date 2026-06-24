@@ -24,8 +24,10 @@ import {Leaderboard} from './components/Leaderboard';
 import {ChatButton} from './components/ChatButton';
 import {ChatPanel} from './components/ChatPanel';
 import {LiveGames} from './components/LiveGames';
+import {KnockoutLeaderboard} from './components/KnockoutLeaderboard';
 import {MatchesView} from './components/MatchesView';
 import {NavBar} from './components/NavBar';
+import {ProfileView} from './components/ProfileView';
 import {NavDrawer} from './components/NavDrawer';
 import {ReactionBurst} from './components/ReactionBurst';
 import {RulesView} from './components/RulesView';
@@ -44,7 +46,8 @@ import {buildMatchCards} from './lib/matches';
 import {currentNavItem} from './lib/nav';
 import {buildParticipantStats} from './lib/participantStats';
 import {loadParticipants} from './lib/predictions';
-import {approvedParticipant, type Approval} from './lib/profiles';
+import {buildKnockoutStandings, knockoutRoster} from './lib/knockoutStandings';
+import {approvedParticipant, type Approval, type Profile} from './lib/profiles';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
 import {useAuth} from './lib/useAuth';
@@ -147,6 +150,17 @@ export default function App() {
 		[]
 	);
 
+	// All profiles (small) so the knockout ranking can name every approved
+	// participant and the admin can see knockout sign-ups.
+	const [profiles, setProfiles] = useState<Record<string, Profile>>({});
+	useEffect(
+		() =>
+			onValue(ref(db, 'profiles'), (snapshot) => {
+				setProfiles((snapshot.val() as Record<string, Profile>) ?? {});
+			}),
+		[]
+	);
+
 	const myParticipantSlug = approvedParticipant(approvals, auth.user?.uid ?? null);
 	const myParticipantName =
 		participants.find((p) => participantSlug(p.name) === myParticipantSlug)
@@ -174,9 +188,20 @@ export default function App() {
 
 	const {
 		byMatch: knockoutPicksByMatch,
+		byUid: knockoutPicksByUid,
 		mine: myKnockoutPicks,
 		setPick: setKnockoutPick,
 	} = useKnockoutPicks(knockoutIdentity);
+
+	const myKnockoutApproval = auth.user ? approvals[auth.user.uid] : undefined;
+	const knockoutApproved = Boolean(
+		myKnockoutApproval &&
+			!myKnockoutApproval.blocked &&
+			(myKnockoutApproval.knockout === true ||
+				myKnockoutApproval.participant)
+	);
+	const knockoutPending =
+		Boolean(auth.profile?.wantsKnockout) && !knockoutApproved;
 	const {hype, last: leaderHype, loaded: hypeLoaded} = useLeaderHype();
 	const {celebrate, last: celebrateEvent, loaded: celebrateLoaded} =
 		useCelebrate();
@@ -497,6 +522,16 @@ export default function App() {
 		[knockoutMatches, knockoutPicksByMatch]
 	);
 
+	const knockoutStandings = useMemo(
+		() =>
+			buildKnockoutStandings(
+				knockoutRoster(profiles, approvals, participants),
+				knockoutPicksByUid,
+				knockoutMatches
+			),
+		[profiles, approvals, participants, knockoutPicksByUid, knockoutMatches]
+	);
+
 	const knockoutInfo = useMemo(
 		() =>
 			Object.fromEntries(
@@ -578,6 +613,7 @@ export default function App() {
 				authPhotoURL={auth.profile?.photoURL ?? null}
 				online={online}
 				onMenuClick={() => setMenuOpen(true)}
+				onProfile={() => navigate('/profile')}
 				onSignIn={auth.signIn}
 				onSignOut={auth.signOut}
 				signedIn={!auth.isAnonymous && !!auth.user}
@@ -793,6 +829,33 @@ export default function App() {
 							)
 						}
 						path="/admin"
+					/>
+
+					<Route
+						element={
+							<KnockoutLeaderboard
+								rows={knockoutStandings}
+								youUid={auth.user?.uid ?? null}
+							/>
+						}
+						path="/knockout"
+					/>
+
+					<Route
+						element={
+							<ProfileView
+								approved={knockoutApproved}
+								isAnonymous={auth.isAnonymous}
+								name={auth.profile?.name ?? null}
+								nickname={auth.profile?.nickname ?? null}
+								onRequestKnockout={auth.requestKnockout}
+								onSetNickname={auth.setNickname}
+								onSignIn={auth.signIn}
+								pending={knockoutPending}
+								photoURL={auth.profile?.photoURL ?? null}
+							/>
+						}
+						path="/profile"
 					/>
 
 					<Route element={<Navigate replace to="/" />} path="*" />

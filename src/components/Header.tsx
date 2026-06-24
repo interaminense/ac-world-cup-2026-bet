@@ -7,6 +7,7 @@ interface HeaderProps {
 	authPhotoURL: string | null;
 	online: OnlineUser[];
 	onMenuClick: () => void;
+	onProfile: () => void;
 	onSignIn: () => void;
 	onSignOut: () => void;
 	signedIn: boolean;
@@ -18,6 +19,7 @@ export function Header({
 	authPhotoURL,
 	online,
 	onMenuClick,
+	onProfile,
 	onSignIn,
 	onSignOut,
 	signedIn,
@@ -47,6 +49,7 @@ export function Header({
 						<div className="hidden items-center gap-3 sm:flex">
 							<AuthButton
 								name={authName}
+								onProfile={onProfile}
 								onSignIn={onSignIn}
 								onSignOut={onSignOut}
 								photoURL={authPhotoURL}
@@ -83,6 +86,7 @@ export function Header({
 				<div className="mt-4 flex items-center justify-end gap-3 sm:hidden">
 					<AuthButton
 						name={authName}
+						onProfile={onProfile}
 						onSignIn={onSignIn}
 						onSignOut={onSignOut}
 						photoURL={authPhotoURL}
