@@ -7,7 +7,7 @@ describe('emitSignal', () => {
 		vi.unstubAllGlobals();
 	});
 
-	it('posts the event wrapped in a stringified payload to the webhook', () => {
+	it('posts the event fields at the top level of the body', () => {
 		const fetchMock = vi.fn().mockResolvedValue({ok: true});
 		vi.stubGlobal('fetch', fetchMock);
 
@@ -27,16 +27,13 @@ describe('emitSignal', () => {
 
 		const body = JSON.parse(init.body as string);
 
-		expect(typeof body.payload).toBe('string');
-
-		const payload = JSON.parse(body.payload);
-
-		expect(payload.event).toBe('knockout_entry_request');
-		expect(payload.name).toBe('Ana');
-		expect(payload.email).toBe('ana@example.com');
-		expect(payload.uid).toBe('u1');
-		expect(payload.demo).toBe(false);
-		expect(typeof payload.at).toBe('string');
+		expect(body.payload).toBeUndefined();
+		expect(body.event).toBe('knockout_entry_request');
+		expect(body.name).toBe('Ana');
+		expect(body.email).toBe('ana@example.com');
+		expect(body.uid).toBe('u1');
+		expect(body.demo).toBe(false);
+		expect(typeof body.at).toBe('string');
 	});
 
 	it('never throws when the request fails', () => {
