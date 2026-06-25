@@ -194,9 +194,15 @@ export function AdminView() {
 								</p>
 
 								<p className="truncate text-xs text-slate-400">
-									{row.participant
-										? `linked: ${row.participant}`
-										: 'spectator'}
+									{row.email}
+								</p>
+
+								<p className="truncate text-xs text-slate-500">
+									{row.pending
+										? `pending → ${row.claim}`
+										: row.participant
+											? `linked: ${row.participant}`
+											: 'spectator'}
 								</p>
 							</div>
 
