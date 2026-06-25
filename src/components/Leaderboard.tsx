@@ -18,8 +18,23 @@ interface LeaderboardProps {
 	reactions?: Record<string, Record<string, number>>;
 	recap?: string;
 	rows: LeaderboardRow[];
+	titleOdds?: Record<string, number>;
 	titles?: Record<string, string>;
 	youName?: string | null;
+}
+
+// Chance of finishing the group stage in first place. Anything below 1% (but
+// still possible) reads "<1%"; a dash means mathematically out.
+function formatOdds(odds?: number): string {
+	if (odds === undefined || odds <= 0) {
+		return '—';
+	}
+
+	if (odds < 0.01) {
+		return '<1%';
+	}
+
+	return `${Math.round(odds * 100)}%`;
 }
 
 export function Leaderboard({
@@ -34,6 +49,7 @@ export function Leaderboard({
 	reactions = {},
 	recap,
 	rows,
+	titleOdds,
 	titles = {},
 	youName = null,
 }: LeaderboardProps) {
@@ -80,6 +96,12 @@ export function Leaderboard({
 							<th className="hidden px-4 py-3 text-right sm:table-cell">
 								Exact scores
 							</th>
+
+							{titleOdds && (
+								<th className="px-2 py-3 text-right sm:px-4">
+									🏆 Title
+								</th>
+							)}
 
 							<th className="px-3 py-3 text-right sm:px-4">Points</th>
 						</tr>
@@ -182,6 +204,12 @@ export function Leaderboard({
 								<td className="hidden px-4 py-3 text-right text-slate-400 sm:table-cell">
 									{row.exactCount}
 								</td>
+
+								{titleOdds && (
+									<td className="whitespace-nowrap px-2 py-3 text-right text-sm font-semibold text-emerald-300 sm:px-4">
+										{formatOdds(titleOdds[row.name])}
+									</td>
+								)}
 
 								<td className="whitespace-nowrap px-3 py-3 text-right font-display text-lg font-bold text-amber-400 sm:px-4">
 									{row.livePoints > 0 ? (

@@ -58,6 +58,7 @@ import {buildKnockoutChampion} from './lib/knockoutChampion';
 import {approvedParticipant, type Approval, type Profile} from './lib/profiles';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
+import {simulateTitleOdds} from './lib/titleOdds';
 import {useAuth} from './lib/useAuth';
 import {useChatUnread} from './lib/useChatUnread';
 import {useCommentary} from './lib/useCommentary';
@@ -638,6 +639,11 @@ export default function App() {
 		[participants, games]
 	);
 
+	const titleOdds = useMemo(
+		() => simulateTitleOdds(participants, games),
+		[participants, games]
+	);
+
 	const groupStageAwards = useMemo(
 		() => buildGroupStageAwards(timeline, rows),
 		[timeline, rows]
@@ -810,6 +816,7 @@ export default function App() {
 										: undefined
 								}
 								rows={rows}
+								titleOdds={titleOdds}
 								titles={boardTitles}
 								youName={myParticipantName}
 							/>
