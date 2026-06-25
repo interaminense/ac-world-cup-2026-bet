@@ -186,6 +186,7 @@ export function AdminView() {
 							<Avatar
 								className="h-9 w-9 rounded-full"
 								name={row.participant ?? row.name}
+								photoURL={row.photoURL}
 							/>
 
 							<div className="min-w-0 flex-1">
@@ -202,7 +203,9 @@ export function AdminView() {
 										? `pending → ${row.claim}`
 										: row.participant
 											? `linked: ${row.participant}`
-											: 'spectator'}
+											: row.knockout
+												? 'knockout participant'
+												: 'spectator'}
 								</p>
 							</div>
 

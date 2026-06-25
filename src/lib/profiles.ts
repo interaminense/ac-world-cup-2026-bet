@@ -20,6 +20,7 @@ export interface UserRow {
 	blocked: boolean;
 	claim: string | null;
 	email: string;
+	knockout: boolean;
 	name: string;
 	participant: string | null;
 	pending: boolean;
@@ -57,6 +58,7 @@ export function deriveUserRows(
 				blocked,
 				claim,
 				email: profile.email,
+				knockout: approval.knockout === true,
 				name: profile.name,
 				participant,
 				pending: !blocked && !!claim && claim !== participant,
