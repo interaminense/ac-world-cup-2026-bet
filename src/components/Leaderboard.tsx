@@ -99,10 +99,10 @@ export function Leaderboard({
 
 							{titleOdds && (
 								<th
-									className="px-2 py-3 text-right sm:px-4"
+									className="whitespace-nowrap px-2 py-3 text-right sm:px-4"
 									title="Estimated chance of finishing the group stage in 1st place, from a simulation of the remaining matches."
 								>
-									<span aria-label="Title odds">🏆</span>
+									% to win
 								</th>
 							)}
 
