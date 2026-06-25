@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 
-import {detectMatchEvents, formatEvent} from './match-bot.mjs';
+import {detectMatchEvents, formatEvent, signalPayload} from './match-bot.mjs';
 
 const base = {
 	awayScore: 0,
@@ -75,5 +75,44 @@ describe('formatEvent', () => {
 				type: 'final',
 			})
 		).toBe('🏁 FT — 🇫🇷 France 2 x 1 Iraq 🇮🇶');
+	});
+});
+
+describe('signalPayload', () => {
+	const game = {
+		awayScore: 1,
+		awayTeam: 'Iraq',
+		homeScore: 2,
+		homeTeam: 'France',
+		id: 1,
+	};
+
+	it('builds a kickoff payload', () => {
+		expect(signalPayload({game, type: 'kickoff'})).toEqual({
+			away: 'Iraq',
+			event: 'match_kickoff',
+			home: 'France',
+		});
+	});
+
+	it('builds a goal payload with the scorer and score', () => {
+		expect(signalPayload({game, side: 'home', type: 'goal'})).toEqual({
+			away: 'Iraq',
+			awayScore: 1,
+			event: 'match_goal',
+			home: 'France',
+			homeScore: 2,
+			scorer: 'France',
+		});
+	});
+
+	it('builds a final payload with the score', () => {
+		expect(signalPayload({game, type: 'final'})).toEqual({
+			away: 'Iraq',
+			awayScore: 1,
+			event: 'match_final',
+			home: 'France',
+			homeScore: 2,
+		});
 	});
 });

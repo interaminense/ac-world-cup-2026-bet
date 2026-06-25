@@ -78,11 +78,41 @@ export function formatEvent(event) {
 	return `⚽ GOOOOAL! ${teamFlagEmoji(team)} ${team} — ${game.homeTeam} ${game.homeScore}-${game.awayScore} ${game.awayTeam}`;
 }
 
-// Post one chat message per detected event, as the bot. Returns the count.
-export async function postMatchEvents(db, previousGames, games) {
-	const events = detectMatchEvents(previousGames, games);
+// The flat JSON payload for the signal webhook, one per match event. Kickoffs,
+// goals and full time all go out here (the chat bot only posts goals).
+export function signalPayload(event) {
+	const {game} = event;
+	const teams = {away: game.awayTeam, home: game.homeTeam};
 
-	for (const event of events) {
+	if (event.type === 'kickoff') {
+		return {...teams, event: 'match_kickoff'};
+	}
+
+	if (event.type === 'final') {
+		return {
+			...teams,
+			awayScore: game.awayScore,
+			event: 'match_final',
+			homeScore: game.homeScore,
+		};
+	}
+
+	return {
+		...teams,
+		awayScore: game.awayScore,
+		event: 'match_goal',
+		homeScore: game.homeScore,
+		scorer: event.side === 'home' ? game.homeTeam : game.awayTeam,
+	};
+}
+
+// Post one chat message per goal, as the bot — kickoffs and full time go to the
+// signal webhook instead, keeping the chat goals-only. Takes the already-detected
+// events. Returns the number of goals posted.
+export async function postMatchEvents(db, events) {
+	const goals = events.filter((event) => event.type === 'goal');
+
+	for (const event of goals) {
 		await db.ref('chatRoom').push({
 			at: ServerValue.TIMESTAMP,
 			name: BOT_NAME,
@@ -90,5 +120,5 @@ export async function postMatchEvents(db, previousGames, games) {
 		});
 	}
 
-	return events.length;
+	return goals.length;
 }

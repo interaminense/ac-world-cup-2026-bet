@@ -5,7 +5,8 @@ import {getDatabase} from 'firebase-admin/database';
 
 import {parsePredictions} from './commentary-facts.mjs';
 import {updateCommentary} from './commentary-core.mjs';
-import {postMatchEvents} from './match-bot.mjs';
+import {emitSignal} from './emit-signal.mjs';
+import {detectMatchEvents, postMatchEvents, signalPayload} from './match-bot.mjs';
 import {pushKnockout} from './knockout.mjs';
 import {fetchEspnGames} from './sources/espn.mjs';
 import {fetchFifaGames} from './sources/fifa.mjs';
@@ -120,14 +121,30 @@ if (
 	process.exit(0);
 }
 
-// Announce kickoffs, goals and full time in the chat (against the prior state,
-// before we overwrite it). On the first run `previous` is null, so the bot
-// no-ops rather than backfilling history.
+// Detect kickoffs, goals and full time against the prior state (before we
+// overwrite it). On the first run `previous` is null, so nothing is detected
+// rather than backfilling history. The chat bot announces goals only; every
+// event (kickoff, goal, final) also goes to the emitsignal webhook when it's
+// configured in the environment.
 try {
-	const posted = await postMatchEvents(db, previous?.games ?? null, games);
+	const events = detectMatchEvents(previous?.games ?? null, games);
+
+	const posted = await postMatchEvents(db, events);
 
 	if (posted) {
-		console.log(`Match bot posted ${posted} chat event(s)`);
+		console.log(`Match bot posted ${posted} goal(s)`);
+	}
+
+	let signaled = 0;
+
+	for (const event of events) {
+		if (await emitSignal(signalPayload(event))) {
+			signaled += 1;
+		}
+	}
+
+	if (signaled) {
+		console.log(`Emitted ${signaled} match signal(s) to the webhook`);
 	}
 }
 catch (botError) {

@@ -64,9 +64,15 @@ The `env` file is optional — without it the poller stays scores-only (no
 commentary, no Slack). Its contents:
 
 ```bash
-export ANTHROPIC_API_KEY=...     # AI commentary (optional)
-export SLACK_WEBHOOK_URL=...      # Slack match digest (optional)
+export ANTHROPIC_API_KEY=...      # AI commentary (optional)
+export SLACK_WEBHOOK_URL=...       # Slack match digest (optional)
+export EMITSIGNAL_WEBHOOK_URL=...  # emitsignal push for kickoff/goal/final (optional)
 ```
+
+With `EMITSIGNAL_WEBHOOK_URL` set, every detected match event (kickoff, goal,
+full time) is POSTed to that emitsignal hook as a flat JSON body
+(`{event, home, away, homeScore?, awayScore?, scorer?, at}`). Unset → no signal
+is sent. The chat bot posts goals only, regardless.
 
 ## 4. Verify
 
