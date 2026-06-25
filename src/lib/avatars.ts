@@ -20,3 +20,15 @@ const AVATARS: Record<string, string> = {
 export function getAvatarUrl(name: string): string | undefined {
 	return AVATARS[name.toLowerCase()];
 }
+
+// Avatar URL priority: the signed-in user's Google photo — passed explicitly, or
+// looked up by participant name — then the participant's Slack photo, then none
+// (the caller renders an initial). Empty strings are skipped so an empty
+// photoURL falls through to the Slack photo.
+export function resolveAvatarUrl(
+	name: string,
+	photoURL?: string | null,
+	photos?: Record<string, string>
+): string | undefined {
+	return photoURL || photos?.[name] || getAvatarUrl(name) || undefined;
+}

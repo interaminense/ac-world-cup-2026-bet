@@ -33,6 +33,7 @@ import {ReactionBurst} from './components/ReactionBurst';
 import {RulesView} from './components/RulesView';
 import {GroupStageView} from './components/GroupStageView';
 import {KnockoutChampionView} from './components/KnockoutChampionView';
+import {PhotosProvider} from './components/PhotosContext';
 import {trackEvent, trackPageView} from './lib/analytics';
 import {acPage, acTrack, initAnalyticsCloud} from './lib/analyticsCloud';
 import {dataPath} from './lib/dataRoot';
@@ -548,6 +549,21 @@ export default function App() {
 		[profiles, approvals, participants]
 	);
 
+	// Participant display name → signed-in Google photo, for every Avatar. Only
+	// approved/linked accounts are here, so a photo is never attributed to a CSV
+	// name before the owner confirms the link.
+	const photosByName = useMemo(() => {
+		const map: Record<string, string> = {};
+
+		for (const row of knockoutRosterRows) {
+			if (row.photoURL) {
+				map[row.name] = row.photoURL;
+			}
+		}
+
+		return map;
+	}, [knockoutRosterRows]);
+
 	const knockoutStandings = useMemo(
 		() =>
 			buildKnockoutStandings(
@@ -690,7 +706,14 @@ export default function App() {
 	}
 
 	return (
+		<PhotosProvider photos={photosByName}>
 		<div className="min-h-screen bg-slate-950 font-sans">
+			<div className="bg-amber-400/10 px-4 py-2 text-center text-sm leading-relaxed text-amber-100">
+				Sign in with Google to join the next phase. Once the matches
+				start being decided, you'll be able to submit your picks for each
+				knockout game right here.
+			</div>
+
 			<Header
 				authName={auth.profile?.name ?? null}
 				authPhotoURL={auth.profile?.photoURL ?? null}
@@ -1024,5 +1047,6 @@ export default function App() {
 				</>
 			)}
 		</div>
+		</PhotosProvider>
 	);
 }

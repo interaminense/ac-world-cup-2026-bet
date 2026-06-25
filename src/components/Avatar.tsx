@@ -1,4 +1,5 @@
-import {getAvatarUrl} from '../lib/avatars';
+import {resolveAvatarUrl} from '../lib/avatars';
+import {usePhotos} from './PhotosContext';
 
 interface AvatarProps {
 	className: string;
@@ -7,9 +8,11 @@ interface AvatarProps {
 }
 
 export function Avatar({className, name, photoURL}: AvatarProps) {
-	// Known pool member → their Slack photo; else the profile photo (e.g. a new
-	// Google participant); else the initial below.
-	const url = getAvatarUrl(name) ?? photoURL ?? undefined;
+	const photos = usePhotos();
+
+	// Signed-in user's Google photo (explicit prop, or by name) → the
+	// participant's Slack photo → the initial below.
+	const url = resolveAvatarUrl(name, photoURL, photos);
 
 	if (url) {
 		return (
