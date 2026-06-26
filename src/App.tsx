@@ -538,10 +538,20 @@ export default function App() {
 		[participants, games]
 	);
 
+	// Tick so the knockout cards and pick locks re-evaluate while the page stays
+	// open: a match flips to live (hiding the score entry) the moment kickoff
+	// passes, without waiting for a data change to force a re-render.
+	const [now, setNow] = useState(() => Date.now());
+
+	useEffect(() => {
+		const id = setInterval(() => setNow(Date.now()), 30000);
+
+		return () => clearInterval(id);
+	}, []);
+
 	const knockoutCards = useMemo(
-		() =>
-			buildKnockoutCards(knockoutMatches, knockoutPicksByMatch, Date.now()),
-		[knockoutMatches, knockoutPicksByMatch]
+		() => buildKnockoutCards(knockoutMatches, knockoutPicksByMatch, now),
+		[knockoutMatches, knockoutPicksByMatch, now]
 	);
 
 	const knockoutRosterRows = useMemo(
@@ -633,11 +643,11 @@ export default function App() {
 									p2: myKnockoutPicks[match.matchNumber].p2,
 								}
 							: undefined,
-						pickable: isKnockoutPickable(match, Date.now()),
+						pickable: isKnockoutPickable(match, now),
 					},
 				])
 			),
-		[knockoutMatches, myKnockoutPicks]
+		[knockoutMatches, myKnockoutPicks, now]
 	);
 
 	const liveCards = cards.filter((card) => card.status === 'live');
