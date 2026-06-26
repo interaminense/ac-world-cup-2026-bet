@@ -9,6 +9,7 @@ function match(over: Partial<KnockoutMatch>): KnockoutMatch {
 		a: '1A',
 		b: '2B',
 		date: '2026-06-28T19:00:00Z',
+		finished: false,
 		matchNumber: 73,
 		scoreA: null,
 		scoreB: null,
@@ -40,7 +41,7 @@ describe('buildKnockoutChampion', () => {
 	});
 
 	it('builds awards and stats from the finished knockout matches', () => {
-		const matches = [match({scoreA: 2, scoreB: 1})];
+		const matches = [match({finished: true, scoreA: 2, scoreB: 1})];
 		const picks = {
 			a: {73: {p1: 2, p2: 1}},
 			b: {73: {p1: 0, p2: 0}},

@@ -58,7 +58,10 @@ export function knockoutStatus(
 	match: KnockoutMatch,
 	nowMs: number
 ): MatchStatus {
-	if (match.scoreA != null && match.scoreB != null) {
+	// Only the FIFA full-time flag (MatchStatus 0, mapped to `finished`) closes a
+	// match. A score alone is not enough: FIFA fills HomeTeamScore/AwayTeamScore
+	// live, so a present score can still be an in-progress (or extra-time) result.
+	if (match.finished) {
 		return 'finished';
 	}
 
@@ -94,7 +97,12 @@ export function buildKnockoutCards(
 	return [...matches]
 		.sort((a, b) => a.matchNumber - b.matchNumber)
 		.map((match) => {
-			const resolved = match.scoreA != null && match.scoreB != null;
+			const hasScore = match.scoreA != null && match.scoreB != null;
+
+			// Show the score as soon as FIFA has one (live or final), but only
+			// award points once the match is finished — a knockout that goes to
+			// extra time/penalties is scored on its full-time (drawn) result.
+			const scored = match.finished && hasScore;
 			const kickoff = knockoutKickoff(match.date);
 
 			const entries: MatchEntry[] = (
@@ -103,7 +111,7 @@ export function buildKnockoutCards(
 				name: pick.name,
 				p1: pick.p1,
 				p2: pick.p2,
-				points: resolved
+				points: scored
 					? scorePrediction(
 							pick.p1,
 							pick.p2,
@@ -122,7 +130,7 @@ export function buildKnockoutCards(
 				team1: match.teamA ?? match.a,
 				team2: match.teamB ?? match.b,
 				time: kickoff?.time ?? '',
-				...(resolved
+				...(hasScore
 					? {r1: match.scoreA as number, r2: match.scoreB as number}
 					: {}),
 			};

@@ -15,6 +15,7 @@ function m(p: Partial<KnockoutMatch>): KnockoutMatch {
 		a: '2A',
 		b: '2B',
 		date: '2026-06-29T20:30:00Z',
+		finished: false,
 		matchNumber: 73,
 		scoreA: null,
 		scoreB: null,
@@ -51,8 +52,26 @@ describe('knockoutKickoff', () => {
 describe('knockoutStatus', () => {
 	const now = Date.parse('2026-06-29T12:00:00Z');
 
-	it('is finished when both scores are present', () => {
-		expect(knockoutStatus(m({scoreA: 2, scoreB: 1}), now)).toBe('finished');
+	it('is finished only when the match is marked finished', () => {
+		expect(
+			knockoutStatus(m({finished: true, scoreA: 2, scoreB: 1}), now)
+		).toBe('finished');
+	});
+
+	it('is still live with a live score before the final whistle', () => {
+		// FIFA fills the score in live; the match is only "finished" at
+		// MatchStatus 0, so a score alone must not flip it to finished.
+		expect(
+			knockoutStatus(
+				m({
+					date: '2026-06-29T10:00:00Z',
+					finished: false,
+					scoreA: 1,
+					scoreB: 0,
+				}),
+				now
+			)
+		).toBe('live');
 	});
 
 	it('is notstarted before kickoff with no score', () => {
@@ -144,7 +163,16 @@ describe('buildKnockoutCards', () => {
 		};
 
 		const [card] = buildKnockoutCards(
-			[m({matchNumber: 73, scoreA: 2, scoreB: 1, teamA: 'S', teamB: 'J'})],
+			[
+				m({
+					finished: true,
+					matchNumber: 73,
+					scoreA: 2,
+					scoreB: 1,
+					teamA: 'S',
+					teamB: 'J',
+				}),
+			],
 			picks,
 			now
 		);
@@ -154,5 +182,32 @@ describe('buildKnockoutCards', () => {
 		expect(card.r2).toBe(1);
 		expect(card.entries[0].points).toBe(25);
 		expect(card.entries[1].points).toBe(0);
+	});
+
+	it('shows the live score but leaves picks unscored until the final whistle', () => {
+		const picks: Record<number, KnockoutPick[]> = {
+			73: [{name: 'Bruna', p1: 2, p2: 1}],
+		};
+
+		const [card] = buildKnockoutCards(
+			[
+				m({
+					date: '2026-06-29T10:00:00Z',
+					finished: false,
+					matchNumber: 73,
+					scoreA: 1,
+					scoreB: 0,
+					teamA: 'S',
+					teamB: 'J',
+				}),
+			],
+			picks,
+			now
+		);
+
+		expect(card.status).toBe('live');
+		expect(card.r1).toBe(1);
+		expect(card.r2).toBe(0);
+		expect(card.entries[0].points).toBeNull();
 	});
 });

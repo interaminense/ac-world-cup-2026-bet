@@ -66,7 +66,8 @@ export function buildKnockoutChampion(
 	const resolved = matches.filter((match) => match.teamA && match.teamB);
 
 	const games: Game[] = resolved.map((match) => {
-		const finished = match.scoreA != null && match.scoreB != null;
+		const finished =
+			match.finished && match.scoreA != null && match.scoreB != null;
 
 		return {
 			awayScore: match.scoreB ?? 0,

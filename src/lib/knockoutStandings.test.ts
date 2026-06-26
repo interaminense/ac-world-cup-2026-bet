@@ -21,6 +21,7 @@ function match(p: Partial<KnockoutMatch>): KnockoutMatch {
 		a: '2A',
 		b: '2B',
 		date: '2026-06-29T20:30:00Z',
+		finished: false,
 		matchNumber: 73,
 		scoreA: null,
 		scoreB: null,
@@ -94,7 +95,7 @@ describe('buildKnockoutStandings', () => {
 	];
 
 	const matches = [
-		match({matchNumber: 76, scoreA: 2, scoreB: 1}), // finished
+		match({finished: true, matchNumber: 76, scoreA: 2, scoreB: 1}), // finished
 		match({matchNumber: 73, scoreA: null, scoreB: null}), // not finished
 	];
 
@@ -152,7 +153,7 @@ describe('buildKnockoutLeaderStats', () => {
 	});
 
 	it('returns null when the top is tied', () => {
-		const matches = [match({matchNumber: 76, scoreA: 2, scoreB: 1})];
+		const matches = [match({finished: true, matchNumber: 76, scoreA: 2, scoreB: 1})];
 		const standings = buildKnockoutStandings(
 			[
 				{name: 'Bruna', uid: 'b'},
@@ -172,13 +173,13 @@ describe('buildKnockoutLeaderStats', () => {
 				{name: 'Caio', uid: 'c'},
 			],
 			{b: {76: {p1: 2, p2: 1}}, c: {76: {p1: 0, p2: 0}}},
-			[match({matchNumber: 76, scoreA: 2, scoreB: 1})]
+			[match({finished: true, matchNumber: 76, scoreA: 2, scoreB: 1})]
 		);
 
 		const leader = buildKnockoutLeaderStats(
 			standings,
 			{b: {76: {p1: 2, p2: 1}}},
-			[match({matchNumber: 76, scoreA: 2, scoreB: 1})]
+			[match({finished: true, matchNumber: 76, scoreA: 2, scoreB: 1})]
 		);
 
 		expect(leader?.name).toBe('Bruna');

@@ -22,6 +22,10 @@ export function normalizeKnockout(results) {
 			a: match.PlaceHolderA ?? '',
 			b: match.PlaceHolderB ?? '',
 			date: match.Date ?? null,
+			// MatchStatus 0 = played/full-time (includes extra time). Penalties
+			// live in HomeTeamPenaltyScore/AwayTeamPenaltyScore, so the score
+			// below stays the drawn full-time result for a shootout match.
+			finished: match.MatchStatus === 0,
 			matchNumber: match.MatchNumber ?? 0,
 			scoreA: match.HomeTeamScore ?? null,
 			scoreB: match.AwayTeamScore ?? null,

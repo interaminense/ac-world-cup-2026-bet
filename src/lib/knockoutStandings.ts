@@ -133,7 +133,8 @@ export function buildKnockoutStandings(
 	matches: KnockoutMatch[]
 ): KnockoutStandingRow[] {
 	const finished = matches.filter(
-		(match) => match.scoreA != null && match.scoreB != null
+		(match) =>
+			match.finished && match.scoreA != null && match.scoreB != null
 	);
 
 	const scored = roster
@@ -210,7 +211,10 @@ export function buildKnockoutLeaderStats(
 	}
 
 	const finished = matches
-		.filter((match) => match.scoreA != null && match.scoreB != null)
+		.filter(
+			(match) =>
+				match.finished && match.scoreA != null && match.scoreB != null
+		)
 		.sort(
 			(a, b) =>
 				(Date.parse(a.date ?? '') || 0) - (Date.parse(b.date ?? '') || 0)

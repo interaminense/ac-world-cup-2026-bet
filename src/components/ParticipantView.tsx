@@ -169,10 +169,13 @@ export function ParticipantView({
 							<tbody>
 								{knockoutBets.map((match) => {
 									const pick = knockoutPicks[match.matchNumber];
-									const resolved =
+									const hasScore =
 										match.scoreA != null &&
 										match.scoreB != null;
-									const points = resolved
+									// Points only once the match is over (extra
+									// time included); the score can show live.
+									const scored = match.finished && hasScore;
+									const points = scored
 										? scorePrediction(
 												pick.p1,
 												pick.p2,
@@ -233,7 +236,7 @@ export function ParticipantView({
 											</td>
 
 											<td className="px-3 py-2.5 text-center text-slate-300">
-												{resolved
+												{hasScore
 													? `${match.scoreA}–${match.scoreB}`
 													: '—'}
 											</td>

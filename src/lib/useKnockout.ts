@@ -9,6 +9,7 @@ export interface KnockoutMatch {
 	a: string;
 	b: string;
 	date: string | null;
+	finished: boolean;
 	matchNumber: number;
 	scoreA: number | null;
 	scoreB: number | null;

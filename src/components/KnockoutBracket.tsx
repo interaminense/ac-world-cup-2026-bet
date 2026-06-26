@@ -73,7 +73,9 @@ function TeamLine({
 // Hover popover listing everyone's picks for the match (with points once the
 // match is decided).
 function PicksPopover({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
-	const resolved = m.scoreA != null && m.scoreB != null;
+	// Points only after the final whistle (extra time included), never on a
+	// live score the FIFA feed fills in mid-match.
+	const resolved = m.finished && m.scoreA != null && m.scoreB != null;
 
 	const entries: MatchEntry[] = picks.map((pick) => ({
 		name: pick.name,
