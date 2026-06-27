@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import {useSearchParams} from 'react-router-dom';
 
 import {kickoffDate} from '../lib/kickoff';
 import type {MatchCard} from '../lib/matches';
@@ -223,6 +224,7 @@ function MatchCardArticle({
 	cheers,
 	commentary,
 	games,
+	highlighted,
 	knockoutEntry,
 	matchReactions,
 	onClearCommentary,
@@ -234,6 +236,7 @@ function MatchCardArticle({
 	cheers: CheerCounts;
 	commentary: Record<number, string>;
 	games: Game[];
+	highlighted?: boolean;
 	knockoutEntry?: KnockoutEntry;
 	matchReactions: ReactionsApi;
 	onClearCommentary?: (matchNo: number) => void;
@@ -247,11 +250,12 @@ function MatchCardArticle({
 	const cheers2 = tally.team2 ?? 0;
 	return (
 		<article
-			className={`group flex flex-col rounded-2xl border bg-white/5 p-4 ${
+			className={`group flex scroll-mt-24 flex-col rounded-2xl border bg-white/5 p-4 ${
 				card.status === 'live'
 					? 'border-emerald-400/40 lg:col-span-2'
 					: 'border-white/10'
-			} ${card.status === 'finished' ? 'opacity-60' : ''}`}
+			} ${card.status === 'finished' ? 'opacity-60' : ''} ${highlighted ? 'ring-2 ring-amber-400' : ''}`}
+			id={`match-${card.matchNo}`}
 		>
 			<div className="mb-3 flex items-center justify-between text-xs text-slate-400">
 				<span>
@@ -366,6 +370,7 @@ function MatchSection({
 	emptyLabel,
 	games,
 	groups,
+	highlight,
 	knockout,
 	matchReactions,
 	onClearCommentary,
@@ -378,6 +383,7 @@ function MatchSection({
 	emptyLabel: string;
 	games: Game[];
 	groups: DayGroup[];
+	highlight?: number | null;
 	knockout: KnockoutSection;
 	matchReactions: ReactionsApi;
 	onClearCommentary?: (matchNo: number) => void;
@@ -430,6 +436,7 @@ function MatchSection({
 									cheers={cheers}
 									commentary={commentary}
 									games={games}
+									highlighted={highlight === card.matchNo}
 									key={card.matchNo}
 									knockoutEntry={knockoutEntry}
 									matchReactions={matchReactions}
@@ -520,6 +527,38 @@ export function MatchesView({
 		upcoming.length === 0 && finished.length > 0 ? 'finished' : 'upcoming'
 	);
 
+	// Deep link from the bracket: /matches?match=<n> opens that match's list,
+	// scrolls it into view, and highlights it briefly.
+	const [searchParams] = useSearchParams();
+	const targetMatch = Number(searchParams.get('match')) || null;
+	const [highlight, setHighlight] = useState<number | null>(null);
+
+	useEffect(() => {
+		if (!targetMatch) {
+			return undefined;
+		}
+
+		setView(
+			finished.some((card) => card.matchNo === targetMatch)
+				? 'finished'
+				: 'upcoming'
+		);
+		setHighlight(targetMatch);
+
+		const scrollId = window.setTimeout(() => {
+			document
+				.getElementById(`match-${targetMatch}`)
+				?.scrollIntoView({behavior: 'smooth', block: 'center'});
+		}, 120);
+		const clearId = window.setTimeout(() => setHighlight(null), 2600);
+
+		return () => {
+			window.clearTimeout(scrollId);
+			window.clearTimeout(clearId);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [targetMatch]);
+
 	const groups =
 		view === 'finished'
 			? groupByLocalDay([...finished].reverse())
@@ -582,6 +621,7 @@ export function MatchesView({
 				}
 				games={games}
 				groups={groups}
+				highlight={highlight}
 				knockout={knockout}
 				matchReactions={matchReactions}
 				onClearCommentary={onClearCommentary}

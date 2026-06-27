@@ -178,7 +178,7 @@ function MobileMatchCard({
 					) : (
 						<Link
 							className="text-slate-400 underline hover:text-slate-200"
-							to="/matches"
+							to={`/matches?match=${m.matchNumber}`}
 						>
 							Not predicted — pick now →
 						</Link>
