@@ -1,6 +1,7 @@
 import {useMemo} from 'react';
 
 import {flagCode} from '../lib/flags';
+import {knockoutStatus} from '../lib/knockoutCards';
 import {buildParticipantStats} from '../lib/participantStats';
 import {scoreParticipant} from '../lib/ranking';
 import {scorePrediction} from '../lib/scoring';
@@ -169,6 +170,8 @@ export function ParticipantView({
 							<tbody>
 								{knockoutBets.map((match) => {
 									const pick = knockoutPicks[match.matchNumber];
+									const sealed =
+										knockoutStatus(match, Date.now()) === 'notstarted';
 									const hasScore =
 										match.scoreA != null &&
 										match.scoreB != null;
@@ -232,7 +235,9 @@ export function ParticipantView({
 											</td>
 
 											<td className="px-3 py-2.5 text-center font-display font-bold text-white">
-												{pick.p1}–{pick.p2}
+												<span className={sealed ? 'blur-sm select-none' : ''}>
+													{pick.p1}–{pick.p2}
+												</span>
 											</td>
 
 											<td className="px-3 py-2.5 text-center text-slate-300">
