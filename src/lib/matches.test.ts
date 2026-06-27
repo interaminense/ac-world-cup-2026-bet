@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 
-import {buildMatchCards} from './matches';
+import {buildMatchCards, predictionRoster} from './matches';
 import type {Game, Participant} from './types';
 
 function makeGame(overrides: Partial<Game> = {}): Game {
@@ -128,6 +128,29 @@ describe('buildMatchCards orientation', () => {
 			p1: 3,
 			p2: 1,
 			points: 25,
+		});
+	});
+});
+
+describe("predictionRoster", () => {
+	const entries = [
+		{name: "Bruna", p1: 2, p2: 1, points: null},
+		{name: "Caio", p1: 1, p2: 1, points: null},
+	];
+
+	it("splits the roster into who predicted and who is pending, sorted", () => {
+		expect(
+			predictionRoster(entries, ["Diego", "Bruna", "Adriano", "Caio"])
+		).toEqual({
+			pending: ["Adriano", "Diego"],
+			predicted: ["Bruna", "Caio"],
+		});
+	});
+
+	it("lists everyone as pending when nobody has predicted", () => {
+		expect(predictionRoster([], ["B", "A"])).toEqual({
+			pending: ["A", "B"],
+			predicted: [],
 		});
 	});
 });

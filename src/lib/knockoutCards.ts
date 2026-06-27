@@ -136,6 +136,7 @@ export function buildKnockoutCards(
 				date: kickoff?.date ?? '',
 				entries,
 				group: match.stage,
+				knockout: true,
 				matchNo: match.matchNumber,
 				status: knockoutStatus(match, nowMs),
 				team1: match.teamA ?? match.a,

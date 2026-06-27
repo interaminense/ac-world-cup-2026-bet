@@ -19,6 +19,7 @@ export interface MatchCard {
 	date: string;
 	entries: MatchEntry[];
 	group: string;
+	knockout?: boolean;
 	matchNo: number;
 	r1?: number;
 	r2?: number;
@@ -104,4 +105,26 @@ export function buildMatchCards(
 				timeElapsed: game?.timeElapsed,
 			};
 		});
+}
+
+export interface PredictionRoster {
+	pending: string[];
+	predicted: string[];
+}
+
+// Before kickoff the scorelines stay hidden; this is what shows instead — who
+// has already locked a pick and who still has to. `predicted` are the names
+// with an entry, `pending` the roster names without one. Sorted alphabetically.
+export function predictionRoster(
+	entries: MatchEntry[],
+	roster: string[]
+): PredictionRoster {
+	const done = new Set(entries.map((entry) => entry.name));
+
+	return {
+		pending: roster
+			.filter((name) => !done.has(name))
+			.sort((a, b) => a.localeCompare(b)),
+		predicted: [...done].sort((a, b) => a.localeCompare(b)),
+	};
 }

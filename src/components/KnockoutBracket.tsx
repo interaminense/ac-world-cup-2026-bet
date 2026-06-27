@@ -2,7 +2,7 @@ import {useMemo} from 'react';
 import {Link} from 'react-router-dom';
 
 import {flagCode} from '../lib/flags';
-import type {KnockoutPick} from '../lib/knockoutCards';
+import {type KnockoutPick, knockoutStatus} from '../lib/knockoutCards';
 import type {MatchEntry} from '../lib/matches';
 import {scorePrediction} from '../lib/scoring';
 import {type KnockoutMatch, useKnockout} from '../lib/useKnockout';
@@ -117,7 +117,10 @@ function MatchCard({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
 				team={m.teamB ?? null}
 			/>
 
-			{picks.length > 0 && <PicksPopover m={m} picks={picks} />}
+			{picks.length > 0 &&
+				knockoutStatus(m, Date.now()) !== 'notstarted' && (
+					<PicksPopover m={m} picks={picks} />
+				)}
 		</div>
 	);
 }
@@ -186,7 +189,10 @@ function MobileMatchCard({
 				</div>
 			)}
 
-			{picks.length > 0 && <PicksPopover m={m} picks={picks} />}
+			{picks.length > 0 &&
+				knockoutStatus(m, Date.now()) !== 'notstarted' && (
+					<PicksPopover m={m} picks={picks} />
+				)}
 		</div>
 	);
 }

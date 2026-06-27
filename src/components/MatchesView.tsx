@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {useSearchParams} from 'react-router-dom';
 
 import {kickoffDate} from '../lib/kickoff';
-import type {MatchCard} from '../lib/matches';
+import {type MatchCard, predictionRoster} from '../lib/matches';
 import type {Game, Participant} from '../lib/types';
 import type {CheerCounts} from '../lib/useCheers';
 import type {ReactionsApi} from '../lib/useReactions';
@@ -219,6 +219,68 @@ function KnockoutPickRow({
 	);
 }
 
+// Before kickoff the scorelines stay sealed; instead show, in black & white,
+// who has already locked a pick and who still has to.
+function PredictionStatus({
+	pending,
+	predicted,
+}: {
+	pending: string[];
+	predicted: string[];
+}) {
+	return (
+		<div className="space-y-2">
+			<p className="text-center text-xs text-slate-500">
+				🔒 Picks are hidden until kickoff
+			</p>
+
+			<div className="grid grid-cols-2 gap-2">
+				<div className="rounded-xl border border-white/10 bg-white/5 p-2.5">
+					<p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-300">
+						Predicted · {predicted.length}
+					</p>
+
+					{predicted.length === 0 ? (
+						<p className="text-[11px] text-slate-600">Nobody yet</p>
+					) : (
+						<div className="flex flex-wrap gap-1">
+							{predicted.map((name) => (
+								<span
+									className="rounded-full bg-white/10 px-2 py-0.5 text-[11px] text-slate-200"
+									key={name}
+								>
+									{name}
+								</span>
+							))}
+						</div>
+					)}
+				</div>
+
+				<div className="rounded-xl border border-white/5 bg-black/20 p-2.5">
+					<p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+						Yet to predict · {pending.length}
+					</p>
+
+					{pending.length === 0 ? (
+						<p className="text-[11px] text-slate-600">Everyone is in</p>
+					) : (
+						<div className="flex flex-wrap gap-1">
+							{pending.map((name) => (
+								<span
+									className="rounded-full bg-white/5 px-2 py-0.5 text-[11px] text-slate-500"
+									key={name}
+								>
+									{name}
+								</span>
+							))}
+						</div>
+					)}
+				</div>
+			</div>
+		</div>
+	);
+}
+
 function MatchCardArticle({
 	card,
 	cheers,
@@ -248,6 +310,14 @@ function MatchCardArticle({
 	const live = card.status === 'live';
 	const cheers1 = tally.team1 ?? 0;
 	const cheers2 = tally.team2 ?? 0;
+
+	// Before kickoff the picks stay hidden; show who is locked in and who is not.
+	const sealed = Boolean(card.knockout) && card.status === 'notstarted';
+	const roster = predictionRoster(
+		card.entries,
+		participants.map((participant) => participant.name)
+	);
+
 	return (
 		<article
 			className={`group flex scroll-mt-24 flex-col rounded-2xl border bg-white/5 p-4 ${
@@ -305,10 +375,17 @@ function MatchCardArticle({
 				/>
 			)}
 
-			<MatchPicks
-				entries={card.entries}
-				live={card.status === 'live'}
-			/>
+			{sealed ? (
+				<PredictionStatus
+					pending={roster.pending}
+					predicted={roster.predicted}
+				/>
+			) : (
+				<MatchPicks
+					entries={card.entries}
+					live={card.status === 'live'}
+				/>
+			)}
 
 			{card.status === 'live' && !knockoutEntry && (
 				<WhatIfPanel
@@ -340,13 +417,15 @@ function MatchCardArticle({
 				</div>
 			)}
 
-			<div className="mt-auto pt-4">
-				<BetSplitBar
-					entries={card.entries}
-					team1={card.team1}
-					team2={card.team2}
-				/>
-			</div>
+			{!sealed && (
+				<div className="mt-auto pt-4">
+					<BetSplitBar
+						entries={card.entries}
+						team1={card.team1}
+						team2={card.team2}
+					/>
+				</div>
+			)}
 
 			<div className="mt-3 border-t border-white/5 pt-2.5">
 				<Reactions
