@@ -56,6 +56,7 @@ interface MatchesViewProps {
 	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
 	onMatchReact: (matchNo: number, emoji: string) => void;
+	knockoutRoster: string[];
 	participants: Participant[];
 }
 
@@ -292,6 +293,7 @@ function MatchCardArticle({
 	onClearCommentary,
 	onClearMatchReaction,
 	onMatchReact,
+	knockoutRoster,
 	participants,
 }: {
 	card: MatchCard;
@@ -304,6 +306,7 @@ function MatchCardArticle({
 	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
 	onMatchReact: (matchNo: number, emoji: string) => void;
+	knockoutRoster: string[];
 	participants: Participant[];
 }) {
 	const tally = cheers[card.matchNo] ?? {};
@@ -315,7 +318,7 @@ function MatchCardArticle({
 	const sealed = Boolean(card.knockout) && card.status === 'notstarted';
 	const roster = predictionRoster(
 		card.entries,
-		participants.map((participant) => participant.name)
+		knockoutRoster
 	);
 
 	return (
@@ -455,6 +458,7 @@ function MatchSection({
 	onClearCommentary,
 	onClearMatchReaction,
 	onMatchReact,
+	knockoutRoster,
 	participants,
 }: {
 	cheers: CheerCounts;
@@ -468,6 +472,7 @@ function MatchSection({
 	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
 	onMatchReact: (matchNo: number, emoji: string) => void;
+	knockoutRoster: string[];
 	participants: Participant[];
 }) {
 	if (groups.length === 0) {
@@ -518,6 +523,7 @@ function MatchSection({
 									highlighted={highlight === card.matchNo}
 									key={card.matchNo}
 									knockoutEntry={knockoutEntry}
+									knockoutRoster={knockoutRoster}
 									matchReactions={matchReactions}
 									onClearCommentary={onClearCommentary}
 									onClearMatchReaction={onClearMatchReaction}
@@ -588,6 +594,7 @@ export function MatchesView({
 	onClearCommentary,
 	onClearMatchReaction,
 	onMatchReact,
+	knockoutRoster,
 	participants,
 }: MatchesViewProps) {
 	// Optimistic layer over the round-tripped picks: the steppers read the draft
@@ -702,6 +709,7 @@ export function MatchesView({
 				groups={groups}
 				highlight={highlight}
 				knockout={knockout}
+				knockoutRoster={knockoutRoster}
 				matchReactions={matchReactions}
 				onClearCommentary={onClearCommentary}
 				onClearMatchReaction={onClearMatchReaction}

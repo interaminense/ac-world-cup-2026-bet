@@ -900,6 +900,7 @@ export default function App() {
 						setKnockoutClosed(matchNo, !isOpen),
 									signedIn: !auth.isAnonymous && !!auth.user,
 								}}
+								knockoutRoster={knockoutRosterRows.map((row) => row.name)}
 								matchReactions={matchReactions}
 								onClearCommentary={auth.isOwner ? clearMatchCommentary : undefined}
 								onClearMatchReaction={auth.isOwner ? clearMatchReaction : undefined}
