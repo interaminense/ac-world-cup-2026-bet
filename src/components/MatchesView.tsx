@@ -170,7 +170,7 @@ function KnockoutPickRow({
 						</button>
 					</>
 				) : (
-					<span>Picks not open yet.</span>
+					<span>Closed for picks.</span>
 				)}
 			</div>
 		);
