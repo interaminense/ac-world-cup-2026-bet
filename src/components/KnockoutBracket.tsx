@@ -131,40 +131,66 @@ function PicksPopover({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
 function MatchCard({
 	m,
 	now,
+	pick,
 	picks,
+	signedIn,
 }: {
 	m: KnockoutMatch;
 	now: number;
+	pick?: KnockoutPick;
 	picks: KnockoutPick[];
+	signedIn: boolean;
 }) {
 	const {label, startingSoon} = knockoutCountdown(m.date, now);
+	const defined = Boolean(m.teamA && m.teamB);
 
 	return (
-		<div
-			className={`group relative w-full min-w-0 rounded-md border bg-white/5 px-1.5 py-1 ${
-				startingSoon
-					? 'border-pink-400/70 ring-1 ring-pink-400/40'
-					: 'border-white/10'
-			}`}
-		>
-			<TeamLine
-				placeholder={m.a}
-				score={m.scoreA ?? null}
-				team={m.teamA ?? null}
-			/>
+		<div className="w-full min-w-0">
+			<div
+				className={`group relative rounded-md border bg-white/5 px-1.5 py-1 ${
+					startingSoon
+						? 'border-pink-400/70 ring-1 ring-pink-400/40'
+						: 'border-white/10'
+				}`}
+			>
+				<TeamLine
+					placeholder={m.a}
+					score={m.scoreA ?? null}
+					team={m.teamA ?? null}
+				/>
 
-			<div className="my-0.5 h-px bg-white/5" />
+				<div className="my-0.5 h-px bg-white/5" />
 
-			<TeamLine
-				placeholder={m.b}
-				score={m.scoreB ?? null}
-				team={m.teamB ?? null}
-			/>
+				<TeamLine
+					placeholder={m.b}
+					score={m.scoreB ?? null}
+					team={m.teamB ?? null}
+				/>
 
-			{label && <Countdown label={label} startingSoon={startingSoon} />}
+				{label && (
+					<Countdown label={label} startingSoon={startingSoon} />
+				)}
 
-			{picks.length > 0 && knockoutStatus(m, now) !== 'notstarted' && (
-				<PicksPopover m={m} picks={picks} />
+				{picks.length > 0 && knockoutStatus(m, now) !== 'notstarted' && (
+					<PicksPopover m={m} picks={picks} />
+				)}
+			</div>
+
+			{signedIn && defined && (
+				<div className="mt-1 text-center text-[9px]">
+					{pick ? (
+						<span className="font-semibold text-emerald-400">
+							✓ {pick.p1}–{pick.p2}
+						</span>
+					) : (
+						<Link
+							className="text-slate-400 underline hover:text-slate-200"
+							to={`/matches?match=${m.matchNumber}`}
+						>
+							Predict →
+						</Link>
+					)}
+				</div>
 			)}
 		</div>
 	);
@@ -255,15 +281,19 @@ function MobileMatchCard({
 function Half({
 	byMatch,
 	byNum,
+	mine,
 	now,
 	rounds,
 	side,
+	signedIn,
 }: {
 	byMatch: Record<number, KnockoutPick[]>;
 	byNum: ByNum;
+	mine: Record<number, KnockoutPick>;
 	now: number;
 	rounds: number[][];
 	side: 'left' | 'right';
+	signedIn: boolean;
 }) {
 	const left = side === 'left';
 
@@ -332,7 +362,9 @@ function Half({
 							<MatchCard
 								m={match}
 								now={now}
+								pick={mine[num]}
 								picks={byMatch[num] ?? []}
+								signedIn={signedIn}
 							/>
 						</div>
 					);
@@ -345,11 +377,15 @@ function Half({
 function Center({
 	byMatch,
 	byNum,
+	mine,
 	now,
+	signedIn,
 }: {
 	byMatch: Record<number, KnockoutPick[]>;
 	byNum: ByNum;
+	mine: Record<number, KnockoutPick>;
 	now: number;
+	signedIn: boolean;
 }) {
 	const final = byNum[104];
 	const third = byNum[103];
@@ -375,7 +411,13 @@ function Center({
 			</span>
 
 			{final && (
-				<MatchCard m={final} now={now} picks={byMatch[104] ?? []} />
+				<MatchCard
+					m={final}
+					now={now}
+					pick={mine[104]}
+					picks={byMatch[104] ?? []}
+					signedIn={signedIn}
+				/>
 			)}
 
 			{third && (
@@ -384,7 +426,13 @@ function Center({
 						3rd place
 					</span>
 
-					<MatchCard m={third} now={now} picks={byMatch[103] ?? []} />
+					<MatchCard
+						m={third}
+						now={now}
+						pick={mine[103]}
+						picks={byMatch[103] ?? []}
+						signedIn={signedIn}
+					/>
 				</div>
 			)}
 		</div>
@@ -420,16 +468,26 @@ export function KnockoutBracket({user}: {user?: KnockoutIdentity | null}) {
 						byMatch={byMatch}
 						byNum={byNum}
 						now={now}
+						mine={mine}
+						signedIn={Boolean(user)}
 						rounds={LEFT}
 						side="left"
 					/>
 
-					<Center byMatch={byMatch} byNum={byNum} now={now} />
+					<Center
+						byMatch={byMatch}
+						byNum={byNum}
+						mine={mine}
+						now={now}
+						signedIn={Boolean(user)}
+					/>
 
 					<Half
 						byMatch={byMatch}
 						byNum={byNum}
 						now={now}
+						mine={mine}
+						signedIn={Boolean(user)}
 						rounds={RIGHT}
 						side="right"
 					/>
