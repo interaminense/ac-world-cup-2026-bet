@@ -160,17 +160,17 @@ function KnockoutPickRow({
 			<div className="mb-3 flex flex-wrap items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-xs text-slate-500">
 				{entry.isOwner ? (
 					<>
-						<span>Fechada para palpites.</span>
+						<span>Closed for picks.</span>
 
 						<button
 							className="rounded-lg bg-emerald-500 px-3 py-1 text-xs font-bold text-emerald-950 hover:bg-emerald-400"
 							onClick={() => entry.onToggleOpen(true)}
 						>
-							Abrir
+							Open
 						</button>
 					</>
 				) : (
-					<span>Palpites ainda não liberados.</span>
+					<span>Picks not open yet.</span>
 				)}
 			</div>
 		);
@@ -211,7 +211,7 @@ function KnockoutPickRow({
 					className="ml-2 rounded-lg border border-white/15 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-300 hover:bg-white/10"
 					onClick={() => entry.onToggleOpen(false)}
 				>
-					Fechar
+					Close
 				</button>
 			)}
 		</div>
