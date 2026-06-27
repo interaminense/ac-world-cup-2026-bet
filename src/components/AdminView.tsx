@@ -24,7 +24,8 @@ export function AdminView() {
 	const {config: menuConfig, move, setHidden} = useMenu();
 	const menuRows = orderMenu(NAV_ITEMS, menuConfig);
 
-	const {chatLoginOnly, setChatLoginOnly} = useSettings();
+	const {chatLoginOnly, setChatLoginOnly, setShowWinners, showWinners} =
+		useSettings();
 
 	const pending = rows.filter((row) => row.pending);
 	const knockoutSignups = pendingKnockout(profiles, approvals);
@@ -57,6 +58,40 @@ export function AdminView() {
 						<span
 							className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
 								chatLoginOnly
+									? 'translate-x-[1.375rem]'
+									: 'translate-x-0.5'
+							}`}
+						/>
+					</button>
+				</div>
+			</section>
+
+			<section>
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+					Winners podium
+				</h3>
+
+				<div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+					<div className="min-w-0">
+						<p className="text-sm font-medium text-white">
+							Show the winners podium
+						</p>
+
+						<p className="text-xs text-slate-400">
+							Floats the leaderboard's top 3 for everyone.
+						</p>
+					</div>
+
+					<button
+						aria-pressed={showWinners}
+						className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+							showWinners ? 'bg-emerald-500' : 'bg-white/15'
+						}`}
+						onClick={() => setShowWinners(!showWinners)}
+					>
+						<span
+							className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
+								showWinners
 									? 'translate-x-[1.375rem]'
 									: 'translate-x-0.5'
 							}`}

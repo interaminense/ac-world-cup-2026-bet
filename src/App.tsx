@@ -19,6 +19,7 @@ import {GoalOverlay} from './components/GoalOverlay';
 import {GroupsView} from './components/GroupsView';
 import {HeadToHeadView} from './components/HeadToHeadView';
 import {Header} from './components/Header';
+import {WinnersPodium} from './components/WinnersPodium';
 import {IdentityPrompt} from './components/IdentityPrompt';
 import {Leaderboard} from './components/Leaderboard';
 import {ChatButton} from './components/ChatButton';
@@ -163,7 +164,7 @@ export default function App() {
 	);
 
 	// When the owner restricts the chat, anonymous visitors can't open or read it.
-	const {chatLoginOnly} = useSettings();
+	const {chatLoginOnly, showWinners} = useSettings();
 	const chatLocked = chatLoginOnly && auth.isAnonymous;
 
 	// All approvals (small) so the signed-in viewer knows their linked participant.
@@ -761,6 +762,8 @@ export default function App() {
 				signedIn={!auth.isAnonymous && !!auth.user}
 				statusText={statusText}
 			/>
+
+			{showWinners && <WinnersPodium rows={rows} />}
 
 			{claimOpen && (
 				<ClaimPrompt

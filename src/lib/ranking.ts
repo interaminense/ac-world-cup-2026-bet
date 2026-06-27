@@ -144,3 +144,9 @@ export function buildLeaderboardWithMovement(
 		movement: (previousRanks.get(row.name) ?? row.rank) - row.rank,
 	}));
 }
+
+// The leaderboard top three — the podium. Rows arrive already sorted by rank,
+// so the first three are 1st/2nd/3rd (fewer when the pool is smaller).
+export function topWinners<T>(rows: T[]): T[] {
+	return rows.slice(0, 3);
+}

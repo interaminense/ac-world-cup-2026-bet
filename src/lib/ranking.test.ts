@@ -4,6 +4,7 @@ import {
 	buildLeaderboard,
 	buildLeaderboardWithMovement,
 	scoreParticipant,
+	topWinners,
 } from './ranking';
 import type {Game, Participant} from './types';
 
@@ -229,5 +230,26 @@ describe('buildLeaderboardWithMovement', () => {
 		expect(biaRow.movement).toBe(1);
 		expect(anaRow.rank).toBe(2);
 		expect(anaRow.movement).toBe(-1);
+	});
+});
+
+describe("topWinners", () => {
+	const row = (name: string, total: number, rank: number) => ({
+		exactCount: 0,
+		livePoints: 0,
+		name,
+		photoURL: null,
+		rank,
+		total,
+	});
+
+	it("returns the first three rows in order", () => {
+		const rows = [row("A", 50, 1), row("B", 40, 2), row("C", 30, 3), row("D", 20, 4)];
+		expect(topWinners(rows).map((r) => r.name)).toEqual(["A", "B", "C"]);
+	});
+
+	it("returns fewer than three when the pool is smaller", () => {
+		expect(topWinners([row("A", 50, 1), row("B", 40, 2)]).map((r) => r.name)).toEqual(["A", "B"]);
+		expect(topWinners([])).toEqual([]);
 	});
 });

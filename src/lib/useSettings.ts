@@ -9,8 +9,11 @@ import {db} from './firebase';
 export function useSettings(): {
 	chatLoginOnly: boolean;
 	setChatLoginOnly: (value: boolean) => void;
+	setShowWinners: (value: boolean) => void;
+	showWinners: boolean;
 } {
 	const [chatLoginOnly, setChatLoginOnly] = useState(false);
+	const [showWinners, setShowWinners] = useState(false);
 
 	useEffect(
 		() =>
@@ -20,10 +23,22 @@ export function useSettings(): {
 		[]
 	);
 
+	useEffect(
+		() =>
+			onValue(ref(db, dataPath('settings/showWinners')), (snapshot) => {
+				setShowWinners(snapshot.val() === true);
+			}),
+		[]
+	);
+
 	return {
 		chatLoginOnly,
 		setChatLoginOnly: (value) => {
 			set(ref(db, dataPath('settings/chatLoginOnly')), value);
 		},
+		setShowWinners: (value) => {
+			set(ref(db, dataPath('settings/showWinners')), value);
+		},
+		showWinners,
 	};
 }
