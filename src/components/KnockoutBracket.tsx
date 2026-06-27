@@ -1,8 +1,12 @@
-import {useMemo} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import {flagCode} from '../lib/flags';
-import {type KnockoutPick, knockoutStatus} from '../lib/knockoutCards';
+import {
+	type KnockoutPick,
+	knockoutCountdown,
+	knockoutStatus,
+} from '../lib/knockoutCards';
 import type {MatchEntry} from '../lib/matches';
 import {scorePrediction} from '../lib/scoring';
 import {type KnockoutMatch, useKnockout} from '../lib/useKnockout';
@@ -71,6 +75,30 @@ function TeamLine({
 	);
 }
 
+// Live countdown line shown on an upcoming match within 24h of kickoff. Inside
+// the last hour it turns pink with a pulsing dot.
+function Countdown({label, startingSoon}: {label: string; startingSoon: boolean}) {
+	return (
+		<div
+			className={`mt-3 flex items-center justify-center gap-1.5 text-[10px] font-semibold tracking-wide ${
+				startingSoon ? 'text-pink-300' : 'text-slate-400'
+			}`}
+		>
+			{startingSoon ? (
+				<span aria-hidden className="relative flex h-2 w-2">
+					<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-pink-400 opacity-75" />
+
+					<span className="relative inline-flex h-2 w-2 rounded-full bg-pink-500" />
+				</span>
+			) : (
+				<span aria-hidden>⏳</span>
+			)}
+
+			<span>{label}</span>
+		</div>
+	);
+}
+
 // Hover popover listing everyone's picks for the match (with points once the
 // match is decided).
 function PicksPopover({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
@@ -100,9 +128,25 @@ function PicksPopover({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
 	);
 }
 
-function MatchCard({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
+function MatchCard({
+	m,
+	now,
+	picks,
+}: {
+	m: KnockoutMatch;
+	now: number;
+	picks: KnockoutPick[];
+}) {
+	const {label, startingSoon} = knockoutCountdown(m.date, now);
+
 	return (
-		<div className="group relative w-full min-w-0 rounded-md border border-white/10 bg-white/5 px-1.5 py-1">
+		<div
+			className={`group relative w-full min-w-0 rounded-md border bg-white/5 px-1.5 py-1 ${
+				startingSoon
+					? 'border-pink-400/70 ring-1 ring-pink-400/40'
+					: 'border-white/10'
+			}`}
+		>
 			<TeamLine
 				placeholder={m.a}
 				score={m.scoreA ?? null}
@@ -117,10 +161,11 @@ function MatchCard({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
 				team={m.teamB ?? null}
 			/>
 
-			{picks.length > 0 &&
-				knockoutStatus(m, Date.now()) !== 'notstarted' && (
-					<PicksPopover m={m} picks={picks} />
-				)}
+			{label && <Countdown label={label} startingSoon={startingSoon} />}
+
+			{picks.length > 0 && knockoutStatus(m, now) !== 'notstarted' && (
+				<PicksPopover m={m} picks={picks} />
+			)}
 		</div>
 	);
 }
@@ -148,20 +193,29 @@ function MobileTeam({
 // made over in the Matches tab, so this only informs).
 function MobileMatchCard({
 	m,
+	now,
 	pick,
 	picks,
 	signedIn,
 }: {
 	m: KnockoutMatch;
+	now: number;
 	pick?: KnockoutPick;
 	picks: KnockoutPick[];
 	signedIn: boolean;
 }) {
 	const hasScore = m.scoreA != null && m.scoreB != null;
 	const defined = Boolean(m.teamA && m.teamB);
+	const {label, startingSoon} = knockoutCountdown(m.date, now);
 
 	return (
-		<div className="group relative w-full min-w-0 rounded-md border border-white/10 bg-white/5 px-2 py-1.5">
+		<div
+			className={`group relative w-full min-w-0 rounded-md border bg-white/5 px-2 py-1.5 ${
+				startingSoon
+					? 'border-pink-400/70 ring-1 ring-pink-400/40'
+					: 'border-white/10'
+			}`}
+		>
 			<div className="flex items-center justify-center gap-2">
 				<MobileTeam placeholder={m.a} team={m.teamA ?? null} />
 
@@ -171,6 +225,8 @@ function MobileMatchCard({
 
 				<MobileTeam placeholder={m.b} team={m.teamB ?? null} />
 			</div>
+
+			{label && <Countdown label={label} startingSoon={startingSoon} />}
 
 			{signedIn && defined && (
 				<div className="mt-1.5 border-t border-white/5 pt-1 text-center text-[10px]">
@@ -189,10 +245,9 @@ function MobileMatchCard({
 				</div>
 			)}
 
-			{picks.length > 0 &&
-				knockoutStatus(m, Date.now()) !== 'notstarted' && (
-					<PicksPopover m={m} picks={picks} />
-				)}
+			{picks.length > 0 && knockoutStatus(m, now) !== 'notstarted' && (
+				<PicksPopover m={m} picks={picks} />
+			)}
 		</div>
 	);
 }
@@ -200,11 +255,13 @@ function MobileMatchCard({
 function Half({
 	byMatch,
 	byNum,
+	now,
 	rounds,
 	side,
 }: {
 	byMatch: Record<number, KnockoutPick[]>;
 	byNum: ByNum;
+	now: number;
 	rounds: number[][];
 	side: 'left' | 'right';
 }) {
@@ -274,6 +331,7 @@ function Half({
 
 							<MatchCard
 								m={match}
+								now={now}
 								picks={byMatch[num] ?? []}
 							/>
 						</div>
@@ -287,9 +345,11 @@ function Half({
 function Center({
 	byMatch,
 	byNum,
+	now,
 }: {
 	byMatch: Record<number, KnockoutPick[]>;
 	byNum: ByNum;
+	now: number;
 }) {
 	const final = byNum[104];
 	const third = byNum[103];
@@ -314,7 +374,9 @@ function Center({
 				Final
 			</span>
 
-			{final && <MatchCard m={final} picks={byMatch[104] ?? []} />}
+			{final && (
+				<MatchCard m={final} now={now} picks={byMatch[104] ?? []} />
+			)}
 
 			{third && (
 				<div className="mt-2 flex w-full flex-col items-center gap-0.5">
@@ -322,7 +384,7 @@ function Center({
 						3rd place
 					</span>
 
-					<MatchCard m={third} picks={byMatch[103] ?? []} />
+					<MatchCard m={third} now={now} picks={byMatch[103] ?? []} />
 				</div>
 			)}
 		</div>
@@ -332,6 +394,16 @@ function Center({
 export function KnockoutBracket({user}: {user?: KnockoutIdentity | null}) {
 	const matches = useKnockout();
 	const {byMatch, mine} = useKnockoutPicks(user ?? null);
+
+	// Tick every 30s so the kickoff countdowns and the ≤1h highlight stay live
+	// without waiting for a data change to re-render.
+	const [now, setNow] = useState(() => Date.now());
+
+	useEffect(() => {
+		const id = setInterval(() => setNow(Date.now()), 30000);
+
+		return () => clearInterval(id);
+	}, []);
 
 	const byNum = useMemo<ByNum>(
 		() =>
@@ -347,15 +419,17 @@ export function KnockoutBracket({user}: {user?: KnockoutIdentity | null}) {
 					<Half
 						byMatch={byMatch}
 						byNum={byNum}
+						now={now}
 						rounds={LEFT}
 						side="left"
 					/>
 
-					<Center byMatch={byMatch} byNum={byNum} />
+					<Center byMatch={byMatch} byNum={byNum} now={now} />
 
 					<Half
 						byMatch={byMatch}
 						byNum={byNum}
+						now={now}
 						rounds={RIGHT}
 						side="right"
 					/>
@@ -392,6 +466,7 @@ export function KnockoutBracket({user}: {user?: KnockoutIdentity | null}) {
 									<MobileMatchCard
 										key={match.matchNumber}
 										m={match}
+										now={now}
 										pick={mine[match.matchNumber]}
 										picks={byMatch[match.matchNumber] ?? []}
 										signedIn={Boolean(user)}
@@ -402,7 +477,6 @@ export function KnockoutBracket({user}: {user?: KnockoutIdentity | null}) {
 					);
 				})}
 			</div>
-
 		</div>
 	);
 }

@@ -148,3 +148,41 @@ export function buildKnockoutCards(
 			};
 		});
 }
+
+export interface KnockoutCountdown {
+	label: string | null;
+	startingSoon: boolean;
+}
+
+// Live countdown for an upcoming knockout match. Within 24h it returns a short
+// "Hh Mm" / "Mm" label (zero parts dropped); within 1h it also flags
+// startingSoon. Otherwise — no date, already started, or >24h away — nothing.
+export function knockoutCountdown(
+	iso: string | null,
+	nowMs: number
+): KnockoutCountdown {
+	const none = {label: null, startingSoon: false};
+
+	if (!iso) {
+		return none;
+	}
+
+	const kickoff = Date.parse(iso);
+	const diff = kickoff - nowMs;
+
+	if (!Number.isFinite(kickoff) || diff <= 0 || diff > 24 * 60 * 60 * 1000) {
+		return none;
+	}
+
+	const totalMinutes = Math.floor(diff / 60000);
+	const hours = Math.floor(totalMinutes / 60);
+	const minutes = totalMinutes % 60;
+	const label =
+		hours > 0
+			? minutes > 0
+				? `${hours}h ${minutes}m`
+				: `${hours}h`
+			: `${minutes}m`;
+
+	return {label, startingSoon: diff <= 60 * 60 * 1000};
+}

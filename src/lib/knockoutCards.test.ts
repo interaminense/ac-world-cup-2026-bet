@@ -4,6 +4,7 @@ import {kickoffDate} from './kickoff';
 import {
 	buildKnockoutCards,
 	canEditKnockoutPick,
+	knockoutCountdown,
 	isKnockoutPickable,
 	knockoutKickoff,
 	knockoutStatus,
@@ -237,5 +238,28 @@ describe('buildKnockoutCards', () => {
 		expect(card.r1).toBe(1);
 		expect(card.r2).toBe(0);
 		expect(card.entries[0].points).toBeNull();
+	});
+});
+
+describe("knockoutCountdown", () => {
+	const now = Date.parse("2026-06-29T12:00:00Z");
+
+	it("returns no label and not-soon for null, invalid, or past kickoffs", () => {
+		expect(knockoutCountdown(null, now)).toEqual({label: null, startingSoon: false});
+		expect(knockoutCountdown("nope", now)).toEqual({label: null, startingSoon: false});
+		expect(knockoutCountdown("2026-06-29T11:00:00Z", now)).toEqual({label: null, startingSoon: false});
+	});
+
+	it("shows nothing when the kickoff is more than 24h away", () => {
+		expect(knockoutCountdown("2026-06-30T18:00:00Z", now)).toEqual({label: null, startingSoon: false});
+	});
+
+	it("shows a discreet countdown within 24h, dropping a zero part", () => {
+		expect(knockoutCountdown("2026-06-29T18:12:00Z", now)).toEqual({label: "6h 12m", startingSoon: false});
+		expect(knockoutCountdown("2026-06-29T14:00:00Z", now)).toEqual({label: "2h", startingSoon: false});
+	});
+
+	it("flags startingSoon within the last hour", () => {
+		expect(knockoutCountdown("2026-06-29T12:45:00Z", now)).toEqual({label: "45m", startingSoon: true});
 	});
 });
