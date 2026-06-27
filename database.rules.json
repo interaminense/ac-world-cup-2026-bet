@@ -64,7 +64,7 @@
 				".write": "auth != null && auth.uid === $uid"
 			}
 		},
-		"knockoutOpen": {
+		"knockoutClosed": {
 			".read": true,
 			".write": "auth.token.email === 'adriano.interaminense@gmail.com' && auth.token.email_verified === true"
 		},

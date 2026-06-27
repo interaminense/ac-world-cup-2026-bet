@@ -70,7 +70,7 @@ import {type CheerCounts, useCheers} from './lib/useCheers';
 import {useGames} from './lib/useGames';
 import {useKnockout} from './lib/useKnockout';
 import {type KnockoutIdentity, useKnockoutPicks} from './lib/useKnockoutPicks';
-import {useKnockoutOpen} from './lib/useKnockoutOpen';
+import {useKnockoutClosed} from './lib/useKnockoutClosed';
 import {useIdentity} from './lib/useIdentity';
 import {useCelebrate} from './lib/useCelebrate';
 import {useLeaderHype} from './lib/useLeaderHype';
@@ -219,7 +219,8 @@ export default function App() {
 		setPick: setKnockoutPick,
 	} = useKnockoutPicks(knockoutIdentity);
 
-	const {open: knockoutOpen, setOpen: setKnockoutOpen} = useKnockoutOpen();
+	const {closed: knockoutClosed, setClosed: setKnockoutClosed} =
+		useKnockoutClosed();
 
 	// Reject a pick write that lands after the match is locked — past kickoff or
 	// not opened by the admin — so a stale or late click is simply ignored.
@@ -230,7 +231,11 @@ export default function App() {
 
 		if (
 			match &&
-			canEditKnockoutPick(match, knockoutOpen[matchNo] === true, Date.now())
+			canEditKnockoutPick(
+				match,
+				knockoutClosed[matchNo] !== true,
+				Date.now()
+			)
 		) {
 			setKnockoutPick(matchNo, p1, p2);
 		}
@@ -656,7 +661,7 @@ export default function App() {
 		() =>
 			Object.fromEntries(
 				knockoutMatches.map((match) => {
-					const open = knockoutOpen[match.matchNumber] === true;
+					const open = knockoutClosed[match.matchNumber] !== true;
 
 					return [
 						match.matchNumber,
@@ -674,7 +679,7 @@ export default function App() {
 					];
 				})
 			),
-		[knockoutMatches, myKnockoutPicks, knockoutOpen, now]
+		[knockoutMatches, myKnockoutPicks, knockoutClosed, now]
 	);
 
 	const liveCards = cards.filter((card) => card.status === 'live');
@@ -891,7 +896,8 @@ export default function App() {
 									isOwner: auth.isOwner,
 									onPick: editKnockoutPick,
 									onSignIn: auth.signIn,
-									onToggleOpen: setKnockoutOpen,
+									onToggleOpen: (matchNo, isOpen) =>
+						setKnockoutClosed(matchNo, !isOpen),
 									signedIn: !auth.isAnonymous && !!auth.user,
 								}}
 								matchReactions={matchReactions}

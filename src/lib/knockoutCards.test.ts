@@ -128,7 +128,7 @@ describe('canEditKnockoutPick', () => {
 		expect(canEditKnockoutPick(ready, true, now)).toBe(true);
 	});
 
-	it('blocks editing when the admin has not opened the match', () => {
+	it('blocks editing when the admin has closed the match', () => {
 		expect(canEditKnockoutPick(ready, false, now)).toBe(false);
 	});
 
