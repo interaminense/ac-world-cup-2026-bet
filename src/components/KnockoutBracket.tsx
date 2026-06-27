@@ -5,7 +5,7 @@ import type {KnockoutPick} from '../lib/knockoutCards';
 import type {MatchEntry} from '../lib/matches';
 import {scorePrediction} from '../lib/scoring';
 import {type KnockoutMatch, useKnockout} from '../lib/useKnockout';
-import {useKnockoutPicks} from '../lib/useKnockoutPicks';
+import {type KnockoutIdentity, useKnockoutPicks} from '../lib/useKnockoutPicks';
 import {Flag} from './Flag';
 import {MatchPicks} from './MatchPicks';
 
@@ -115,6 +115,72 @@ function MatchCard({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
 				score={m.scoreB ?? null}
 				team={m.teamB ?? null}
 			/>
+
+			{picks.length > 0 && <PicksPopover m={m} picks={picks} />}
+		</div>
+	);
+}
+
+function MobileTeam({
+	placeholder,
+	team,
+}: {
+	placeholder: string;
+	team: string | null;
+}) {
+	const hasFlag = Boolean(team && flagCode(team));
+
+	return hasFlag ? (
+		<Flag className="h-6 w-9 shrink-0" team={team as string} />
+	) : (
+		<span className="truncate text-xs font-medium text-slate-400">
+			{placeholder}
+		</span>
+	);
+}
+
+// Mobile card: flags side by side with the scoreline when there is one, and —
+// for a signed-in user — whether they've already submitted a pick (picks are
+// made over in the Matches tab, so this only informs).
+function MobileMatchCard({
+	m,
+	pick,
+	picks,
+	signedIn,
+}: {
+	m: KnockoutMatch;
+	pick?: KnockoutPick;
+	picks: KnockoutPick[];
+	signedIn: boolean;
+}) {
+	const hasScore = m.scoreA != null && m.scoreB != null;
+	const defined = Boolean(m.teamA && m.teamB);
+
+	return (
+		<div className="group relative w-full min-w-0 rounded-md border border-white/10 bg-white/5 px-2 py-1.5">
+			<div className="flex items-center justify-center gap-2">
+				<MobileTeam placeholder={m.a} team={m.teamA ?? null} />
+
+				<span className="shrink-0 font-display text-sm font-bold text-amber-300">
+					{hasScore ? `${m.scoreA}–${m.scoreB}` : 'vs'}
+				</span>
+
+				<MobileTeam placeholder={m.b} team={m.teamB ?? null} />
+			</div>
+
+			{signedIn && defined && (
+				<div className="mt-1.5 border-t border-white/5 pt-1 text-center text-[10px]">
+					{pick ? (
+						<span className="font-semibold text-emerald-400">
+							✓ You predicted {pick.p1}–{pick.p2}
+						</span>
+					) : (
+						<span className="text-slate-500">
+							You haven't predicted yet
+						</span>
+					)}
+				</div>
+			)}
 
 			{picks.length > 0 && <PicksPopover m={m} picks={picks} />}
 		</div>
@@ -253,9 +319,9 @@ function Center({
 	);
 }
 
-export function KnockoutBracket() {
+export function KnockoutBracket({user}: {user?: KnockoutIdentity | null}) {
 	const matches = useKnockout();
-	const {byMatch} = useKnockoutPicks(null);
+	const {byMatch, mine} = useKnockoutPicks(user ?? null);
 
 	const byNum = useMemo<ByNum>(
 		() =>
@@ -313,10 +379,12 @@ export function KnockoutBracket() {
 								}`}
 							>
 								{roundMatches.map((match) => (
-									<MatchCard
+									<MobileMatchCard
 										key={match.matchNumber}
 										m={match}
+										pick={mine[match.matchNumber]}
 										picks={byMatch[match.matchNumber] ?? []}
+										signedIn={Boolean(user)}
 									/>
 								))}
 							</div>

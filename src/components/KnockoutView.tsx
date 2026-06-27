@@ -1,11 +1,13 @@
 import type {KnockoutStandingRow} from '../lib/knockoutStandings';
 import type {ParticipantStats} from '../lib/participantStats';
+import type {KnockoutIdentity} from '../lib/useKnockoutPicks';
 import {KnockoutBracket} from './KnockoutBracket';
 import {KnockoutLeaderboard} from './KnockoutLeaderboard';
 
 // The Knockout Stage page: the bracket and the zeroed knockout ranking stacked
 // as two sections on the same screen.
 export function KnockoutView({
+	knockoutUser,
 	leader,
 	myReactions,
 	onClearReaction,
@@ -16,6 +18,7 @@ export function KnockoutView({
 	rows,
 	youName,
 }: {
+	knockoutUser: KnockoutIdentity | null;
 	leader: {name: string; stats: ParticipantStats} | null;
 	myReactions?: Record<string, string[]>;
 	onClearReaction?: (name: string, emoji: string) => void;
@@ -28,12 +31,18 @@ export function KnockoutView({
 }) {
 	return (
 		<div className="space-y-8">
+			<div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm leading-relaxed text-amber-100">
+				🏆 The knockout stage is about to begin. If you haven't locked in
+				your predictions yet, head to the <strong>Matches</strong> tab and
+				pick the scoreline for every game before it kicks off.
+			</div>
+
 			<section>
 				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">
 					Bracket
 				</h2>
 
-				<KnockoutBracket />
+				<KnockoutBracket user={knockoutUser} />
 			</section>
 
 			<section>

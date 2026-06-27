@@ -745,12 +745,6 @@ export default function App() {
 	return (
 		<PhotosProvider photos={photosByName}>
 		<div className="min-h-screen bg-slate-950 font-sans">
-			<div className="bg-amber-400/10 px-4 py-2 text-center text-sm leading-relaxed text-amber-100">
-				Sign in with Google to join the next phase. Once the matches
-				start being decided, you'll be able to submit your picks for each
-				knockout game right here.
-			</div>
-
 			<Header
 				authName={auth.profile?.name ?? null}
 				authPhotoURL={auth.profile?.photoURL ?? null}
@@ -1011,6 +1005,7 @@ export default function App() {
 					<Route
 						element={
 							<KnockoutView
+								knockoutUser={knockoutIdentity}
 								leader={knockoutLeader}
 								myReactions={mine}
 								onClearReaction={
