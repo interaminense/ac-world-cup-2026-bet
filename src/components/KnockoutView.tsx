@@ -1,3 +1,5 @@
+import {Link} from 'react-router-dom';
+
 import type {KnockoutStandingRow} from '../lib/knockoutStandings';
 import type {ParticipantStats} from '../lib/participantStats';
 import type {KnockoutIdentity} from '../lib/useKnockoutPicks';
@@ -33,8 +35,22 @@ export function KnockoutView({
 		<div className="space-y-8">
 			<div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm leading-relaxed text-amber-100">
 				🏆 The knockout stage is about to begin. If you haven't locked in
-				your predictions yet, head to the <strong>Matches</strong> tab and
-				pick the scoreline for every game before it kicks off.
+				your predictions yet, head to the{' '}
+				<Link
+					className="font-semibold text-amber-300 underline hover:text-amber-200"
+					to="/matches"
+				>
+					Matches
+				</Link>{' '}
+				tab and pick the scoreline for every game before it kicks off.
+				Want to see how the group stage finished? Check the{' '}
+				<Link
+					className="font-semibold text-amber-300 underline hover:text-amber-200"
+					to="/leaderboard"
+				>
+					group-stage leaderboard
+				</Link>
+				.
 			</div>
 
 			<section>

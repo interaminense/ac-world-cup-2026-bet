@@ -875,7 +875,7 @@ export default function App() {
 								youName={myParticipantName}
 							/>
 						}
-						path="/"
+						path="/leaderboard"
 					/>
 
 					<Route
@@ -1021,7 +1021,7 @@ export default function App() {
 								youName={presenceName}
 							/>
 						}
-						path="/knockout"
+						path="/"
 					/>
 
 					<Route

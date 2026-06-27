@@ -1,4 +1,5 @@
 import {useMemo} from 'react';
+import {Link} from 'react-router-dom';
 
 import {flagCode} from '../lib/flags';
 import type {KnockoutPick} from '../lib/knockoutCards';
@@ -175,9 +176,12 @@ function MobileMatchCard({
 							✓ You predicted {pick.p1}–{pick.p2}
 						</span>
 					) : (
-						<span className="text-slate-500">
-							You haven't predicted yet
-						</span>
+						<Link
+							className="text-slate-400 underline hover:text-slate-200"
+							to="/matches"
+						>
+							Not predicted — pick now →
+						</Link>
 					)}
 				</div>
 			)}

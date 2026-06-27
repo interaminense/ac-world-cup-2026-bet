@@ -12,13 +12,14 @@ export interface NavItem {
 // Single source for the menu — used by the top nav, the sidebar drawer, and the
 // page title. `id` is the stable key the owner's menu manager orders/hides by.
 export const NAV_ITEMS: NavItem[] = [
-	{end: true, icon: '🏆', id: 'leaderboard', label: 'Leaderboard', to: '/'},
+	{icon: '🏆', id: 'leaderboard', label: 'Leaderboard', to: '/leaderboard'},
 	{
 		badge: 'new',
+		end: true,
 		icon: '🥇',
 		id: 'knockout',
 		label: 'Knockout Stage',
-		to: '/knockout',
+		to: '/',
 	},
 	{icon: '⚽', id: 'matches', label: 'Matches', to: '/matches'},
 	{icon: '🗂️', id: 'groups', label: 'Groups', to: '/groups'},
@@ -101,7 +102,7 @@ const OFF_MENU: NavItem[] = [
 
 export function currentNavItem(pathname: string): NavItem {
 	// Most specific match wins, so /knockout-champion resolves to its own item
-	// rather than /knockout, whose `to` is a prefix of it.
+	// rather than the home route at "/".
 	const matches = [...NAV_ITEMS, ...OFF_MENU]
 		.filter((item) =>
 			item.end ? pathname === item.to : pathname.startsWith(item.to)

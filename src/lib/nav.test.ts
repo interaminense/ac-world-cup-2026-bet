@@ -48,16 +48,19 @@ describe('visibleMenu', () => {
 });
 
 describe('currentNavItem', () => {
-	it('resolves the leaderboard only on an exact "/"', () => {
-		expect(currentNavItem('/').id).toBe('leaderboard');
+	it('resolves the knockout stage on an exact "/" (the home)', () => {
+		expect(currentNavItem('/').id).toBe('knockout');
+	});
+
+	it('resolves the group-stage leaderboard on /leaderboard', () => {
+		expect(currentNavItem('/leaderboard').id).toBe('leaderboard');
 	});
 
 	it('resolves a deep participant path to Participants', () => {
 		expect(currentNavItem('/bets/adriano').id).toBe('bets');
 	});
 
-	it('prefers the most specific match for overlapping prefixes', () => {
-		expect(currentNavItem('/knockout').id).toBe('knockout');
+	it('prefers the most specific match over the "/" home', () => {
 		expect(currentNavItem('/knockout-champion').id).toBe(
 			'knockoutchampion'
 		);
