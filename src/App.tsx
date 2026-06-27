@@ -44,7 +44,10 @@ import {db} from './lib/firebase';
 import {getMatchStatus} from './lib/games';
 import {detectLocale, localize, stripEmoji} from './lib/locale';
 import {buildStats} from './lib/stats';
-import {buildKnockoutCards, isKnockoutPickable} from './lib/knockoutCards';
+import {
+	buildKnockoutCards,
+	canEditKnockoutPick,
+} from './lib/knockoutCards';
 import {buildMatchCards} from './lib/matches';
 import {currentNavItem, NAV_ITEMS, visibleMenu} from './lib/nav';
 import {buildParticipantStats} from './lib/participantStats';
@@ -67,6 +70,7 @@ import {type CheerCounts, useCheers} from './lib/useCheers';
 import {useGames} from './lib/useGames';
 import {useKnockout} from './lib/useKnockout';
 import {type KnockoutIdentity, useKnockoutPicks} from './lib/useKnockoutPicks';
+import {useKnockoutOpen} from './lib/useKnockoutOpen';
 import {useIdentity} from './lib/useIdentity';
 import {useCelebrate} from './lib/useCelebrate';
 import {useLeaderHype} from './lib/useLeaderHype';
@@ -214,6 +218,23 @@ export default function App() {
 		mine: myKnockoutPicks,
 		setPick: setKnockoutPick,
 	} = useKnockoutPicks(knockoutIdentity);
+
+	const {open: knockoutOpen, setOpen: setKnockoutOpen} = useKnockoutOpen();
+
+	// Reject a pick write that lands after the match is locked — past kickoff or
+	// not opened by the admin — so a stale or late click is simply ignored.
+	const editKnockoutPick = (matchNo: number, p1: number, p2: number) => {
+		const match = knockoutMatches.find(
+			(entry) => entry.matchNumber === matchNo
+		);
+
+		if (
+			match &&
+			canEditKnockoutPick(match, knockoutOpen[matchNo] === true, Date.now())
+		) {
+			setKnockoutPick(matchNo, p1, p2);
+		}
+	};
 
 	const myKnockoutApproval = auth.user ? approvals[auth.user.uid] : undefined;
 	const knockoutApproved = Boolean(
@@ -634,20 +655,26 @@ export default function App() {
 	const knockoutInfo = useMemo(
 		() =>
 			Object.fromEntries(
-				knockoutMatches.map((match) => [
-					match.matchNumber,
-					{
-						myPick: myKnockoutPicks[match.matchNumber]
-							? {
-									p1: myKnockoutPicks[match.matchNumber].p1,
-									p2: myKnockoutPicks[match.matchNumber].p2,
-								}
-							: undefined,
-						pickable: isKnockoutPickable(match, now),
-					},
-				])
+				knockoutMatches.map((match) => {
+					const open = knockoutOpen[match.matchNumber] === true;
+
+					return [
+						match.matchNumber,
+						{
+							defined: Boolean(match.teamA && match.teamB),
+							myPick: myKnockoutPicks[match.matchNumber]
+								? {
+										p1: myKnockoutPicks[match.matchNumber].p1,
+										p2: myKnockoutPicks[match.matchNumber].p2,
+									}
+								: undefined,
+							open,
+							pickable: canEditKnockoutPick(match, open, now),
+						},
+					];
+				})
 			),
-		[knockoutMatches, myKnockoutPicks, now]
+		[knockoutMatches, myKnockoutPicks, knockoutOpen, now]
 	);
 
 	const liveCards = cards.filter((card) => card.status === 'live');
@@ -867,8 +894,10 @@ export default function App() {
 								knockoutCards={knockoutCards}
 								knockoutPick={{
 									info: knockoutInfo,
-									onPick: setKnockoutPick,
+									isOwner: auth.isOwner,
+									onPick: editKnockoutPick,
 									onSignIn: auth.signIn,
+									onToggleOpen: setKnockoutOpen,
 									signedIn: !auth.isAnonymous && !!auth.user,
 								}}
 								matchReactions={matchReactions}

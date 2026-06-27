@@ -87,6 +87,17 @@ export function isKnockoutPickable(
 	return Number.isFinite(kickoff) && nowMs < kickoff;
 }
 
+// A pick can be created or changed only while the match accepts picks: both
+// teams known, before kickoff, and opened by the admin. Gates the entry UI and
+// rejects late/closed writes — a click after kickoff is ignored.
+export function canEditKnockoutPick(
+	match: KnockoutMatch,
+	open: boolean,
+	nowMs: number
+): boolean {
+	return open && isKnockoutPickable(match, nowMs);
+}
+
 // Turn the knockout matches (plus everyone's in-app picks) into match cards that
 // drop straight into the Upcoming/Finished lists and the predictions table.
 export function buildKnockoutCards(

@@ -16,17 +16,31 @@ import {WhatIfPanel} from './WhatIfPanel';
 // Per-knockout-card pick state handed to a match card so a signed-in user can
 // predict the scoreline inline (group-stage cards have no in-app entry).
 interface KnockoutEntry {
+	defined: boolean;
+	isOwner: boolean;
 	myPick?: {p1: number; p2: number};
 	onPick: (p1: number, p2: number) => void;
 	onSignIn?: () => void;
+	onToggleOpen: (open: boolean) => void;
+	open: boolean;
 	pickable: boolean;
 	signedIn: boolean;
 }
 
 interface KnockoutSection {
-	info: Record<number, {myPick?: {p1: number; p2: number}; pickable: boolean}>;
+	info: Record<
+		number,
+		{
+			defined: boolean;
+			myPick?: {p1: number; p2: number};
+			open: boolean;
+			pickable: boolean;
+		}
+	>;
+	isOwner: boolean;
 	onPick: (matchNo: number, p1: number, p2: number) => void;
 	onSignIn?: () => void;
+	onToggleOpen: (matchNo: number, open: boolean) => void;
 	signedIn: boolean;
 }
 
@@ -131,10 +145,33 @@ function KnockoutPickRow({
 	team1: string;
 	team2: string;
 }) {
-	if (!entry.pickable) {
+	// Teams not drawn yet.
+	if (!entry.defined) {
 		return (
 			<div className="mb-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-xs text-slate-500">
 				Waiting for teams
+			</div>
+		);
+	}
+
+	// Defined, but the admin hasn't opened it for picks.
+	if (!entry.open) {
+		return (
+			<div className="mb-3 flex flex-wrap items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-xs text-slate-500">
+				{entry.isOwner ? (
+					<>
+						<span>Fechada para palpites.</span>
+
+						<button
+							className="rounded-lg bg-emerald-500 px-3 py-1 text-xs font-bold text-emerald-950 hover:bg-emerald-400"
+							onClick={() => entry.onToggleOpen(true)}
+						>
+							Abrir
+						</button>
+					</>
+				) : (
+					<span>Palpites ainda não liberados.</span>
+				)}
 			</div>
 		);
 	}
@@ -168,6 +205,15 @@ function KnockoutPickRow({
 			<Stepper onChange={(n) => entry.onPick(p1, n)} value={p2} />
 
 			<Flag team={team2} />
+
+			{entry.isOwner && (
+				<button
+					className="ml-2 rounded-lg border border-white/15 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-300 hover:bg-white/10"
+					onClick={() => entry.onToggleOpen(false)}
+				>
+					Fechar
+				</button>
+			)}
 		</div>
 	);
 }
@@ -361,10 +407,18 @@ function MatchSection({
 
 							const knockoutEntry: KnockoutEntry | undefined = info
 								? {
+										defined: info.defined,
+										isOwner: knockout.isOwner,
 										myPick: info.myPick,
 										onPick: (p1, p2) =>
 											knockout.onPick(card.matchNo, p1, p2),
 										onSignIn: knockout.onSignIn,
+										onToggleOpen: (open) =>
+											knockout.onToggleOpen(
+												card.matchNo,
+												open
+											),
+										open: info.open,
 										pickable: info.pickable,
 										signedIn: knockout.signedIn,
 									}
@@ -478,15 +532,22 @@ export function MatchesView({
 
 				return [
 					num,
-					{myPick: draft[num] ?? value.myPick, pickable: value.pickable},
+					{
+						defined: value.defined,
+						myPick: draft[num] ?? value.myPick,
+						open: value.open,
+						pickable: value.pickable,
+					},
 				];
 			})
 		),
+		isOwner: knockoutPick.isOwner,
 		onPick: (matchNo, p1, p2) => {
 			setDraft((previous) => ({...previous, [matchNo]: {p1, p2}}));
 			knockoutPick.onPick(matchNo, p1, p2);
 		},
 		onSignIn: knockoutPick.onSignIn,
+		onToggleOpen: knockoutPick.onToggleOpen,
 		signedIn: knockoutPick.signedIn,
 	};
 

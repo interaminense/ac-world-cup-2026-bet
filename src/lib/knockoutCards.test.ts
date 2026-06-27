@@ -3,6 +3,7 @@ import {describe, expect, it} from 'vitest';
 import {kickoffDate} from './kickoff';
 import {
 	buildKnockoutCards,
+	canEditKnockoutPick,
 	isKnockoutPickable,
 	knockoutKickoff,
 	knockoutStatus,
@@ -112,6 +113,33 @@ describe('isKnockoutPickable', () => {
 				now
 			)
 		).toBe(false);
+	});
+});
+
+describe('canEditKnockoutPick', () => {
+	const now = Date.parse('2026-06-29T12:00:00Z');
+	const ready = m({
+		date: '2026-06-29T20:30:00Z',
+		teamA: 'Spain',
+		teamB: 'Japan',
+	});
+
+	it('allows editing when defined, opened by the admin, and before kickoff', () => {
+		expect(canEditKnockoutPick(ready, true, now)).toBe(true);
+	});
+
+	it('blocks editing when the admin has not opened the match', () => {
+		expect(canEditKnockoutPick(ready, false, now)).toBe(false);
+	});
+
+	it('blocks editing after kickoff even when open', () => {
+		const started = m({
+			date: '2026-06-29T10:00:00Z',
+			teamA: 'Spain',
+			teamB: 'Japan',
+		});
+
+		expect(canEditKnockoutPick(started, true, now)).toBe(false);
 	});
 });
 
