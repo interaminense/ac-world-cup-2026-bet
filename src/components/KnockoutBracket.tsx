@@ -143,14 +143,17 @@ function MatchCard({
 }) {
 	const {label, startingSoon} = knockoutCountdown(m.date, now);
 	const defined = Boolean(m.teamA && m.teamB);
+	const live = knockoutStatus(m, now) === 'live';
 
 	return (
 		<div className="w-full min-w-0">
 			<div
 				className={`group relative rounded-md border bg-white/5 px-1.5 py-1 ${
-					startingSoon
-						? 'border-pink-400/70 ring-1 ring-pink-400/40'
-						: 'border-white/10'
+					live
+						? 'border-emerald-400/70 ring-1 ring-emerald-400/40'
+						: startingSoon
+							? 'border-pink-400/70 ring-1 ring-pink-400/40'
+							: 'border-white/10'
 				}`}
 			>
 				<TeamLine
@@ -179,9 +182,12 @@ function MatchCard({
 			{signedIn && defined && (
 				<div className="mt-1 text-center text-[9px]">
 					{pick ? (
-						<span className="font-semibold text-sky-400">
+						<Link
+							className="font-semibold text-sky-400 underline hover:text-sky-300"
+							to={`/matches?match=${m.matchNumber}`}
+						>
 							✓ {pick.p1}–{pick.p2}
-						</span>
+						</Link>
 					) : (
 						<Link
 							className="text-slate-400 underline hover:text-slate-200"
@@ -233,13 +239,16 @@ function MobileMatchCard({
 	const hasScore = m.scoreA != null && m.scoreB != null;
 	const defined = Boolean(m.teamA && m.teamB);
 	const {label, startingSoon} = knockoutCountdown(m.date, now);
+	const live = knockoutStatus(m, now) === 'live';
 
 	return (
 		<div
 			className={`group relative w-full min-w-0 rounded-md border bg-white/5 px-2 py-1.5 ${
-				startingSoon
-					? 'border-pink-400/70 ring-1 ring-pink-400/40'
-					: 'border-white/10'
+				live
+					? 'border-emerald-400/70 ring-1 ring-emerald-400/40'
+					: startingSoon
+						? 'border-pink-400/70 ring-1 ring-pink-400/40'
+						: 'border-white/10'
 			}`}
 		>
 			<div className="flex items-center justify-center gap-2">
@@ -257,9 +266,12 @@ function MobileMatchCard({
 			{signedIn && defined && (
 				<div className="mt-1.5 border-t border-white/5 pt-1 text-center text-[10px]">
 					{pick ? (
-						<span className="font-semibold text-sky-400">
+						<Link
+							className="font-semibold text-sky-400 underline hover:text-sky-300"
+							to={`/matches?match=${m.matchNumber}`}
+						>
 							✓ You predicted {pick.p1}–{pick.p2}
-						</span>
+						</Link>
 					) : (
 						<Link
 							className="text-slate-400 underline hover:text-slate-200"
