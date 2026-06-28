@@ -210,7 +210,8 @@ export default function App() {
 	// Knockout picks: signed-in users predict the bracket games from the
 	// Upcoming tab. Identity carries the pool name when claimed, else the Google
 	// name, so picks read consistently with the rest of the app.
-	const knockoutMatches = useKnockout();
+	const {fetchedAt: knockoutFetchedAt, matches: knockoutMatches} =
+		useKnockout();
 
 	const knockoutIdentity: KnockoutIdentity | null =
 		!auth.isAnonymous && auth.user
@@ -277,6 +278,7 @@ export default function App() {
 	const [goalKey, setGoalKey] = useState(0);
 	const [showGoal, setShowGoal] = useState(false);
 	const prevScores = useRef<Map<number, string> | null>(null);
+	const prevKnockoutScores = useRef<Map<number, string> | null>(null);
 	const prevCheers = useRef<CheerCounts | null>(null);
 	const prevHypeN = useRef<number | null>(null);
 
@@ -438,6 +440,51 @@ export default function App() {
 
 		prevScores.current = current;
 	}, [gamesFile]);
+
+	// Same goal celebration for the knockout bracket — its scores live in the
+	// separate `knockout` node, so the group effect above never sees them.
+	useEffect(() => {
+		const current = new Map(
+			knockoutMatches
+				.filter((match) => match.scoreA != null && match.scoreB != null)
+				.map((match) => [
+					match.matchNumber,
+					`${match.scoreA}-${match.scoreB}`,
+				])
+		);
+
+		if (prevKnockoutScores.current) {
+			const goal = knockoutMatches.some((match) => {
+				const previous = prevKnockoutScores.current?.get(
+					match.matchNumber
+				);
+
+				if (
+					!previous ||
+					match.scoreA == null ||
+					match.scoreB == null
+				) {
+					return false;
+				}
+
+				const [home, away] = previous.split('-').map(Number);
+
+				return (
+					(match.scoreA > home || match.scoreB > away) &&
+					knockoutStatus(match, Date.now()) === 'live'
+				);
+			});
+
+			if (goal) {
+				trackEvent('goal_celebration_shown');
+				acTrack('goal_celebration_shown');
+				setGoalKey((key) => key + 1);
+				setShowGoal(true);
+			}
+		}
+
+		prevKnockoutScores.current = current;
+	}, [knockoutMatches]);
 
 	// A cheer from anyone bumps a team's count in the RTDB; every online client
 	// sees it rise here and fires its own random emoji shower. The first
@@ -778,8 +825,14 @@ export default function App() {
 		[cards, knockoutCards]
 	);
 
-	const statusText = gamesFile
-		? `Last updated ${new Date(gamesFile.fetchedAt).toLocaleString('en-US', {
+	// The freshest of the two feeds: once the group stage ends, `games` stops
+	// changing but the knockout node keeps updating every poll.
+	const lastUpdated = Math.max(
+		gamesFile ? Date.parse(gamesFile.fetchedAt) : 0,
+		knockoutFetchedAt ?? 0
+	);
+	const statusText = lastUpdated
+		? `Last updated ${new Date(lastUpdated).toLocaleString('en-US', {
 				day: 'numeric',
 				hour: '2-digit',
 				minute: '2-digit',

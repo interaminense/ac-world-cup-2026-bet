@@ -24,22 +24,33 @@ export interface KnockoutMatch {
 // Realtime Database fresh as the bracket fills in.
 const FALLBACK = staticKnockout as KnockoutMatch[];
 
-export function useKnockout(): KnockoutMatch[] {
+export function useKnockout(): {
+	fetchedAt: number | null;
+	matches: KnockoutMatch[];
+} {
 	const [matches, setMatches] = useState<KnockoutMatch[]>(FALLBACK);
+	// When the poller last refreshed the bracket, so the header can show the
+	// freshest "last updated" once the group feed stops changing.
+	const [fetchedAt, setFetchedAt] = useState<number | null>(null);
 
 	useEffect(
 		() =>
 			onValue(ref(db, dataPath('knockout')), (snapshot) => {
 				const value = snapshot.val() as {
+					fetchedAt?: number;
 					matches?: KnockoutMatch[];
 				} | null;
 
 				if (value?.matches?.length) {
 					setMatches(value.matches);
 				}
+
+				if (typeof value?.fetchedAt === 'number') {
+					setFetchedAt(value.fetchedAt);
+				}
 			}),
 		[]
 	);
 
-	return matches;
+	return {fetchedAt, matches};
 }

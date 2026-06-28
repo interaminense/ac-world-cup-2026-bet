@@ -473,7 +473,7 @@ function Center({
 }
 
 export function KnockoutBracket({user}: {user?: KnockoutIdentity | null}) {
-	const matches = useKnockout();
+	const {matches} = useKnockout();
 	const {byMatch, mine} = useKnockoutPicks(user ?? null);
 
 	// Tick every 30s so the kickoff countdowns and the ≤1h highlight stay live
