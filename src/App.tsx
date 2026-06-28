@@ -153,9 +153,6 @@ export default function App() {
 	const matchReactions = useMatchReactions();
 	const {cheer, counts: cheerCounts, loaded: cheersLoaded} = useCheers();
 	const identity = useIdentity();
-	const {markRead: markChatRead, unread: chatUnread} = useChatUnread(
-		identity.name
-	);
 	const auth = useAuth();
 
 	const {config: menuConfig} = useMenu();
@@ -199,6 +196,11 @@ export default function App() {
 	const presenceName = myParticipantName ?? auth.profile?.name ?? null;
 	const presencePhoto = auth.profile?.photoURL ?? null;
 	const online = usePresence(presenceName, presencePhoto);
+
+	// The chat identifies you by your Google login (pool name when claimed, else
+	// Google name) — there is no separate name picker.
+	const chatName = !auth.isAnonymous && auth.user ? presenceName : null;
+	const {markRead: markChatRead, unread: chatUnread} = useChatUnread(chatName);
 
 	// Knockout picks: signed-in users predict the bracket games from the
 	// Upcoming tab. Identity carries the pool name when claimed, else the Google
@@ -1082,17 +1084,14 @@ export default function App() {
 					) : (
 						<ChatPanel
 							games={games}
-							identity={identity.name}
+							identity={chatName}
 							liveCard={liveCard}
 							onCelebrate={(name) => {
 								celebrate(name);
 								acTrack('celebrate_sent', {name});
 							}}
 							onClose={() => setChatOpen(false)}
-							onRequestIdentify={() => {
-								setChatOpen(false);
-								setIdentityOpen(true);
-							}}
+							onSignIn={auth.signIn}
 							participants={participants}
 						/>
 					)}

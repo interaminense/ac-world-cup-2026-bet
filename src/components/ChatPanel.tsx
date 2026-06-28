@@ -40,7 +40,7 @@ interface Props {
 	liveCard: MatchCard | null;
 	onCelebrate: (name: string) => void;
 	onClose: () => void;
-	onRequestIdentify: () => void;
+	onSignIn: () => void;
 	participants: Participant[];
 }
 
@@ -50,7 +50,7 @@ export function ChatPanel({
 	liveCard,
 	onCelebrate,
 	onClose,
-	onRequestIdentify,
+	onSignIn,
 	participants,
 }: Props) {
 	const {hasMore, loadOlder, messages, send} = useChat();
@@ -294,14 +294,14 @@ export function ChatPanel({
 			) : (
 				<div className="shrink-0 border-t border-white/10 px-4 py-5 text-center">
 					<p className="mb-3 text-xs text-slate-400">
-						Identify yourself to join the chat
+						Sign in to join the chat
 					</p>
 
 					<button
 						className="rounded-full bg-sky-500 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-400"
-						onClick={onRequestIdentify}
+						onClick={onSignIn}
 					>
-						👋 Who are you?
+						Sign in with Google
 					</button>
 				</div>
 			)}
