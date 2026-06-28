@@ -99,8 +99,8 @@ function Countdown({label, startingSoon}: {label: string; startingSoon: boolean}
 	);
 }
 
-// Hover popover listing everyone's picks for the match (with points once the
-// match is decided).
+// Hover/tap popover listing everyone's picks for the match, with the current
+// points and tier colors.
 function PicksPopover({
 	m,
 	open = false,
@@ -110,16 +110,18 @@ function PicksPopover({
 	open?: boolean;
 	picks: KnockoutPick[];
 }) {
-	// Points only after the final whistle (extra time included), never on a
-	// live score the FIFA feed fills in mid-match.
-	const resolved = m.finished && m.scoreA != null && m.scoreB != null;
+	// Score live (provisional, pulsing) and finished matches alike — the popover
+	// only opens once the match is under way, and a shootout never moves the
+	// scoreline (penalties are excluded). Mirrors the match cards.
+	const hasScore = m.scoreA != null && m.scoreB != null;
+	const live = hasScore && !m.finished;
 
 	const entries: MatchEntry[] = picks.map((pick) => ({
 		name: pick.name,
 		p1: pick.p1,
 		p2: pick.p2,
 		photoURL: pick.photoURL,
-		points: resolved
+		points: hasScore
 			? scorePrediction(
 					pick.p1,
 					pick.p2,
@@ -135,7 +137,7 @@ function PicksPopover({
 				open ? 'visible opacity-100' : 'invisible opacity-0'
 			}`}
 		>
-			<MatchPicks entries={entries} />
+			<MatchPicks entries={entries} live={live} />
 		</div>
 	);
 }
