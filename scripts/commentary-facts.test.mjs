@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest';
 
 import {
+	buildKnockoutMatchFacts,
 	buildLeaderboardFacts,
 	buildMatchFacts,
 	computeBoard,
@@ -105,5 +106,39 @@ describe('liveFixtureCount', () => {
 		}));
 
 		expect(liveFixtureCount(games, players)).toBe(1);
+	});
+});
+
+describe('buildKnockoutMatchFacts', () => {
+	const match = {
+		matchNumber: 73,
+		scoreA: 2,
+		scoreB: 1,
+		stage: 'Round of 32',
+		teamA: 'Brazil',
+		teamB: 'Mexico',
+	};
+
+	it('buckets the in-app picks into exact, winner+goals, and zeros', () => {
+		const facts = buildKnockoutMatchFacts(match, [
+			{name: 'Ana', p1: 2, p2: 1}, // exact → 25
+			{name: 'Bia', p1: 3, p2: 1}, // right winner + goals (2) wrong → 18? no: max 3 vs 2
+			{name: 'Caio', p1: 0, p2: 2}, // wrong winner → 0
+		]);
+
+		expect(facts.matchNo).toBe(73);
+		expect(facts.stage).toBe('Round of 32');
+		expect(facts.result).toBe('Brazil 2-1 Mexico');
+		expect(facts.exactHitters).toEqual(['Ana']);
+		expect(facts.zeros).toEqual(['Caio']);
+	});
+
+	it('flags a lone correct outcome', () => {
+		const facts = buildKnockoutMatchFacts(match, [
+			{name: 'Ana', p1: 1, p2: 0}, // home win → right outcome
+			{name: 'Bia', p1: 0, p2: 1}, // away win → wrong
+		]);
+
+		expect(facts.loneRightOutcome).toBe('Ana');
 	});
 });

@@ -86,19 +86,19 @@ export async function pushKnockout(db) {
 	const matches = await fetchKnockout();
 
 	if (matches.length === 0) {
-		return {events: [], pushed: 0};
+		return {events: [], matches: [], pushed: 0};
 	}
 
 	const snapshot = await db.ref('knockout').once('value');
 	const previous = snapshot.val();
 
 	if (previous && canonical(previous.matches) === canonical(matches)) {
-		return {events: [], pushed: 0};
+		return {events: [], matches, pushed: 0};
 	}
 
 	const events = detectKnockoutEvents(previous?.matches ?? null, matches);
 
 	await db.ref('knockout').set({fetchedAt: ServerValue.TIMESTAMP, matches});
 
-	return {events, pushed: matches.length};
+	return {events, matches, pushed: matches.length};
 }

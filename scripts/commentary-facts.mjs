@@ -353,3 +353,34 @@ export function buildLeaderboardFacts(games, players) {
 		totalMatches,
 	};
 }
+
+// Facts for one finished knockout match, from the in-app bracket picks (each
+// pick carries its participant `name`). The drawn full-time result is used for a
+// shootout (penalties are excluded upstream), so calling the draw still scores.
+export function buildKnockoutMatchFacts(match, picks) {
+	const r1 = match.scoreA;
+	const r2 = match.scoreB;
+	const realOutcome = outcome(r1, r2);
+
+	const entries = (picks ?? []).map((pick) => ({
+		name: pick.name,
+		outcome: outcome(pick.p1, pick.p2),
+		pick: `${pick.p1}-${pick.p2}`,
+		points: scorePrediction(pick.p1, pick.p2, r1, r2),
+	}));
+
+	const rightOutcome = entries.filter((entry) => entry.outcome === realOutcome);
+
+	return {
+		exactHitters: entries.filter((e) => e.points === 25).map((e) => e.name),
+		loneRightOutcome:
+			rightOutcome.length === 1 ? rightOutcome[0].name : null,
+		matchNo: match.matchNumber,
+		result: `${match.teamA} ${r1}-${r2} ${match.teamB}`,
+		stage: match.stage,
+		winnerGoalsHitters: entries
+			.filter((e) => e.points === 18)
+			.map((e) => `${e.name} (${e.pick})`),
+		zeros: entries.filter((e) => e.points === 0).map((e) => e.name),
+	};
+}

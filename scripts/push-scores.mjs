@@ -4,7 +4,10 @@ import {cert, initializeApp} from 'firebase-admin/app';
 import {getDatabase} from 'firebase-admin/database';
 
 import {parsePredictions} from './commentary-facts.mjs';
-import {updateCommentary} from './commentary-core.mjs';
+import {
+	updateCommentary,
+	updateKnockoutCommentary,
+} from './commentary-core.mjs';
 import {emitSignal} from './emit-signal.mjs';
 import {
 	detectMatchEvents,
@@ -118,7 +121,8 @@ const MATCH_HOOKS = {
 // updates even on a tick where no group score changed — and run its own match
 // bot (chat + emitsignal), since knockout matches never flow through `games`.
 try {
-	const {events: knockoutEvents, pushed} = await pushKnockout(db);
+	const {events: knockoutEvents, matches: knockoutMatches, pushed} =
+		await pushKnockout(db);
 
 	if (pushed) {
 		console.log(`Pushed knockout bracket (${pushed} matches) to RTDB`);
@@ -147,6 +151,42 @@ try {
 		console.log(
 			`Emitted ${knockoutSignaled} knockout signal(s) to channels`
 		);
+	}
+
+	// AI commentary + Slack digest for finished bracket matches (mirrors the
+	// group stage). The in-app picks carry each participant's name, so the
+	// facts need only `knockoutPicks`. Runs before the group early-exit, so it
+	// keeps up even when no group score changed.
+	if (knockoutMatches.some((match) => match.finished)) {
+		const picksSnapshot = await db.ref('knockoutPicks').once('value');
+		const picksByUid = picksSnapshot.val() ?? {};
+		const picksByMatch = {};
+
+		for (const uid of Object.keys(picksByUid)) {
+			for (const matchNo of Object.keys(picksByUid[uid] ?? {})) {
+				const pick = picksByUid[uid][matchNo];
+
+				(picksByMatch[matchNo] ??= []).push({
+					name: pick.name,
+					p1: pick.p1,
+					p2: pick.p2,
+				});
+			}
+		}
+
+		const koSnapshot = await db.ref('commentary').once('value');
+		const koCommentary = koSnapshot.val() || {byMatch: {}};
+
+		const {changed: koChanged} = await updateKnockoutCommentary(
+			knockoutMatches,
+			picksByMatch,
+			koCommentary
+		);
+
+		if (koChanged) {
+			await db.ref('commentary').set(koCommentary);
+			console.log('Updated RTDB knockout commentary');
+		}
 	}
 }
 catch (knockoutError) {

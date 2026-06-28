@@ -26,6 +26,21 @@ export function buildSlackMessage(matchNo, games, players, commentary) {
 	].join('\n');
 }
 
+// Knockout digest: stage + score, the AI comment (en), and a link.
+export function buildKnockoutSlackMessage(match, commentary) {
+	const score = `${match.teamA} ${match.scoreA} x ${match.scoreB} ${match.teamB}`;
+	const comment = commentary.byMatch?.[match.matchNumber]?.en ?? '';
+
+	return [
+		`🏆 ${match.stage} — ${score}`,
+		'',
+		`🎙️ ${comment}`,
+		'',
+		'See the bracket',
+		SITE,
+	].join('\n');
+}
+
 export async function postToSlack(text, webhook = process.env.SLACK_WEBHOOK_URL) {
 	if (!webhook) {
 		return false;

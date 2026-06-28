@@ -1,11 +1,16 @@
 import {
+	buildKnockoutMatchFacts,
 	buildLeaderboardFacts,
 	buildMatchFacts,
 	computeBoard,
 	finishedFixtures,
 	liveFixtureCount,
 } from './commentary-facts.mjs';
-import {buildSlackMessage, postToSlack} from './slack.mjs';
+import {
+	buildKnockoutSlackMessage,
+	buildSlackMessage,
+	postToSlack,
+} from './slack.mjs';
 
 // Shared commentary engine: turns games + predictions into the localized blurbs
 // the UI shows. Used by both the GitHub Action (file-backed generate-commentary)
@@ -29,6 +34,14 @@ const MATCH_SYSTEM = `You are the in-house commentator for a friendly office Wor
 Voice: playful, punchy, a little cheeky — a sports pundit roasting friends at a bar. Tease bold calls and bad luck, celebrate the winners, call out lone-wolf picks and big leaderboard swings. Always punch up or sideways, NEVER mean: mock the bet or the luck, never the person. Office-safe, no profanity or slurs.
 
 Use only the real names, scores and numbers in the facts provided — never invent anything. Scoring: 25 exact score, 18 right winner & winner's goals, 15 right winner & goal difference, 12 right draw wrong score, 10 right winner only, 0 otherwise.
+
+Return the SAME blurb in three languages — en: American English, pt: Brazilian Portuguese (casual "zoeira"), es: Spain Spanish (castellano).`;
+
+const KNOCKOUT_MATCH_SYSTEM = `You are the in-house commentator for the "AC World Cup 2026 BET" office pool, now in the KNOCKOUT stage — win or go home. After each match you write ONE short, witty blurb (2-3 sentences) about how the pool's players did on that specific game.
+
+Voice: playful, punchy, a little cheeky — a sports pundit roasting friends at a bar. Tease the bold calls and bad luck, celebrate whoever nailed it, call out lone-wolf reads and the whiffs. Always punch up or sideways, NEVER mean: mock the bet or the luck, never the person. Office-safe, no profanity or slurs.
+
+The facts name the round (stage) and the result. A match decided on penalties is scored on its drawn full-time result. Use only the real names, scores and numbers in the facts — never invent anything. Scoring: 25 exact score, 18 right winner & winner's goals, 15 right winner & goal difference, 12 right draw wrong score, 10 right winner only, 0 otherwise.
 
 Return the SAME blurb in three languages — en: American English, pt: Brazilian Portuguese (casual "zoeira"), es: Spain Spanish (castellano).`;
 
@@ -74,6 +87,10 @@ async function callJson(system, facts, schema) {
 
 function commentMatch(facts) {
 	return callJson(MATCH_SYSTEM, facts, LOCALIZED_SCHEMA);
+}
+
+function commentKnockoutMatch(facts) {
+	return callJson(KNOCKOUT_MATCH_SYSTEM, facts, LOCALIZED_SCHEMA);
 }
 
 function commentRecap(facts) {
@@ -225,6 +242,85 @@ export async function updateCommentary(
 		}
 		catch (error) {
 			console.error(`Leaderboard recap failed: ${error.message}`);
+		}
+	}
+
+	if (changed) {
+		commentary.generatedAt = new Date().toISOString();
+	}
+
+	return {changed, commentary};
+}
+
+// Generate a blurb for every newly-finished knockout match (stored in
+// commentary.byMatch under its match number, alongside the group blurbs, so the
+// app shows it on the knockout card with no client change) and post each to
+// Slack. `picksByMatch` maps a knockout match number to its in-app picks. With
+// no ANTHROPIC_API_KEY this is a no-op, so the caller can still persist scores.
+export async function updateKnockoutCommentary(
+	matches,
+	picksByMatch,
+	commentary,
+	{dryRun = !process.env.ANTHROPIC_API_KEY, slack = true} = {}
+) {
+	commentary.byMatch ??= {};
+
+	const pending = matches.filter(
+		(match) =>
+			match.finished &&
+			match.scoreA != null &&
+			match.scoreB != null &&
+			(picksByMatch[match.matchNumber]?.length ?? 0) > 0 &&
+			!commentary.byMatch[match.matchNumber]
+	);
+
+	if (pending.length === 0) {
+		return {changed: false, commentary};
+	}
+
+	if (dryRun) {
+		console.log(
+			`[dry run] no ANTHROPIC_API_KEY — knockout matches=${pending.length}`
+		);
+
+		return {changed: false, commentary};
+	}
+
+	let changed = false;
+
+	for (const match of pending) {
+		try {
+			commentary.byMatch[match.matchNumber] = await commentKnockoutMatch(
+				buildKnockoutMatchFacts(match, picksByMatch[match.matchNumber])
+			);
+			changed = true;
+			console.log(
+				`Generated knockout commentary for match ${match.matchNumber}`
+			);
+
+			if (slack) {
+				try {
+					if (
+						await postToSlack(
+							buildKnockoutSlackMessage(match, commentary)
+						)
+					) {
+						console.log(
+							`Posted knockout match ${match.matchNumber} digest to Slack`
+						);
+					}
+				}
+				catch (slackError) {
+					console.error(
+						`Slack post for knockout match ${match.matchNumber} failed: ${slackError.message}`
+					);
+				}
+			}
+		}
+		catch (error) {
+			console.error(
+				`Knockout match ${match.matchNumber} failed: ${error.message}`
+			);
 		}
 	}
 
