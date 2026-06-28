@@ -58,7 +58,7 @@ export function WinnersPodium({rows}: {rows: LeaderboardRow[]}) {
 	return (
 		<div className="border-b border-white/10 bg-slate-900/95 px-4 py-3 sm:fixed sm:bottom-4 sm:left-4 sm:z-40 sm:w-auto sm:rounded-2xl sm:border sm:border-amber-400/20 sm:shadow-2xl sm:backdrop-blur">
 			<p className="mb-4 text-center text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-400">
-				🏆 Pódio
+				🏆 Pódio Group Stage
 			</p>
 
 			<div className="flex items-end justify-center gap-0.5">
