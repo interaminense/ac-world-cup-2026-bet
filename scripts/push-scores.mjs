@@ -6,7 +6,13 @@ import {getDatabase} from 'firebase-admin/database';
 import {parsePredictions} from './commentary-facts.mjs';
 import {updateCommentary} from './commentary-core.mjs';
 import {emitSignal} from './emit-signal.mjs';
-import {detectMatchEvents, postMatchEvents, signalPayload} from './match-bot.mjs';
+import {
+	detectMatchEvents,
+	knockoutSignalPayload,
+	postKnockoutEvents,
+	postMatchEvents,
+	signalPayload,
+} from './match-bot.mjs';
 import {pushKnockout} from './knockout.mjs';
 import {fetchEspnGames} from './sources/espn.mjs';
 import {fetchFifaGames} from './sources/fifa.mjs';
@@ -99,17 +105,52 @@ function canonical(value) {
 const snapshot = await db.ref('games').once('value');
 const previous = snapshot.val();
 
+// One emitsignal channel hook per event type (each is its own ac-world-cup-2026
+// channel). Firing is gated by EMITSIGNAL_API_KEY in emit-signal.mjs, so only
+// the configured server signals. Shared by the group and knockout bots.
+const MATCH_HOOKS = {
+	final: 'https://api.emitsignal.com/h/gh_2k12v79', // ac-world-cup-2026/match_finished
+	goal: 'https://api.emitsignal.com/h/gh_ikfrubx', // ac-world-cup-2026/goals
+	kickoff: 'https://api.emitsignal.com/h/gh_q9ur7an', // ac-world-cup-2026/match_kickoff
+};
+
 // Keep the knockout bracket fresh independently of the group-stage diff, so it
-// updates even on a tick where no group score changed.
+// updates even on a tick where no group score changed — and run its own match
+// bot (chat + emitsignal), since knockout matches never flow through `games`.
 try {
-	const pushed = await pushKnockout(db);
+	const {events: knockoutEvents, pushed} = await pushKnockout(db);
 
 	if (pushed) {
 		console.log(`Pushed knockout bracket (${pushed} matches) to RTDB`);
 	}
+
+	const knockoutPosted = await postKnockoutEvents(db, knockoutEvents);
+
+	if (knockoutPosted) {
+		console.log(`Match bot posted ${knockoutPosted} knockout goal(s)`);
+	}
+
+	let knockoutSignaled = 0;
+
+	for (const event of knockoutEvents) {
+		if (
+			await emitSignal(
+				MATCH_HOOKS[event.type],
+				knockoutSignalPayload(event)
+			)
+		) {
+			knockoutSignaled += 1;
+		}
+	}
+
+	if (knockoutSignaled) {
+		console.log(
+			`Emitted ${knockoutSignaled} knockout signal(s) to channels`
+		);
+	}
 }
 catch (knockoutError) {
-	console.error(`Knockout push failed: ${knockoutError.message}`);
+	console.error(`Knockout push/bot failed: ${knockoutError.message}`);
 }
 
 if (
@@ -120,15 +161,6 @@ if (
 	console.log(`Games unchanged (source: ${source}); skipping write`);
 	process.exit(0);
 }
-
-// One emitsignal channel hook per event type (each is its own ac-world-cup-2026
-// channel). Firing is gated by EMITSIGNAL_API_KEY in emit-signal.mjs, so only
-// the configured server signals.
-const MATCH_HOOKS = {
-	final: 'https://api.emitsignal.com/h/gh_2k12v79', // ac-world-cup-2026/match_finished
-	goal: 'https://api.emitsignal.com/h/gh_ikfrubx', // ac-world-cup-2026/goals
-	kickoff: 'https://api.emitsignal.com/h/gh_q9ur7an', // ac-world-cup-2026/match_kickoff
-};
 
 // Detect kickoffs, goals and full time against the prior state (before we
 // overwrite it). On the first run `previous` is null, so nothing is detected

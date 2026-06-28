@@ -1,6 +1,12 @@
 import {describe, expect, it} from 'vitest';
 
-import {detectMatchEvents, formatEvent, signalPayload} from './match-bot.mjs';
+import {
+	detectKnockoutEvents,
+	detectMatchEvents,
+	formatEvent,
+	formatKnockoutEvent,
+	signalPayload,
+} from './match-bot.mjs';
 
 const base = {
 	awayScore: 0,
@@ -117,5 +123,72 @@ describe('signalPayload', () => {
 			homeScore: 2,
 			message: formatEvent({game, type: 'final'}),
 		});
+	});
+});
+
+const ko = (overrides = {}) => ({
+	finished: false,
+	matchNumber: 73,
+	scoreA: null,
+	scoreB: null,
+	stage: 'Round of 32',
+	teamA: 'South Africa',
+	teamB: 'Canada',
+	...overrides,
+});
+
+describe('detectKnockoutEvents', () => {
+	it('returns nothing without a previous snapshot', () => {
+		expect(detectKnockoutEvents(null, [ko()])).toEqual([]);
+	});
+
+	it('detects a kickoff when a match gets its first score', () => {
+		const events = detectKnockoutEvents(
+			[ko()],
+			[ko({scoreA: 0, scoreB: 0})]
+		);
+
+		expect(events).toEqual([{match: events[0]?.match, type: 'kickoff'}]);
+	});
+
+	it('detects a goal for the side whose score rose', () => {
+		const events = detectKnockoutEvents(
+			[ko({scoreA: 0, scoreB: 0})],
+			[ko({scoreA: 1, scoreB: 0})]
+		);
+
+		expect(events).toHaveLength(1);
+		expect(events[0]).toMatchObject({side: 'home', type: 'goal'});
+	});
+
+	it('detects full time when the match finishes', () => {
+		const events = detectKnockoutEvents(
+			[ko({scoreA: 1, scoreB: 0})],
+			[ko({finished: true, scoreA: 1, scoreB: 0})]
+		);
+
+		expect(events).toEqual([{match: events[0]?.match, type: 'final'}]);
+	});
+
+	it('ignores an unchanged live match', () => {
+		expect(
+			detectKnockoutEvents(
+				[ko({scoreA: 1, scoreB: 0})],
+				[ko({scoreA: 1, scoreB: 0})]
+			)
+		).toEqual([]);
+	});
+});
+
+describe('formatKnockoutEvent', () => {
+	it('names the stage on kickoff and the scorer on a goal', () => {
+		const match = ko({scoreA: 1, scoreB: 0});
+
+		expect(formatKnockoutEvent({match, type: 'kickoff'})).toContain(
+			'Round of 32'
+		);
+		expect(
+			formatKnockoutEvent({match, side: 'home', type: 'goal'})
+		).toContain('South Africa');
 	});
 });

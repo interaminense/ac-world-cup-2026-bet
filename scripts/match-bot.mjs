@@ -128,3 +128,131 @@ export async function postMatchEvents(db, events) {
 
 	return goals.length;
 }
+
+// --- Knockout bracket (separate `knockout` node, different shape) -----------
+
+// Status from the stored knockout shape: a started match always has a score,
+// finished carries the FIFA full-time flag.
+function knockoutStatusOf(match) {
+	if (match.finished) {
+		return 'finished';
+	}
+
+	if (match.scoreA != null && match.scoreB != null) {
+		return 'live';
+	}
+
+	return 'notstarted';
+}
+
+// Kickoffs, goals and full time for the bracket, diffing the prior knockout
+// matches against the fresh ones (same contract as detectMatchEvents). No
+// previous snapshot → nothing, so history is never backfilled.
+export function detectKnockoutEvents(previousMatches, matches) {
+	if (!previousMatches) {
+		return [];
+	}
+
+	const prevByNum = new Map(
+		previousMatches.map((match) => [match.matchNumber, match])
+	);
+	const events = [];
+
+	for (const match of matches) {
+		const prev = prevByNum.get(match.matchNumber);
+
+		if (!prev) {
+			continue;
+		}
+
+		const before = knockoutStatusOf(prev);
+		const after = knockoutStatusOf(match);
+
+		if (before === 'notstarted' && after === 'live') {
+			events.push({match, type: 'kickoff'});
+		}
+
+		if (after === 'live') {
+			if ((match.scoreA ?? 0) > (prev.scoreA ?? 0)) {
+				events.push({match, side: 'home', type: 'goal'});
+			}
+
+			if ((match.scoreB ?? 0) > (prev.scoreB ?? 0)) {
+				events.push({match, side: 'away', type: 'goal'});
+			}
+		}
+
+		if (before !== 'finished' && after === 'finished') {
+			events.push({match, type: 'final'});
+		}
+	}
+
+	return events;
+}
+
+export function formatKnockoutEvent(event) {
+	const {match} = event;
+	const home = `${teamFlagEmoji(match.teamA)} ${match.teamA}`;
+	const away = `${match.teamB} ${teamFlagEmoji(match.teamB)}`;
+
+	if (event.type === 'kickoff') {
+		return `🟢 LIVE — ${match.stage}: ${home} 🆚 ${away}`;
+	}
+
+	if (event.type === 'final') {
+		return `🏁 FT — ${home} ${match.scoreA} x ${match.scoreB} ${away}`;
+	}
+
+	const team = event.side === 'home' ? match.teamA : match.teamB;
+
+	return `⚽ GOOOOAL! ${teamFlagEmoji(team)} ${team} — ${match.teamA} ${match.scoreA}-${match.scoreB} ${match.teamB}`;
+}
+
+// Signal payload for a knockout event — mirrors signalPayload, on the bracket
+// shape, so the emitsignal channels carry the same fields as the group stage.
+export function knockoutSignalPayload(event) {
+	const {match} = event;
+	const common = {
+		away: match.teamB,
+		home: match.teamA,
+		message: formatKnockoutEvent(event),
+		stage: match.stage,
+	};
+
+	if (event.type === 'kickoff') {
+		return {...common, event: 'match_kickoff'};
+	}
+
+	if (event.type === 'final') {
+		return {
+			...common,
+			awayScore: match.scoreB,
+			event: 'match_final',
+			homeScore: match.scoreA,
+		};
+	}
+
+	return {
+		...common,
+		awayScore: match.scoreB,
+		event: 'match_goal',
+		homeScore: match.scoreA,
+		scorer: event.side === 'home' ? match.teamA : match.teamB,
+	};
+}
+
+// Post one chat message per knockout goal, as the bot (chat stays goals-only,
+// like the group stage).
+export async function postKnockoutEvents(db, events) {
+	const goals = events.filter((event) => event.type === 'goal');
+
+	for (const event of goals) {
+		await db.ref('chatRoom').push({
+			at: ServerValue.TIMESTAMP,
+			name: BOT_NAME,
+			text: formatKnockoutEvent(event),
+		});
+	}
+
+	return goals.length;
+}

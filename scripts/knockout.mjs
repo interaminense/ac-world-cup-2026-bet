@@ -1,5 +1,7 @@
 import {ServerValue} from 'firebase-admin/database';
 
+import {detectKnockoutEvents} from './match-bot.mjs';
+
 const FEED_URL =
 	'https://api.fifa.com/api/v3/calendar/matches?idCompetition=17&idSeason=285023&language=en&count=500';
 
@@ -78,21 +80,25 @@ function canonical(matches) {
 }
 
 // Fetch the knockout bracket and push it to RTDB `knockout`, only when changed.
+// Returns the kickoff/goal/final events seen since the last push (for the chat
+// bot + emitsignal) and how many matches were written.
 export async function pushKnockout(db) {
 	const matches = await fetchKnockout();
 
 	if (matches.length === 0) {
-		return 0;
+		return {events: [], pushed: 0};
 	}
 
 	const snapshot = await db.ref('knockout').once('value');
 	const previous = snapshot.val();
 
 	if (previous && canonical(previous.matches) === canonical(matches)) {
-		return 0;
+		return {events: [], pushed: 0};
 	}
+
+	const events = detectKnockoutEvents(previous?.matches ?? null, matches);
 
 	await db.ref('knockout').set({fetchedAt: ServerValue.TIMESTAMP, matches});
 
-	return matches.length;
+	return {events, pushed: matches.length};
 }
