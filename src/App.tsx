@@ -23,6 +23,7 @@ import {WinnersPodium} from './components/WinnersPodium';
 import {IdentityPrompt} from './components/IdentityPrompt';
 import {Leaderboard} from './components/Leaderboard';
 import {ChatButton} from './components/ChatButton';
+import {ChatLockedPanel} from './components/ChatLockedPanel';
 import {ChatPanel} from './components/ChatPanel';
 import {LiveGames} from './components/LiveGames';
 import {KnockoutView} from './components/KnockoutView';
@@ -1055,39 +1056,46 @@ export default function App() {
 				</Routes>
 			</main>
 
-			{!chatOpen && !chatLocked && (
+			{!chatOpen && (
 				<ChatButton
 					onClick={() => {
 						setChatOpen(true);
 						markChatRead();
 						acTrack('chat_opened');
 					}}
-					unread={chatUnread}
+					unread={chatLocked ? 0 : chatUnread}
 				/>
 			)}
 
-			{chatOpen && !chatLocked && (
+			{chatOpen && (
 				<>
 					<div
 						className="fixed inset-0 z-40 bg-black/50"
 						onClick={() => setChatOpen(false)}
 					/>
 
-					<ChatPanel
-						games={games}
-						identity={identity.name}
-						liveCard={liveCard}
-						onCelebrate={(name) => {
-							celebrate(name);
-							acTrack('celebrate_sent', {name});
-						}}
-						onClose={() => setChatOpen(false)}
-						onRequestIdentify={() => {
-							setChatOpen(false);
-							setIdentityOpen(true);
-						}}
-						participants={participants}
-					/>
+					{chatLocked ? (
+						<ChatLockedPanel
+							onClose={() => setChatOpen(false)}
+							onSignIn={auth.signIn}
+						/>
+					) : (
+						<ChatPanel
+							games={games}
+							identity={identity.name}
+							liveCard={liveCard}
+							onCelebrate={(name) => {
+								celebrate(name);
+								acTrack('celebrate_sent', {name});
+							}}
+							onClose={() => setChatOpen(false)}
+							onRequestIdentify={() => {
+								setChatOpen(false);
+								setIdentityOpen(true);
+							}}
+							participants={participants}
+						/>
+					)}
 				</>
 			)}
 		</div>
