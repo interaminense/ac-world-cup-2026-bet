@@ -32,9 +32,13 @@ Use only the real names, scores and numbers in the facts provided — never inve
 
 Return the SAME blurb in three languages — en: American English, pt: Brazilian Portuguese (casual "zoeira"), es: Spain Spanish (castellano).`;
 
-const RECAP_SYSTEM = `You are the commentator for the "AC World Cup 2026 BET" office pool. The match day is over — there are no live games — so write a settled state-of-the-race recap: 2-3 punchy sentences on the title race, the chasers, and the strugglers. Playful, never mean; use the real names and numbers. Plain text — NO emojis.
+const RECAP_SYSTEM = `You are the commentator for the "AC World Cup 2026 BET" office pool, and the group stage — the pool's first phase — is coming to a close. Write a celebratory wrap-up recap: 2-3 punchy sentences.
 
-Return it in three languages — en: American English, pt: Brazilian Portuguese, es: Spain Spanish (castellano).`;
+Lead by congratulating the current leader (rank 1 in the standings) by name for topping the table. The title is now down to the handful of players listed in titleContenders — with so few games left, everyone else is mathematically out of first place, so frame them as playing for pride. If matchesRemaining is 0 the first phase is over, so crown the leader as the group-stage champion; otherwise note the group stage is in its final games.
+
+Voice: warm, playful, a little cheeky — celebrate the leader, never be mean. Use only the real names and numbers in the facts; never invent anything. Plain text — NO emojis.
+
+Return it in three languages — en: American English, pt: Brazilian Portuguese (casual "zoeira"), es: Spain Spanish (castellano).`;
 
 const TITLES_SYSTEM = `You are the commentator for the "AC World Cup 2026 BET" office pool. For every participant in the standings, write a very short tag (max ~3 words, plain text, NO emojis) capturing their current vibe — e.g. "On fire", "Ice cold", "Co-leader", "Backed the upset". Base it on rank, points, exact-score count and recent form. Return exactly one entry per participant.
 

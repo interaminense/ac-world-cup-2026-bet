@@ -333,5 +333,23 @@ export function buildLeaderboardFacts(games, players) {
 		};
 	});
 
-	return {matchesPlayed: finished.length, standings};
+	// With `matchesRemaining` group games left and 25 the most anyone can score
+	// per game, a player tops out at total + 25 * remaining while the leader can
+	// stall at their current total. Anyone whose ceiling still clears the
+	// leader's floor is mathematically alive for first place.
+	const totalMatches = Object.keys(players[0]?.preds ?? {}).length;
+	const matchesRemaining = Math.max(0, totalMatches - finished.length);
+	const leaderTotal = after[0]?.total ?? 0;
+	const maxGain = matchesRemaining * 25;
+	const titleContenders = after
+		.filter((row) => row.total + maxGain >= leaderTotal)
+		.map((row) => row.name);
+
+	return {
+		matchesPlayed: finished.length,
+		matchesRemaining,
+		standings,
+		titleContenders,
+		totalMatches,
+	};
 }
