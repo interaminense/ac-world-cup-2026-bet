@@ -1,8 +1,7 @@
 import {useDeferredValue, useMemo, useState} from 'react';
 
 import {acTrack} from '../lib/analyticsCloud';
-import type {Game, Participant} from '../lib/types';
-import {liveWhatIfContext, simulateWhatIf, type WhatIfMover} from '../lib/whatif';
+import type {WhatIfContext, WhatIfMover} from '../lib/whatif';
 import {Avatar} from './Avatar';
 import {Flag} from './Flag';
 
@@ -111,18 +110,17 @@ function ScoreStepper({
 }
 
 export function WhatIfPanel({
-	games,
+	context,
 	matchNo,
-	participants,
+	simulate,
 }: {
-	games: Game[];
+	context: WhatIfContext | null;
 	matchNo: number;
-	participants: Participant[];
+	simulate: (r1: number, r2: number) => WhatIfMover[];
 }) {
-	const ctx = liveWhatIfContext(participants, games, matchNo);
-	const baseR1 = ctx?.r1 ?? 0;
-	const baseR2 = ctx?.r2 ?? 0;
-	const live = ctx !== null;
+	const baseR1 = context?.r1 ?? 0;
+	const baseR2 = context?.r2 ?? 0;
+	const live = context !== null;
 
 	// Default to one extra goal for team 1, so a scenario is always live.
 	const [add1, setAdd1] = useState(1);
@@ -136,26 +134,11 @@ export function WhatIfPanel({
 	const standings = useMemo(
 		() =>
 			live
-				? [
-						...simulateWhatIf(
-							participants,
-							games,
-							matchNo,
-							baseR1 + deferredAdd1,
-							baseR2 + deferredAdd2
-						),
-					].sort((a, b) => a.rankAfter - b.rankAfter)
+				? [...simulate(baseR1 + deferredAdd1, baseR2 + deferredAdd2)].sort(
+						(a, b) => a.rankAfter - b.rankAfter
+					)
 				: [],
-		[
-			live,
-			participants,
-			games,
-			matchNo,
-			baseR1,
-			baseR2,
-			deferredAdd1,
-			deferredAdd2,
-		]
+		[live, simulate, baseR1, baseR2, deferredAdd1, deferredAdd2]
 	);
 
 	// Fixed DOM order (by name) so React keeps each node — positions come from
@@ -170,7 +153,7 @@ export function WhatIfPanel({
 		[standings]
 	);
 
-	if (!ctx) {
+	if (!context) {
 		return null;
 	}
 
@@ -204,7 +187,7 @@ export function WhatIfPanel({
 			</div>
 
 			<div className="flex items-center justify-center gap-4">
-				<Flag className="h-3.5 w-5 shrink-0" team={ctx.team1} />
+				<Flag className="h-3.5 w-5 shrink-0" team={context.team1} />
 
 				<ScoreStepper
 					canSubtract={add1 > 0}
@@ -216,8 +199,8 @@ export function WhatIfPanel({
 						setAdd1((value) => Math.max(0, value - 1));
 						acTrack('whatif_adjusted', {matchNo});
 					}}
-					score={ctx.r1 + add1}
-					team={ctx.team1}
+					score={context.r1 + add1}
+					team={context.team1}
 				/>
 
 				<ScoreStepper
@@ -230,11 +213,11 @@ export function WhatIfPanel({
 						setAdd2((value) => Math.max(0, value - 1));
 						acTrack('whatif_adjusted', {matchNo});
 					}}
-					score={ctx.r2 + add2}
-					team={ctx.team2}
+					score={context.r2 + add2}
+					team={context.team2}
 				/>
 
-				<Flag className="h-3.5 w-5 shrink-0" team={ctx.team2} />
+				<Flag className="h-3.5 w-5 shrink-0" team={context.team2} />
 			</div>
 
 			<div

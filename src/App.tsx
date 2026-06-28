@@ -65,6 +65,10 @@ import {approvedParticipant, type Approval, type Profile} from './lib/profiles';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
 import {simulateTitleOdds} from './lib/titleOdds';
+import {
+	liveKnockoutWhatIfContext,
+	simulateKnockoutWhatIf,
+} from './lib/whatif';
 import {useAuth} from './lib/useAuth';
 import {useChatUnread} from './lib/useChatUnread';
 import {useCommentary} from './lib/useCommentary';
@@ -614,6 +618,26 @@ export default function App() {
 		[knockoutRosterRows, knockoutPicksByUid, knockoutMatches]
 	);
 
+	// "What if" for a live knockout match: reshuffles the knockout standings (not
+	// the group leaderboard) by re-scoring everyone's bracket picks at the given
+	// score. `now` keeps the live-status check fresh on each tick.
+	const knockoutWhatIf = useMemo(
+		() => ({
+			context: (matchNo: number) =>
+				liveKnockoutWhatIfContext(knockoutMatches, matchNo, now),
+			simulate: (matchNo: number, r1: number, r2: number) =>
+				simulateKnockoutWhatIf(
+					knockoutRosterRows,
+					knockoutPicksByUid,
+					knockoutMatches,
+					matchNo,
+					r1,
+					r2
+				),
+		}),
+		[knockoutMatches, knockoutRosterRows, knockoutPicksByUid, now]
+	);
+
 	// CSV players plus approved knockout newcomers, for the Participants menu and
 	// their profile pages (the group-stage computations keep using `participants`).
 	const menuParticipants = useMemo(
@@ -909,6 +933,7 @@ export default function App() {
 									signedIn: !auth.isAnonymous && !!auth.user,
 								}}
 								knockoutRoster={knockoutRosterRows.map((row) => row.name)}
+								knockoutWhatIf={knockoutWhatIf}
 								matchReactions={matchReactions}
 								onClearCommentary={auth.isOwner ? clearMatchCommentary : undefined}
 								onClearMatchReaction={auth.isOwner ? clearMatchReaction : undefined}

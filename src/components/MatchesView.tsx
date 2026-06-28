@@ -6,6 +6,12 @@ import {type MatchCard, predictionRoster} from '../lib/matches';
 import type {Game, Participant} from '../lib/types';
 import type {CheerCounts} from '../lib/useCheers';
 import type {ReactionsApi} from '../lib/useReactions';
+import {
+	liveWhatIfContext,
+	simulateWhatIf,
+	type WhatIfContext,
+	type WhatIfMover,
+} from '../lib/whatif';
 import {BetSplitBar} from './BetSplitBar';
 import {CheerCount} from './CheerCount';
 import {Flag} from './Flag';
@@ -52,6 +58,10 @@ interface MatchesViewProps {
 	games: Game[];
 	knockoutCards: MatchCard[];
 	knockoutPick: KnockoutSection;
+	knockoutWhatIf: {
+		context: (matchNo: number) => WhatIfContext | null;
+		simulate: (matchNo: number, r1: number, r2: number) => WhatIfMover[];
+	};
 	matchReactions: ReactionsApi;
 	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
@@ -289,6 +299,7 @@ function MatchCardArticle({
 	games,
 	highlighted,
 	knockoutEntry,
+	knockoutWhatIf,
 	matchReactions,
 	onClearCommentary,
 	onClearMatchReaction,
@@ -302,6 +313,10 @@ function MatchCardArticle({
 	games: Game[];
 	highlighted?: boolean;
 	knockoutEntry?: KnockoutEntry;
+	knockoutWhatIf: {
+		context: (matchNo: number) => WhatIfContext | null;
+		simulate: (matchNo: number, r1: number, r2: number) => WhatIfMover[];
+	};
 	matchReactions: ReactionsApi;
 	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
@@ -390,13 +405,34 @@ function MatchCardArticle({
 				/>
 			)}
 
-			{card.status === 'live' && !knockoutEntry && (
-				<WhatIfPanel
-					games={games}
-					matchNo={card.matchNo}
-					participants={participants}
-				/>
-			)}
+			{card.status === 'live' &&
+				(card.knockout ? (
+					<WhatIfPanel
+						context={knockoutWhatIf.context(card.matchNo)}
+						matchNo={card.matchNo}
+						simulate={(r1, r2) =>
+							knockoutWhatIf.simulate(card.matchNo, r1, r2)
+						}
+					/>
+				) : (
+					<WhatIfPanel
+						context={liveWhatIfContext(
+							participants,
+							games,
+							card.matchNo
+						)}
+						matchNo={card.matchNo}
+						simulate={(r1, r2) =>
+							simulateWhatIf(
+								participants,
+								games,
+								card.matchNo,
+								r1,
+								r2
+							)
+						}
+					/>
+				))}
 
 			{commentary[card.matchNo] && (
 				<div className="mt-3 flex items-start gap-2 rounded-xl border border-sky-400/20 bg-sky-400/5 px-3 py-2.5">
@@ -454,6 +490,7 @@ function MatchSection({
 	groups,
 	highlight,
 	knockout,
+	knockoutWhatIf,
 	matchReactions,
 	onClearCommentary,
 	onClearMatchReaction,
@@ -468,6 +505,10 @@ function MatchSection({
 	groups: DayGroup[];
 	highlight?: number | null;
 	knockout: KnockoutSection;
+	knockoutWhatIf: {
+		context: (matchNo: number) => WhatIfContext | null;
+		simulate: (matchNo: number, r1: number, r2: number) => WhatIfMover[];
+	};
 	matchReactions: ReactionsApi;
 	onClearCommentary?: (matchNo: number) => void;
 	onClearMatchReaction?: (matchNo: number, emoji: string) => void;
@@ -524,6 +565,7 @@ function MatchSection({
 									key={card.matchNo}
 									knockoutEntry={knockoutEntry}
 									knockoutRoster={knockoutRoster}
+									knockoutWhatIf={knockoutWhatIf}
 									matchReactions={matchReactions}
 									onClearCommentary={onClearCommentary}
 									onClearMatchReaction={onClearMatchReaction}
@@ -590,6 +632,7 @@ export function MatchesView({
 	games,
 	knockoutCards,
 	knockoutPick,
+	knockoutWhatIf,
 	matchReactions,
 	onClearCommentary,
 	onClearMatchReaction,
@@ -710,6 +753,7 @@ export function MatchesView({
 				highlight={highlight}
 				knockout={knockout}
 				knockoutRoster={knockoutRoster}
+				knockoutWhatIf={knockoutWhatIf}
 				matchReactions={matchReactions}
 				onClearCommentary={onClearCommentary}
 				onClearMatchReaction={onClearMatchReaction}

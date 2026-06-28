@@ -4,8 +4,11 @@ import {
 	normalizeTeamName,
 	realScoreFor,
 } from './games';
+import {knockoutStatus} from './knockoutCards';
+import {buildKnockoutStandings, type KnockoutRosterRow} from './knockoutStandings';
 import {buildLeaderboard} from './ranking';
 import type {Game, Participant, Prediction} from './types';
+import type {KnockoutMatch} from './useKnockout';
 
 export interface WhatIfMover {
 	name: string;
@@ -160,4 +163,68 @@ export function buildWhatIf(
 			score: `${ctx.r1}–${ctx.r2 + 1}`,
 		},
 	];
+}
+
+// The live knockout match's teams and current score, or null when it isn't
+// live. Mirrors liveWhatIfContext for the bracket games.
+export function liveKnockoutWhatIfContext(
+	matches: KnockoutMatch[],
+	matchNo: number,
+	nowMs: number
+): WhatIfContext | null {
+	const match = matches.find((item) => item.matchNumber === matchNo);
+
+	if (!match || knockoutStatus(match, nowMs) !== 'live') {
+		return null;
+	}
+
+	return {
+		r1: match.scoreA ?? 0,
+		r2: match.scoreB ?? 0,
+		team1: match.teamA ?? match.a,
+		team2: match.teamB ?? match.b,
+	};
+}
+
+// Who moves in the knockout standings if the live match ends `r1–r2`, measured
+// against the current standings. Treats the match as finished at that score and
+// re-scores everyone's in-app picks.
+export function simulateKnockoutWhatIf(
+	roster: KnockoutRosterRow[],
+	picksByUid: Record<string, Record<number, {p1: number; p2: number}>>,
+	matches: KnockoutMatch[],
+	matchNo: number,
+	r1: number,
+	r2: number
+): WhatIfMover[] {
+	const baseline = new Map(
+		buildKnockoutStandings(roster, picksByUid, matches).map((row) => [
+			row.name,
+			{rank: row.rank, total: row.points},
+		])
+	);
+
+	const simMatches = matches.map((match) =>
+		match.matchNumber === matchNo
+			? {...match, finished: true, scoreA: r1, scoreB: r2}
+			: match
+	);
+
+	return buildKnockoutStandings(roster, picksByUid, simMatches)
+		.map((row) => {
+			const before = baseline.get(row.name);
+
+			return {
+				name: row.name,
+				pointsDelta: row.points - (before?.total ?? 0),
+				rankAfter: row.rank,
+				rankBefore: before?.rank ?? row.rank,
+				totalAfter: row.points,
+			};
+		})
+		.sort(
+			(a, b) =>
+				Math.abs(b.pointsDelta) - Math.abs(a.pointsDelta) ||
+				a.name.localeCompare(b.name)
+		);
 }
