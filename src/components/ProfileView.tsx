@@ -37,7 +37,7 @@ export function ProfileView({
 				</p>
 
 				<button
-					className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-bold text-emerald-950 transition hover:bg-emerald-400"
+					className="rounded-full bg-sky-500 px-4 py-2 text-sm font-bold text-sky-950 transition hover:bg-sky-400"
 					onClick={onSignIn}
 				>
 					Sign in with Google
@@ -73,13 +73,13 @@ export function ProfileView({
 			</div>
 
 			<section className="rounded-2xl border border-white/10 bg-white/5 p-4">
-				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Nickname
 				</h3>
 
 				<div className="flex gap-2">
 					<input
-						className="min-w-0 flex-1 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-emerald-400/50"
+						className="min-w-0 flex-1 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-sky-400/50"
 						maxLength={24}
 						onChange={(event) => {
 							setDraft(event.target.value);
@@ -90,7 +90,7 @@ export function ProfileView({
 					/>
 
 					<button
-						className="shrink-0 rounded-lg bg-emerald-500 px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-400"
+						className="shrink-0 rounded-lg bg-sky-500 px-4 text-sm font-bold text-sky-950 transition hover:bg-sky-400"
 						onClick={() => {
 							onSetNickname(draft);
 							setSaved(true);
@@ -101,17 +101,17 @@ export function ProfileView({
 				</div>
 
 				{saved && (
-					<p className="mt-2 text-xs text-emerald-400">✓ saved</p>
+					<p className="mt-2 text-xs text-sky-400">✓ saved</p>
 				)}
 			</section>
 
 			<section className="rounded-2xl border border-white/10 bg-white/5 p-4">
-				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Knockout
 				</h3>
 
 				{approved ? (
-					<p className="text-sm text-emerald-300">
+					<p className="text-sm text-sky-300">
 						✅ You're in the knockout pool.
 					</p>
 				) : pending ? (
@@ -126,7 +126,7 @@ export function ProfileView({
 						</p>
 
 						<button
-							className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-bold text-emerald-950 transition hover:bg-emerald-400"
+							className="rounded-full bg-sky-500 px-4 py-2 text-sm font-bold text-sky-950 transition hover:bg-sky-400"
 							onClick={onRequestKnockout}
 						>
 							Join the knockout

@@ -5,7 +5,7 @@ import type {NavItem} from '../lib/nav';
 const itemClass = ({isActive}: {isActive: boolean}) =>
 	`flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
 		isActive
-			? 'border-emerald-400 text-white'
+			? 'border-sky-400 text-white'
 			: 'border-transparent text-slate-400 hover:text-slate-200'
 	}`;
 
@@ -40,7 +40,7 @@ export function NavBar({
 										className={({isActive}) =>
 											`rounded-lg px-3 py-2 text-sm transition-colors ${
 												isActive
-													? 'bg-emerald-500/20 font-semibold text-emerald-300'
+													? 'bg-sky-500/20 font-semibold text-sky-300'
 													: 'text-slate-300 hover:bg-white/10'
 											}`
 										}
@@ -74,7 +74,7 @@ export function NavBar({
 					<NavLink
 						className={({isActive}) =>
 							isActive
-								? 'border-b-2 border-emerald-400 pb-1 text-white'
+								? 'border-b-2 border-sky-400 pb-1 text-white'
 								: 'pb-1 text-slate-400 transition hover:text-white'
 						}
 						to="/admin"

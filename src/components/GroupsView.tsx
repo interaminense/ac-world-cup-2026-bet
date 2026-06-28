@@ -57,7 +57,7 @@ export function GroupsView({games}: {games: Game[]}) {
 							{group.teams.map((team, index) => (
 								<tr
 									className={`border-t border-white/5 ${
-										index < 2 ? 'bg-emerald-400/[0.06]' : ''
+										index < 2 ? 'bg-sky-400/[0.06]' : ''
 									}`}
 									key={team.team}
 								>

@@ -38,7 +38,7 @@ export function KnockoutChampionView({
 	return (
 		<div className="space-y-6">
 			<section>
-				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Knockout champion
 				</h2>
 
@@ -57,7 +57,7 @@ export function KnockoutChampionView({
 			</section>
 
 			<section>
-				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Awards
 				</h2>
 
@@ -75,7 +75,7 @@ export function KnockoutChampionView({
 			</section>
 
 			<section>
-				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Stats
 				</h2>
 

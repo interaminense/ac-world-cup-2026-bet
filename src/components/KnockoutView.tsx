@@ -54,7 +54,7 @@ export function KnockoutView({
 			</div>
 
 			<section>
-				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Bracket
 				</h2>
 
@@ -62,7 +62,7 @@ export function KnockoutView({
 			</section>
 
 			<section>
-				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Leaderboard
 				</h2>
 

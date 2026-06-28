@@ -177,7 +177,7 @@ export function Reactions({
 						<button
 							className={`flex items-center gap-1 rounded-full px-1.5 py-0.5 text-xs transition-colors ${
 								mine.includes(reaction.emoji)
-									? 'bg-emerald-400/20 ring-1 ring-inset ring-emerald-400/50'
+									? 'bg-sky-400/20 ring-1 ring-inset ring-sky-400/50'
 									: 'bg-white/5 hover:bg-white/10'
 							}`}
 							onClick={() => onReact(reaction.emoji)}

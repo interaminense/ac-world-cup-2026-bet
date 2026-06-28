@@ -66,7 +66,7 @@ export function ParticipantView({
 							</span>
 
 							{stats.movement > 0 && (
-								<span className="text-xs font-semibold text-emerald-400">
+								<span className="text-xs font-semibold text-sky-400">
 									▲{stats.movement}
 								</span>
 							)}
@@ -145,7 +145,7 @@ export function ParticipantView({
 
 			{knockoutBets.length > 0 && (
 				<div>
-					<h3 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+					<h3 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 						Knockout
 					</h3>
 

@@ -26,11 +26,11 @@ export function Header({
 	statusText,
 }: HeaderProps) {
 	return (
-		<header className="border-b border-white/10 bg-gradient-to-r from-emerald-950 via-slate-950 to-emerald-950 pt-[env(safe-area-inset-top)]">
+		<header className="border-b border-white/10 bg-gradient-to-r from-sky-950 via-slate-950 to-sky-950 pt-[env(safe-area-inset-top)]">
 			<div className="mx-auto max-w-5xl px-4 py-8">
 				<div className="flex items-start justify-between gap-3">
 					<div className="min-w-0">
-						<p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400">
+						<p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-400">
 							Analytics Cloud
 						</p>
 
@@ -38,6 +38,10 @@ export function Header({
 							World Cup 2026{' '}
 							<span className="text-amber-400">BET</span>
 						</h1>
+
+						<p className="mt-1 text-sm font-semibold text-sky-400">
+							Knockout stage
+						</p>
 
 						<span className="mt-1 block text-xs text-slate-400">
 							{statusText}

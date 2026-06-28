@@ -146,7 +146,7 @@ export function ChatPanel({
 		<div className="fixed inset-y-0 left-14 right-0 z-50 flex flex-col overflow-hidden border-l border-white/10 bg-slate-900 shadow-2xl sm:left-auto sm:w-80 md:w-96">
 			<div className="flex shrink-0 items-center justify-between border-b border-white/10 px-4 py-3">
 				<div className="min-w-0">
-					<p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-400">
+					<p className="text-[10px] font-semibold uppercase tracking-wider text-sky-400">
 						Chat
 					</p>
 
@@ -210,7 +210,7 @@ export function ChatPanel({
 									<div
 										className={`break-words rounded-2xl px-3 py-1.5 text-sm leading-relaxed ${
 											isMe
-												? 'rounded-tr-sm bg-emerald-500/25 text-white'
+												? 'rounded-tr-sm bg-sky-500/25 text-white'
 												: 'rounded-tl-sm bg-white/10 text-slate-200'
 										}`}
 									>
@@ -268,7 +268,7 @@ export function ChatPanel({
 					<input
 						autoComplete="off"
 						autoCorrect="off"
-						className="min-w-0 flex-1 rounded-xl bg-white/10 px-3 py-2 text-base text-white placeholder-slate-500 outline-none focus:ring-1 focus:ring-emerald-400 sm:text-sm"
+						className="min-w-0 flex-1 rounded-xl bg-white/10 px-3 py-2 text-base text-white placeholder-slate-500 outline-none focus:ring-1 focus:ring-sky-400 sm:text-sm"
 						maxLength={200}
 						onChange={(e) => setDraft(e.target.value)}
 						onKeyDown={(e) => {
@@ -284,7 +284,7 @@ export function ChatPanel({
 					/>
 
 					<button
-						className="shrink-0 rounded-xl bg-emerald-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-400 disabled:opacity-40"
+						className="shrink-0 rounded-xl bg-sky-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-400 disabled:opacity-40"
 						disabled={!draft.trim()}
 						onClick={submit}
 					>
@@ -298,7 +298,7 @@ export function ChatPanel({
 					</p>
 
 					<button
-						className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-400"
+						className="rounded-full bg-sky-500 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-400"
 						onClick={onRequestIdentify}
 					>
 						👋 Who are you?

@@ -33,7 +33,7 @@ export function AdminView() {
 	return (
 		<div className="space-y-6">
 			<section>
-				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Chat
 				</h3>
 
@@ -51,7 +51,7 @@ export function AdminView() {
 					<button
 						aria-pressed={chatLoginOnly}
 						className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-							chatLoginOnly ? 'bg-emerald-500' : 'bg-white/15'
+							chatLoginOnly ? 'bg-sky-500' : 'bg-white/15'
 						}`}
 						onClick={() => setChatLoginOnly(!chatLoginOnly)}
 					>
@@ -67,7 +67,7 @@ export function AdminView() {
 			</section>
 
 			<section>
-				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Winners podium
 				</h3>
 
@@ -85,7 +85,7 @@ export function AdminView() {
 					<button
 						aria-pressed={showWinners}
 						className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-							showWinners ? 'bg-emerald-500' : 'bg-white/15'
+							showWinners ? 'bg-sky-500' : 'bg-white/15'
 						}`}
 						onClick={() => setShowWinners(!showWinners)}
 					>
@@ -101,7 +101,7 @@ export function AdminView() {
 			</section>
 
 			<section>
-				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Pending claims ({pending.length})
 				</h3>
 
@@ -135,7 +135,7 @@ export function AdminView() {
 								</div>
 
 								<button
-									className="rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-emerald-950 transition hover:bg-emerald-400"
+									className="rounded-full bg-sky-500 px-3 py-1 text-xs font-bold text-sky-950 transition hover:bg-sky-400"
 									onClick={() =>
 										approve(row.uid, row.claim as string)
 									}
@@ -156,7 +156,7 @@ export function AdminView() {
 			</section>
 
 			<section>
-				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Knockout sign-ups ({knockoutSignups.length})
 				</h3>
 
@@ -187,7 +187,7 @@ export function AdminView() {
 								</div>
 
 								<button
-									className="rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold text-emerald-950 transition hover:bg-emerald-400"
+									className="rounded-full bg-sky-500 px-3 py-1 text-xs font-bold text-sky-950 transition hover:bg-sky-400"
 									onClick={() => approveKnockout(row.uid)}
 								>
 									Approve
@@ -206,7 +206,7 @@ export function AdminView() {
 			</section>
 
 			<section>
-				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Users ({rows.length})
 				</h3>
 
@@ -265,7 +265,7 @@ export function AdminView() {
 			</section>
 
 			<section>
-				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Menu
 				</h3>
 

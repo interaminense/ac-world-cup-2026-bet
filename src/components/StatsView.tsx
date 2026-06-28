@@ -40,7 +40,7 @@ export function StatsView({
 	return (
 		<div className="space-y-6">
 			<section>
-				<h2 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h2 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					⏪ Rewind the race
 				</h2>
 
@@ -110,7 +110,7 @@ export function StatsView({
 			</div>
 
 			<section>
-				<h2 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h2 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 					📈 Points over time
 				</h2>
 

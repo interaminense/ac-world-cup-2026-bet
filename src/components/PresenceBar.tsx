@@ -26,13 +26,13 @@ export function PresenceBar({online}: {online: OnlineUser[]}) {
 						{user.photoURL ? (
 							<img
 								alt=""
-								className="h-7 w-7 rounded-full object-cover ring-2 ring-emerald-500/70"
+								className="h-7 w-7 rounded-full object-cover ring-2 ring-sky-500/70"
 								referrerPolicy="no-referrer"
 								src={user.photoURL}
 							/>
 						) : (
 							<Avatar
-								className="h-7 w-7 rounded-full ring-2 ring-emerald-500/70"
+								className="h-7 w-7 rounded-full ring-2 ring-sky-500/70"
 								name={user.name as string}
 							/>
 						)}
@@ -47,7 +47,7 @@ export function PresenceBar({online}: {online: OnlineUser[]}) {
 			</div>
 
 			<span className="flex items-center gap-1 whitespace-nowrap text-xs font-medium text-slate-300">
-				<span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+				<span className="h-2 w-2 animate-pulse rounded-full bg-sky-400" />
 				{total} online
 			</span>
 		</div>

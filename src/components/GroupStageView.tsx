@@ -28,7 +28,7 @@ export function GroupStageView({
 		<div className="space-y-6">
 			{leader && (
 				<section>
-					<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">
+					<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">
 						Group stage champion
 					</h2>
 
@@ -42,7 +42,7 @@ export function GroupStageView({
 
 			{awards.length > 0 && (
 				<section>
-					<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">
+					<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">
 						Awards
 					</h2>
 
@@ -55,7 +55,7 @@ export function GroupStageView({
 			)}
 
 			<section>
-				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">
+				<h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-400">
 					Stats
 				</h2>
 

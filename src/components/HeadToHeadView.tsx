@@ -5,7 +5,7 @@ import type {LeaderboardRow} from '../lib/ranking';
 import type {Game, Participant} from '../lib/types';
 import {Avatar} from './Avatar';
 
-const A_COLOR = '#34d399';
+const A_COLOR = '#a78bfa';
 const B_COLOR = '#38bdf8';
 
 interface HeadToHeadViewProps {
@@ -33,7 +33,7 @@ function PickerRow({
 }) {
 	const active =
 		accent === 'a'
-			? 'bg-emerald-500 text-emerald-950'
+			? 'bg-sky-500 text-sky-950'
 			: 'bg-sky-500 text-sky-950';
 
 	return (
@@ -149,7 +149,7 @@ function DuelRow({
 		<div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-white/5 py-2 last:border-0">
 			<span
 				className={`text-right font-display text-lg font-bold ${
-					aWin ? 'text-emerald-400' : 'text-slate-400'
+					aWin ? 'text-sky-400' : 'text-slate-400'
 				}`}
 			>
 				{aWin ? `👑 ${a}` : a}
@@ -293,7 +293,7 @@ export function HeadToHeadView({
 						{aName}
 					</p>
 
-					<p className="font-display text-3xl font-bold text-emerald-400">
+					<p className="font-display text-3xl font-bold text-sky-400">
 						{a.total}
 					</p>
 				</div>
@@ -393,7 +393,7 @@ export function HeadToHeadView({
 								<span
 									className={`text-center font-display text-sm font-bold ${
 										match.winner === 'a'
-											? 'text-emerald-400'
+											? 'text-sky-400'
 											: 'text-slate-500'
 									}`}
 								>

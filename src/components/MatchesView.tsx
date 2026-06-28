@@ -165,7 +165,7 @@ function KnockoutPickRow({
 						<span>Closed for picks.</span>
 
 						<button
-							className="rounded-lg bg-emerald-500 px-3 py-1 text-xs font-bold text-emerald-950 hover:bg-emerald-400"
+							className="rounded-lg bg-sky-500 px-3 py-1 text-xs font-bold text-sky-950 hover:bg-sky-400"
 							onClick={() => entry.onToggleOpen(true)}
 						>
 							Open
@@ -181,7 +181,7 @@ function KnockoutPickRow({
 	if (!entry.signedIn) {
 		return (
 			<button
-				className="mb-3 w-full rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-4 py-2 text-sm font-medium text-emerald-300"
+				className="mb-3 w-full rounded-xl border border-sky-400/20 bg-sky-400/5 px-4 py-2 text-sm font-medium text-sky-300"
 				onClick={entry.onSignIn}
 			>
 				👋 Sign in with Google to predict
@@ -193,8 +193,8 @@ function KnockoutPickRow({
 	const p2 = entry.myPick?.p2 ?? 0;
 
 	return (
-		<div className="mb-3 flex flex-wrap items-center justify-center gap-2 rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-3 py-2">
-			<span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-400">
+		<div className="mb-3 flex flex-wrap items-center justify-center gap-2 rounded-xl border border-sky-400/20 bg-sky-400/5 px-3 py-2">
+			<span className="mr-1 text-[10px] font-semibold uppercase tracking-wide text-sky-400">
 				Your pick
 			</span>
 
@@ -325,7 +325,7 @@ function MatchCardArticle({
 		<article
 			className={`group flex scroll-mt-24 flex-col rounded-2xl border bg-white/5 p-4 ${
 				card.status === 'live'
-					? 'border-emerald-400/40 lg:col-span-2'
+					? 'border-sky-400/40 lg:col-span-2'
 					: 'border-white/10'
 			} ${card.status === 'finished' ? 'opacity-60' : ''} ${highlighted ? 'ring-2 ring-amber-400' : ''}`}
 			id={`match-${card.matchNo}`}
@@ -399,7 +399,7 @@ function MatchCardArticle({
 			)}
 
 			{commentary[card.matchNo] && (
-				<div className="mt-3 flex items-start gap-2 rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-3 py-2.5">
+				<div className="mt-3 flex items-start gap-2 rounded-xl border border-sky-400/20 bg-sky-400/5 px-3 py-2.5">
 					<span aria-hidden className="text-sm">
 						🎙️
 					</span>
@@ -487,7 +487,7 @@ function MatchSection({
 		<section className="space-y-6">
 			{groups.map((group) => (
 				<div key={group.label}>
-					<h3 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+					<h3 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 						{group.label}
 					</h3>
 
@@ -556,7 +556,7 @@ function SubTab({
 		<button
 			className={`flex w-full items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors sm:w-auto sm:py-1.5 ${
 				active
-					? 'bg-emerald-500 text-emerald-950'
+					? 'bg-sky-500 text-sky-950'
 					: 'bg-white/5 text-slate-300 hover:bg-white/10'
 			}`}
 			onClick={onClick}
@@ -573,7 +573,7 @@ function SubTab({
 			<span
 				className={`ml-auto shrink-0 rounded-full px-1.5 text-xs font-bold sm:ml-0 ${
 					active
-						? 'bg-emerald-950/15 text-emerald-950'
+						? 'bg-sky-950/15 text-sky-950'
 						: 'bg-white/10 text-slate-400'
 				}`}
 			>

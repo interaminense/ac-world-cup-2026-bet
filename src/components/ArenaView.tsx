@@ -257,13 +257,13 @@ export function ArenaView({
 
 			<div className="hidden sm:block">
 				{!identity && (
-					<div className="mb-3 flex items-center justify-between rounded-xl border border-emerald-400/20 bg-emerald-400/5 px-4 py-3">
+					<div className="mb-3 flex items-center justify-between rounded-xl border border-sky-400/20 bg-sky-400/5 px-4 py-3">
 						<span className="text-sm text-slate-300">
 							Pick a name to join the arena and score.
 						</span>
 
 						<button
-							className="shrink-0 rounded-full bg-emerald-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-emerald-400"
+							className="shrink-0 rounded-full bg-sky-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-sky-400"
 							onClick={onRequestIdentify}
 						>
 							👋 Who are you?
@@ -273,7 +273,7 @@ export function ArenaView({
 
 				<div className="flex gap-4">
 					<div
-						className="relative aspect-square h-[70vh] max-w-full shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-emerald-950/40 to-slate-950"
+						className="relative aspect-square h-[70vh] max-w-full shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-sky-950/40 to-slate-950"
 						onClick={(event) => {
 							const point = toFraction(event);
 
@@ -356,7 +356,7 @@ export function ArenaView({
 										className={`pointer-events-auto rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
 											isReady
 												? 'bg-white/10 text-slate-300 hover:bg-white/20'
-												: 'bg-emerald-500 text-white hover:bg-emerald-400'
+												: 'bg-sky-500 text-white hover:bg-sky-400'
 										}`}
 										onClick={() => {
 											if (!isReady) {
@@ -374,7 +374,7 @@ export function ArenaView({
 					</div>
 
 					<div className="w-48 shrink-0 self-start rounded-2xl border border-white/10 bg-white/5 p-3">
-						<p className="mb-2 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+						<p className="mb-2 text-xs font-semibold uppercase tracking-wider text-sky-400">
 							{playing ? formatCountdown(endsAt - now) : 'Scores'}
 						</p>
 

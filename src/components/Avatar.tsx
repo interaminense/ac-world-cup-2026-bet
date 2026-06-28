@@ -33,7 +33,7 @@ export function Avatar({className, name, photoURL}: AvatarProps) {
 		<span
 			className={`flex shrink-0 items-center justify-center font-display font-bold ${
 				isBot
-					? 'bg-emerald-500/30 text-emerald-100'
+					? 'bg-sky-500/30 text-sky-100'
 					: 'bg-white/10 text-slate-300'
 			} ${className}`}
 		>

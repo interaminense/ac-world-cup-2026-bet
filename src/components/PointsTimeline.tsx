@@ -425,7 +425,7 @@ export function PointsTimeline({frames}: {frames: TimelineFrame[]}) {
 			<div className="flex items-center gap-3">
 				<button
 					aria-label={playing ? 'Pause' : 'Play'}
-					className="shrink-0 rounded-full bg-emerald-500 px-3 py-1.5 text-sm font-semibold text-emerald-950 transition-colors hover:bg-emerald-400"
+					className="shrink-0 rounded-full bg-sky-500 px-3 py-1.5 text-sm font-semibold text-sky-950 transition-colors hover:bg-sky-400"
 					onClick={togglePlay}
 				>
 					{playing ? '⏸' : '▶'}
@@ -442,7 +442,7 @@ export function PointsTimeline({frames}: {frames: TimelineFrame[]}) {
 
 				<input
 					aria-label="Match timeline"
-					className="h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-white/15 accent-emerald-500"
+					className="h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-white/15 accent-sky-500"
 					defaultValue={Math.max(0, L - 1)}
 					max={L - 1}
 					min={0}

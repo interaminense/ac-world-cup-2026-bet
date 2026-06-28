@@ -31,7 +31,7 @@ export function LiveGames({
 	}
 
 	return (
-		<div className="border-b border-white/10 bg-emerald-950/30">
+		<div className="border-b border-white/10 bg-sky-950/30">
 			<div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-4 px-4 py-4">
 				{games.map((game) => {
 					const tally = cheers[game.matchNo] ?? {};

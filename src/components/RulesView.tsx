@@ -129,7 +129,7 @@ export function RulesView() {
 
 					<li>
 						Live matches score{' '}
-						<span className="font-medium text-emerald-400">
+						<span className="font-medium text-sky-400">
 							provisionally
 						</span>{' '}
 						(pulsing points) and can change until full time.

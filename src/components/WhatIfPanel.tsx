@@ -39,7 +39,7 @@ function StandingRow({index, mover}: {index: number; mover: WhatIfMover}) {
 				{moved && (
 					<span
 						className={`shrink-0 whitespace-nowrap text-[10px] font-semibold ${
-							up ? 'text-emerald-400' : 'text-rose-400'
+							up ? 'text-sky-400' : 'text-rose-400'
 						}`}
 					>
 						{mover.rankBefore} → {mover.rankAfter}
@@ -59,7 +59,7 @@ function StandingRow({index, mover}: {index: number; mover: WhatIfMover}) {
 				{mover.pointsDelta !== 0 && (
 					<span
 						className={`text-[10px] font-semibold ${
-							gained ? 'text-emerald-400' : 'text-rose-400'
+							gained ? 'text-sky-400' : 'text-rose-400'
 						}`}
 					>
 						{gained ? '+' : ''}
@@ -178,14 +178,14 @@ export function WhatIfPanel({
 	const isDefault = add1 === 1 && add2 === 0;
 
 	return (
-		<div className="mt-3 rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-3">
+		<div className="mt-3 rounded-xl border border-sky-400/20 bg-sky-400/5 p-3">
 			<div className="mb-2 flex items-center justify-between">
-				<p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-emerald-400">
+				<p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-sky-400">
 					🔮 What if…
 					{pending && (
 						<span
 							aria-label="Calculating"
-							className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-emerald-400/30 border-t-emerald-400"
+							className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-sky-400/30 border-t-sky-400"
 						/>
 					)}
 				</p>

@@ -47,7 +47,7 @@ export function NavDrawer({
 	const itemClass = (isActive: boolean) =>
 		`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
 			isActive
-				? 'bg-emerald-500 text-emerald-950'
+				? 'bg-sky-500 text-sky-950'
 				: 'text-slate-300 hover:bg-white/10'
 		}`;
 
@@ -67,7 +67,7 @@ export function NavDrawer({
 				}`}
 			>
 				<div className="mb-3 flex items-center justify-between">
-					<span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+					<span className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 						Menu
 					</span>
 
@@ -109,7 +109,7 @@ export function NavDrawer({
 												// color sets the participants apart.
 												`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
 													isActive
-														? 'bg-emerald-500/20 text-emerald-300'
+														? 'bg-sky-500/20 text-sky-300'
 														: 'text-slate-400 hover:bg-white/10 hover:text-slate-200'
 												}`
 											}

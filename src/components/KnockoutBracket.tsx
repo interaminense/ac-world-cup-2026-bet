@@ -179,7 +179,7 @@ function MatchCard({
 			{signedIn && defined && (
 				<div className="mt-1 text-center text-[9px]">
 					{pick ? (
-						<span className="font-semibold text-emerald-400">
+						<span className="font-semibold text-sky-400">
 							✓ {pick.p1}–{pick.p2}
 						</span>
 					) : (
@@ -257,7 +257,7 @@ function MobileMatchCard({
 			{signedIn && defined && (
 				<div className="mt-1.5 border-t border-white/5 pt-1 text-center text-[10px]">
 					{pick ? (
-						<span className="font-semibold text-emerald-400">
+						<span className="font-semibold text-sky-400">
 							✓ You predicted {pick.p1}–{pick.p2}
 						</span>
 					) : (
@@ -509,7 +509,7 @@ export function KnockoutBracket({user}: {user?: KnockoutIdentity | null}) {
 
 					return (
 						<section key={round.key}>
-							<h3 className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+							<h3 className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
 								{round.key === 'Final' && <span aria-hidden>🏆</span>}
 
 								{round.label}

@@ -64,7 +64,7 @@ export function Leaderboard({
 			)}
 
 			{recap && (
-				<div className="flex items-start gap-2 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 px-4 py-3">
+				<div className="flex items-start gap-2 rounded-2xl border border-sky-400/20 bg-sky-400/5 px-4 py-3">
 					<span aria-hidden className="text-sm">
 						🎙️
 					</span>
@@ -117,7 +117,7 @@ export function Leaderboard({
 						return (
 							<tr
 								className={`group cursor-pointer border-b border-white/5 transition-colors last:border-0 hover:bg-white/10 ${
-									isYou ? 'bg-emerald-400/10' : ''
+									isYou ? 'bg-sky-400/10' : ''
 								}`}
 								key={row.name}
 								onClick={() => onSelect(row.name)}
@@ -142,13 +142,13 @@ export function Leaderboard({
 													</span>
 
 													{isYou && (
-														<span className="rounded-full bg-emerald-400/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-300">
+														<span className="rounded-full bg-sky-400/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-sky-300">
 															you
 														</span>
 													)}
 
 													{!live && (row.movement ?? 0) > 0 && (
-														<span className="text-xs text-emerald-400">▲</span>
+														<span className="text-xs text-sky-400">▲</span>
 													)}
 
 													{!live && (row.movement ?? 0) < 0 && (
@@ -209,7 +209,7 @@ export function Leaderboard({
 								</td>
 
 								{titleOdds && (
-									<td className="whitespace-nowrap px-2 py-3 text-right text-sm font-semibold text-emerald-300 sm:px-4">
+									<td className="whitespace-nowrap px-2 py-3 text-right text-sm font-semibold text-sky-300 sm:px-4">
 										{formatOdds(titleOdds[row.name])}
 									</td>
 								)}
@@ -218,7 +218,7 @@ export function Leaderboard({
 									{row.livePoints > 0 ? (
 										<>
 											{row.total - row.livePoints}{' '}
-											<span className="animate-pulse text-emerald-400">
+											<span className="animate-pulse text-sky-400">
 												+{row.livePoints}
 											</span>
 										</>
