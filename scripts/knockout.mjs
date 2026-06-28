@@ -14,6 +14,15 @@ const STAGES = [
 
 const desc = (entries) => entries?.[0]?.Description ?? '';
 
+// Live minute for an in-progress match ("19" from FIFA's "19'", "45" from
+// "45'+2"); null before kickoff (MatchStatus 1) or after full time
+// (MatchStatus 0). The bracket and live banner render the bare number and add
+// their own apostrophe.
+const liveMinute = (match) =>
+	match.MatchStatus !== 0 && match.MatchStatus !== 1
+		? (String(match.MatchTime ?? '').match(/^\d+/)?.[0] ?? null)
+		: null;
+
 // FIFA calendar Results → the compact knockout shape the bracket renders.
 export function normalizeKnockout(results) {
 	return (results || [])
@@ -32,6 +41,7 @@ export function normalizeKnockout(results) {
 			stage: desc(match.StageName),
 			teamA: desc(match.Home?.TeamName) || null,
 			teamB: desc(match.Away?.TeamName) || null,
+			timeElapsed: liveMinute(match),
 		}))
 		.sort((x, y) => x.matchNumber - y.matchNumber);
 }

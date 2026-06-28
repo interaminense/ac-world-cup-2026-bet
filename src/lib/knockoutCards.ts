@@ -142,6 +142,7 @@ export function buildKnockoutCards(
 				team1: match.teamA ?? match.a,
 				team2: match.teamB ?? match.b,
 				time: kickoff?.time ?? '',
+				timeElapsed: match.timeElapsed ?? undefined,
 				...(hasScore
 					? {r1: match.scoreA as number, r2: match.scoreB as number}
 					: {}),

@@ -67,3 +67,41 @@ describe('normalizeKnockout', () => {
 		expect(r32.scoreA).toBeNull();
 	});
 });
+
+describe('normalizeKnockout live minute', () => {
+	const liveMatch = (overrides) => [
+		{
+			Away: {TeamName: en('Canada')},
+			Home: {TeamName: en('South Africa')},
+			MatchNumber: 73,
+			StageName: en('Round of 32'),
+			...overrides,
+		},
+	];
+
+	it('captures the live minute from MatchTime', () => {
+		const [match] = normalizeKnockout(
+			liveMatch({MatchStatus: 3, MatchTime: "19'"})
+		);
+
+		expect(match.timeElapsed).toBe('19');
+	});
+
+	it('keeps the minute and drops the stoppage suffix', () => {
+		const [match] = normalizeKnockout(
+			liveMatch({MatchStatus: 3, MatchTime: "45'+2"})
+		);
+
+		expect(match.timeElapsed).toBe('45');
+	});
+
+	it('has no minute before kickoff or after full time', () => {
+		const [pre] = normalizeKnockout(liveMatch({MatchStatus: 1}));
+		const [post] = normalizeKnockout(
+			liveMatch({MatchStatus: 0, MatchTime: "90'"})
+		);
+
+		expect(pre.timeElapsed).toBeNull();
+		expect(post.timeElapsed).toBeNull();
+	});
+});

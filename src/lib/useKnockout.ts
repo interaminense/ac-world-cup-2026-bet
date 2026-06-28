@@ -16,6 +16,8 @@ export interface KnockoutMatch {
 	stage: string;
 	teamA: string | null;
 	teamB: string | null;
+	// Bare live minute ("19") while the match is in progress; absent otherwise.
+	timeElapsed?: string | null;
 }
 
 // The bundled snapshot is the baseline; the live poller keeps `knockout` in the
