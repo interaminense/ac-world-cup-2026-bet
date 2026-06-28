@@ -711,9 +711,11 @@ export default function App() {
 		[timeline, rows]
 	);
 
+	// Live surfacing spans both phases: a live knockout match is just as "live"
+	// as a group game, so the banner draws from both card sets.
 	const liveGames = useMemo(
 		() =>
-			cards
+			[...cards, ...knockoutCards]
 				.filter((card) => card.status === 'live')
 				.map((card) => ({
 					matchNo: card.matchNo,
@@ -723,7 +725,7 @@ export default function App() {
 					team2: card.team2,
 					timeElapsed: card.timeElapsed,
 				})),
-		[cards]
+		[cards, knockoutCards]
 	);
 
 	const statusText = gamesFile
