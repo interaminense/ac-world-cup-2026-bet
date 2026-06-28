@@ -1,4 +1,5 @@
 import {participantSlug} from './auth';
+import {knockoutStatus} from './knockoutCards';
 import type {ParticipantStats} from './participantStats';
 import type {Approval, Profile} from './profiles';
 import {POINTS, scorePrediction} from './scoring';
@@ -117,6 +118,7 @@ export function pendingKnockout(
 
 export interface KnockoutStandingRow {
 	exact: number;
+	livePoints: number;
 	name: string;
 	photoURL?: string | null;
 	played: number;
@@ -125,16 +127,27 @@ export interface KnockoutStandingRow {
 	uid: string;
 }
 
-// Zeroed knockout ranking: each approved participant's in-app picks scored over
-// the finished knockout matches with the same rules as the group stage.
+// Knockout ranking: each approved participant's in-app picks scored over the
+// finished knockout matches with the same rules as the group stage, plus any
+// live match scored provisionally — its points fold into `points` and surface
+// separately as `livePoints` (pulsing in the table), mirroring the group
+// leaderboard. `nowMs` decides which match is currently live.
 export function buildKnockoutStandings(
 	roster: KnockoutRosterRow[],
 	picksByUid: Record<string, Record<number, {p1: number; p2: number}>>,
-	matches: KnockoutMatch[]
+	matches: KnockoutMatch[],
+	nowMs: number = Date.now()
 ): KnockoutStandingRow[] {
+	const hasScore = (match: KnockoutMatch) =>
+		match.scoreA != null && match.scoreB != null;
 	const finished = matches.filter(
+		(match) => match.finished && hasScore(match)
+	);
+	const liveMatches = matches.filter(
 		(match) =>
-			match.finished && match.scoreA != null && match.scoreB != null
+			!match.finished &&
+			hasScore(match) &&
+			knockoutStatus(match, nowMs) === 'live'
 	);
 
 	const scored = roster
@@ -142,6 +155,7 @@ export function buildKnockoutStandings(
 			const picks = picksByUid[uid] ?? {};
 
 			let exact = 0;
+			let livePoints = 0;
 			let played = 0;
 			let points = 0;
 
@@ -168,7 +182,25 @@ export function buildKnockoutStandings(
 				}
 			}
 
-			return {exact, name, photoURL, played, points, uid};
+			for (const match of liveMatches) {
+				const pick = picks[match.matchNumber];
+
+				if (!pick) {
+					continue;
+				}
+
+				const got = scorePrediction(
+					pick.p1,
+					pick.p2,
+					match.scoreA as number,
+					match.scoreB as number
+				);
+
+				livePoints += got;
+				points += got;
+			}
+
+			return {exact, livePoints, name, photoURL, played, points, uid};
 		})
 		.sort(
 			(a, b) =>

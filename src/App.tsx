@@ -49,6 +49,7 @@ import {buildStats} from './lib/stats';
 import {
 	buildKnockoutCards,
 	canEditKnockoutPick,
+	knockoutStatus,
 } from './lib/knockoutCards';
 import {buildMatchCards} from './lib/matches';
 import {currentNavItem, NAV_ITEMS, visibleMenu} from './lib/nav';
@@ -64,7 +65,7 @@ import {buildKnockoutChampion} from './lib/knockoutChampion';
 import {approvedParticipant, type Approval, type Profile} from './lib/profiles';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
-import {simulateTitleOdds} from './lib/titleOdds';
+import {simulateKnockoutTitleOdds, simulateTitleOdds} from './lib/titleOdds';
 import {
 	liveKnockoutWhatIfContext,
 	simulateKnockoutWhatIf,
@@ -613,9 +614,34 @@ export default function App() {
 			buildKnockoutStandings(
 				knockoutRosterRows,
 				knockoutPicksByUid,
-				knockoutMatches
+				knockoutMatches,
+				now
 			),
-		[knockoutRosterRows, knockoutPicksByUid, knockoutMatches]
+		[knockoutRosterRows, knockoutPicksByUid, knockoutMatches, now]
+	);
+
+	// A live knockout match shows provisional points (and hides the odds column).
+	const liveKnockout = useMemo(
+		() =>
+			knockoutMatches.some(
+				(match) => knockoutStatus(match, now) === 'live'
+			),
+		[knockoutMatches, now]
+	);
+
+	// Chance each participant tops the knockout pool — the same Monte Carlo as the
+	// group stage, over the in-app picks. Only computed (and shown) once no match
+	// is live, so the column appears when a match has finished.
+	const knockoutOdds = useMemo(
+		() =>
+			liveKnockout
+				? undefined
+				: simulateKnockoutTitleOdds(
+						knockoutRosterRows,
+						knockoutPicksByUid,
+						knockoutMatches
+					),
+		[liveKnockout, knockoutRosterRows, knockoutPicksByUid, knockoutMatches]
 	);
 
 	// "What if" for a live knockout match: reshuffles the knockout standings (not
@@ -1047,6 +1073,7 @@ export default function App() {
 							<KnockoutView
 								knockoutUser={knockoutIdentity}
 								leader={knockoutLeader}
+								live={liveKnockout}
 								myReactions={mine}
 								onClearReaction={
 									auth.isOwner ? clearPlayerReaction : undefined
@@ -1058,6 +1085,7 @@ export default function App() {
 								}
 								reactions={counts}
 								rows={knockoutStandings}
+								titleOdds={knockoutOdds}
 								youName={presenceName}
 							/>
 						}

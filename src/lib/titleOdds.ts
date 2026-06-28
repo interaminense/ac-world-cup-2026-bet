@@ -1,6 +1,8 @@
+import type {KnockoutRosterRow} from './knockoutStandings';
 import {buildMatchCards} from './matches';
 import {scorePrediction} from './scoring';
 import type {Game, Participant} from './types';
+import type {KnockoutMatch} from './useKnockout';
 
 export interface TitleOddsOptions {
 	// Mean goals per team for the neutral scoreline model.
@@ -143,6 +145,112 @@ export function simulateTitleOdds(
 
 	for (let i = 0; i < names.length; i++) {
 		out[names[i]] = wins[i] / sims;
+	}
+
+	return out;
+}
+
+// Probability each knockout participant finishes the bracket pool in first
+// place, the same neutral Monte Carlo as the group stage but over the in-app
+// knockout picks. Finished matches lock in; every undecided match someone has
+// picked is replayed `sims` times and everyone is re-scored. Matches nobody has
+// picked (future rounds with unknown teams) are skipped, so the estimate only
+// reflects the picks made so far.
+export function simulateKnockoutTitleOdds(
+	roster: KnockoutRosterRow[],
+	picksByUid: Record<string, Record<number, {p1: number; p2: number}>>,
+	matches: KnockoutMatch[],
+	options: TitleOddsOptions = {}
+): Record<string, number> {
+	const {lambda = 1.35, seed = 0x9e3779b9, sims = 20000} = options;
+
+	const out: Record<string, number> = {};
+
+	if (roster.length === 0) {
+		return out;
+	}
+
+	const hasScore = (match: KnockoutMatch) =>
+		match.scoreA != null && match.scoreB != null;
+
+	// Points locked in from finished matches, indexed by roster position.
+	const locked = roster.map(({uid}) => {
+		const picks = picksByUid[uid] ?? {};
+		let total = 0;
+
+		for (const match of matches) {
+			const pick = picks[match.matchNumber];
+
+			if (match.finished && hasScore(match) && pick) {
+				total += scorePrediction(
+					pick.p1,
+					pick.p2,
+					match.scoreA as number,
+					match.scoreB as number
+				);
+			}
+		}
+
+		return total;
+	});
+
+	// Undecided fixtures that at least one participant has picked.
+	const remaining = matches
+		.filter((match) => !match.finished)
+		.map((match) => ({
+			p1: roster.map(
+				({uid}) => picksByUid[uid]?.[match.matchNumber]?.p1 ?? -1
+			),
+			p2: roster.map(
+				({uid}) => picksByUid[uid]?.[match.matchNumber]?.p2 ?? -1
+			),
+		}))
+		.filter(({p1}) => p1.some((value) => value >= 0));
+
+	const rand = mulberry32(seed);
+	const wins = new Array<number>(roster.length).fill(0);
+
+	for (let s = 0; s < sims; s++) {
+		const totals = locked.slice();
+
+		for (const {p1, p2} of remaining) {
+			const r1 = poisson(rand, lambda);
+			const r2 = poisson(rand, lambda);
+
+			for (let i = 0; i < roster.length; i++) {
+				if (p1[i] >= 0) {
+					totals[i] += scorePrediction(p1[i], p2[i], r1, r2);
+				}
+			}
+		}
+
+		let max = -Infinity;
+
+		for (const total of totals) {
+			if (total > max) {
+				max = total;
+			}
+		}
+
+		let leaders = 0;
+
+		for (const total of totals) {
+			if (total === max) {
+				leaders++;
+			}
+		}
+
+		const credit = 1 / leaders;
+
+		for (let i = 0; i < roster.length; i++) {
+			if (totals[i] === max) {
+				wins[i] += credit;
+			}
+		}
+	}
+
+	for (let i = 0; i < roster.length; i++) {
+		out[roster[i].name] = wins[i] / sims;
 	}
 
 	return out;

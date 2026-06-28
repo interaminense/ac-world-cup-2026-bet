@@ -11,6 +11,7 @@ import {KnockoutLeaderboard} from './KnockoutLeaderboard';
 export function KnockoutView({
 	knockoutUser,
 	leader,
+	live,
 	myReactions,
 	onClearReaction,
 	onHype,
@@ -18,10 +19,12 @@ export function KnockoutView({
 	onSelect,
 	reactions,
 	rows,
+	titleOdds,
 	youName,
 }: {
 	knockoutUser: KnockoutIdentity | null;
 	leader: {name: string; stats: ParticipantStats} | null;
+	live?: boolean;
 	myReactions?: Record<string, string[]>;
 	onClearReaction?: (name: string, emoji: string) => void;
 	onHype: (rx: number, ry: number) => void;
@@ -29,6 +32,7 @@ export function KnockoutView({
 	onSelect: (name: string) => void;
 	reactions?: Record<string, Record<string, number>>;
 	rows: KnockoutStandingRow[];
+	titleOdds?: Record<string, number>;
 	youName: string | null;
 }) {
 	return (
@@ -68,6 +72,7 @@ export function KnockoutView({
 
 				<KnockoutLeaderboard
 					leader={leader}
+					live={live}
 					myReactions={myReactions}
 					onClearReaction={onClearReaction}
 					onHype={onHype}
@@ -75,6 +80,7 @@ export function KnockoutView({
 					onSelect={onSelect}
 					reactions={reactions}
 					rows={rows}
+					titleOdds={titleOdds}
 					youName={youName}
 				/>
 			</section>

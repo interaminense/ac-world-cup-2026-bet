@@ -3,10 +3,13 @@ import type {ParticipantStats} from '../lib/participantStats';
 import type {LeaderboardRow} from '../lib/ranking';
 import {Leaderboard} from './Leaderboard';
 
-// The zeroed knockout ranking, rendered with the same table + leader card as the
-// main group-stage leaderboard. Picks score on the in-app knockout predictions.
+// The knockout ranking, rendered with the same table + leader card as the main
+// group-stage leaderboard. Picks score on the in-app knockout predictions: live
+// matches show provisional (pulsing) points, and the "% to win" column appears
+// only once no match is live.
 export function KnockoutLeaderboard({
 	leader,
+	live,
 	myReactions,
 	onClearReaction,
 	onHype,
@@ -14,9 +17,11 @@ export function KnockoutLeaderboard({
 	onSelect,
 	reactions,
 	rows,
+	titleOdds,
 	youName,
 }: {
 	leader: {name: string; stats: ParticipantStats} | null;
+	live?: boolean;
 	myReactions?: Record<string, string[]>;
 	onClearReaction?: (name: string, emoji: string) => void;
 	onHype: (rx: number, ry: number) => void;
@@ -24,6 +29,7 @@ export function KnockoutLeaderboard({
 	onSelect: (name: string) => void;
 	reactions?: Record<string, Record<string, number>>;
 	rows: KnockoutStandingRow[];
+	titleOdds?: Record<string, number>;
 	youName: string | null;
 }) {
 	if (rows.length === 0) {
@@ -37,7 +43,7 @@ export function KnockoutLeaderboard({
 
 	const leaderboardRows: LeaderboardRow[] = rows.map((row) => ({
 		exactCount: row.exact,
-		livePoints: 0,
+		livePoints: row.livePoints,
 		name: row.name,
 		photoURL: row.photoURL,
 		rank: row.rank,
@@ -47,6 +53,7 @@ export function KnockoutLeaderboard({
 	return (
 		<Leaderboard
 			leader={leader ?? undefined}
+			live={live}
 			myReactions={myReactions}
 			onClearReaction={onClearReaction}
 			onHype={onHype}
@@ -54,6 +61,7 @@ export function KnockoutLeaderboard({
 			onSelect={onSelect}
 			reactions={reactions}
 			rows={leaderboardRows}
+			titleOdds={titleOdds}
 			youName={youName}
 		/>
 	);

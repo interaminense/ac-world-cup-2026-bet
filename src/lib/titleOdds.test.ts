@@ -1,6 +1,7 @@
 import {describe, expect, it} from 'vitest';
 
-import {simulateTitleOdds} from './titleOdds';
+import {simulateKnockoutTitleOdds, simulateTitleOdds} from './titleOdds';
+import type {KnockoutMatch} from './useKnockout';
 import type {Game, Participant, Prediction} from './types';
 
 function pred(matchNo: number, t1: string, p1: number, t2: string, p2: number): Prediction {
@@ -101,5 +102,62 @@ describe('simulateTitleOdds', () => {
 		const second = simulateTitleOdds([a, b], games, {seed: 123, sims: 500});
 
 		expect(first).toEqual(second);
+	});
+});
+
+function ko(p: Partial<KnockoutMatch>): KnockoutMatch {
+	return {
+		a: '2A',
+		b: '2B',
+		date: '2026-06-28T19:00:00Z',
+		finished: false,
+		matchNumber: 73,
+		scoreA: null,
+		scoreB: null,
+		stage: 'Round of 32',
+		teamA: 'South Africa',
+		teamB: 'Canada',
+		...p,
+	};
+}
+
+describe('simulateKnockoutTitleOdds', () => {
+	const roster = [
+		{name: 'Bruna', uid: 'b'},
+		{name: 'Caio', uid: 'c'},
+	];
+
+	it('returns an empty map for an empty roster', () => {
+		expect(simulateKnockoutTitleOdds([], {}, [])).toEqual({});
+	});
+
+	it('hands the title to the leader when no picked match remains', () => {
+		const matches = [ko({finished: true, matchNumber: 73, scoreA: 2, scoreB: 1})];
+		const picksByUid = {
+			b: {73: {p1: 2, p2: 1}}, // exact → 25
+			c: {73: {p1: 0, p2: 0}}, // miss → 0
+		};
+
+		const odds = simulateKnockoutTitleOdds(roster, picksByUid, matches, {
+			sims: 200,
+		});
+
+		expect(odds.Bruna).toBe(1);
+		expect(odds.Caio).toBe(0);
+	});
+
+	it('splits 50/50 when an undecided picked match is identical', () => {
+		const matches = [ko({finished: false, matchNumber: 73})];
+		const picksByUid = {
+			b: {73: {p1: 2, p2: 1}},
+			c: {73: {p1: 2, p2: 1}},
+		};
+
+		const odds = simulateKnockoutTitleOdds(roster, picksByUid, matches, {
+			sims: 1000,
+		});
+
+		expect(odds.Bruna).toBe(0.5);
+		expect(odds.Caio).toBe(0.5);
 	});
 });

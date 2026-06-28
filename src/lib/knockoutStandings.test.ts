@@ -121,6 +121,51 @@ describe('buildKnockoutStandings', () => {
 
 		expect(rows.every((r) => r.points === 0 && r.rank === 1)).toBe(true);
 	});
+
+	it('scores a live match provisionally as livePoints (not played)', () => {
+		const live = [
+			match({
+				date: '2026-06-28T19:00:00Z',
+				matchNumber: 73,
+				scoreA: 1,
+				scoreB: 0,
+			}),
+		];
+		const now = Date.parse('2026-06-28T19:20:00Z');
+
+		const [row] = buildKnockoutStandings(
+			[{name: 'Bruna', uid: 'b'}],
+			{b: {73: {p1: 1, p2: 0}}}, // exact 1–0 → 25 provisional
+			live,
+			now
+		);
+
+		expect(row.livePoints).toBe(25);
+		expect(row.points).toBe(25);
+		expect(row.played).toBe(0);
+	});
+
+	it('ignores a live match before kickoff', () => {
+		const upcoming = [
+			match({
+				date: '2026-06-28T19:00:00Z',
+				matchNumber: 73,
+				scoreA: 1,
+				scoreB: 0,
+			}),
+		];
+		const now = Date.parse('2026-06-28T18:00:00Z');
+
+		const [row] = buildKnockoutStandings(
+			[{name: 'Bruna', uid: 'b'}],
+			{b: {73: {p1: 1, p2: 0}}},
+			upcoming,
+			now
+		);
+
+		expect(row.livePoints).toBe(0);
+		expect(row.points).toBe(0);
+	});
 });
 
 describe('mergeKnockoutParticipants', () => {
