@@ -109,11 +109,14 @@ export function buildKnockoutCards(
 		.sort((a, b) => a.matchNumber - b.matchNumber)
 		.map((match) => {
 			const hasScore = match.scoreA != null && match.scoreB != null;
+			const status = knockoutStatus(match, nowMs);
 
-			// Show the score as soon as FIFA has one (live or final), but only
-			// award points once the match is finished — a knockout that goes to
-			// extra time/penalties is scored on its full-time (drawn) result.
-			const scored = match.finished && hasScore;
+			// Score the picks while the match is under way (provisional, live)
+			// and once it has finished — same as the group-stage cards, so the
+			// current points and tier colors show on the match card. A shootout
+			// never moves the scoreline (penalties excluded), so the full-time
+			// result stays the drawn one.
+			const scored = hasScore && status !== 'notstarted';
 			const kickoff = knockoutKickoff(match.date);
 
 			const entries: MatchEntry[] = (
@@ -138,7 +141,7 @@ export function buildKnockoutCards(
 				group: match.stage,
 				knockout: true,
 				matchNo: match.matchNumber,
-				status: knockoutStatus(match, nowMs),
+				status,
 				team1: match.teamA ?? match.a,
 				team2: match.teamB ?? match.b,
 				time: kickoff?.time ?? '',

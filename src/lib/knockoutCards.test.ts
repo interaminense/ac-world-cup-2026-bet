@@ -213,7 +213,7 @@ describe('buildKnockoutCards', () => {
 		expect(card.entries[1].points).toBe(0);
 	});
 
-	it('shows the live score but leaves picks unscored until the final whistle', () => {
+	it('scores picks provisionally while the match is live', () => {
 		const picks: Record<number, KnockoutPick[]> = {
 			73: [{name: 'Bruna', p1: 2, p2: 1}],
 		};
@@ -237,7 +237,8 @@ describe('buildKnockoutCards', () => {
 		expect(card.status).toBe('live');
 		expect(card.r1).toBe(1);
 		expect(card.r2).toBe(0);
-		expect(card.entries[0].points).toBeNull();
+		// 2–1 vs a live 1–0: right winner and goal difference → 15 (provisional).
+		expect(card.entries[0].points).toBe(15);
 	});
 });
 
