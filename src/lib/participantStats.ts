@@ -2,8 +2,10 @@ import {realScoreFor} from './games';
 import {kickoffDate} from './kickoff';
 import {buildMatchCards} from './matches';
 import {buildLeaderboardWithMovement, scoreParticipant} from './ranking';
+import {scorePrediction} from './scoring';
 import {buildPointsTimeline} from './timeline';
 import type {Game, Participant} from './types';
+import type {KnockoutMatch} from './useKnockout';
 
 // The six scoring tiers, highest first. Colors mirror TIER_STYLES (the chips
 // in the Rules and on match cards) so the breakdown reads the same: 25 amber,
@@ -182,5 +184,121 @@ export function buildParticipantStats(
 		tierCounts,
 		total,
 		uniquePicks,
+	};
+}
+
+// Knockout-phase stats for one participant, shaped like ParticipantStats so the
+// same panel renders both phases. Computed from this participant's own picks and
+// the match results, so it reads all-zero until knockout games finish, then
+// fills in alongside the bets table. Pool-wide fields (rank, movement,
+// contrarian, rankHistory) need every participant's knockout picks, which this
+// view does not have yet, so they stay neutral until that data is wired in.
+export function buildKnockoutStats(
+	matches: KnockoutMatch[],
+	picks: Record<number, {p1: number; p2: number}>
+): ParticipantStats {
+	const bets = matches
+		.filter((match) => picks[match.matchNumber])
+		.sort((a, b) => a.matchNumber - b.matchNumber)
+		.map((match) => {
+			const pick = picks[match.matchNumber];
+			const hasScore = match.scoreA != null && match.scoreB != null;
+			// Points only once the match is over (extra time included).
+			const finished = match.finished && hasScore;
+
+			return {
+				finished,
+				p1: pick.p1,
+				p2: pick.p2,
+				points: finished
+					? scorePrediction(
+							pick.p1,
+							pick.p2,
+							match.scoreA as number,
+							match.scoreB as number
+						)
+					: null,
+				teamA: match.teamA ?? match.a,
+				teamB: match.teamB ?? match.b,
+			};
+		});
+
+	const finished = bets.filter((bet) => bet.finished);
+	const finishedCount = finished.length;
+	const finishedPoints = finished.reduce(
+		(sum, bet) => sum + (bet.points ?? 0),
+		0
+	);
+	const hits = finished.filter((bet) => (bet.points ?? 0) >= 10).length;
+
+	const tierCounts = SCORE_TIERS.map(
+		(tier) =>
+			finished.filter((bet) => (bet.points ?? 0) === tier.points).length
+	);
+
+	let bestRound: ParticipantStats['bestRound'] = null;
+
+	for (const bet of finished) {
+		const points = bet.points ?? 0;
+
+		if (points > 0 && (!bestRound || points > bestRound.points)) {
+			bestRound = {
+				label: `${bet.teamA} ${bet.p1}–${bet.p2} ${bet.teamB}`,
+				points,
+			};
+		}
+	}
+
+	// Trailing run of scoring picks, in match order (newest last).
+	let streak = 0;
+
+	for (let i = finished.length - 1; i >= 0; i--) {
+		if ((finished[i].points ?? 0) > 0) {
+			streak++;
+		}
+		else {
+			break;
+		}
+	}
+
+	const totalGoals = bets.reduce((sum, bet) => sum + bet.p1 + bet.p2, 0);
+	const avgGoals = bets.length ? totalGoals / bets.length : null;
+
+	const scorelineCount = new Map<string, number>();
+
+	for (const bet of bets) {
+		const key = `${Math.max(bet.p1, bet.p2)}–${Math.min(bet.p1, bet.p2)}`;
+
+		scorelineCount.set(key, (scorelineCount.get(key) ?? 0) + 1);
+	}
+
+	let favoriteScoreline: string | null = null;
+	let favoriteCount = 0;
+
+	for (const [key, count] of scorelineCount) {
+		if (count > favoriteCount) {
+			favoriteCount = count;
+			favoriteScoreline = key;
+		}
+	}
+
+	return {
+		avgGoals,
+		avgPerMatch: finishedCount ? finishedPoints / finishedCount : null,
+		bestRound,
+		contrarianRate: null,
+		favoriteScoreline,
+		finishedCount,
+		gapToLeader: 0,
+		hitRate: finishedCount ? hits / finishedCount : null,
+		hits,
+		leadOverNext: null,
+		movement: 0,
+		rank: 0,
+		rankHistory: [],
+		streak,
+		tierCounts,
+		total: finishedPoints,
+		uniquePicks: 0,
 	};
 }

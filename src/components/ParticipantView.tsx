@@ -1,8 +1,8 @@
-import {useMemo} from 'react';
+import {useMemo, useState} from 'react';
 
 import {flagCode} from '../lib/flags';
 import {knockoutStatus} from '../lib/knockoutCards';
-import {buildParticipantStats} from '../lib/participantStats';
+import {buildKnockoutStats, buildParticipantStats} from '../lib/participantStats';
 import {scoreParticipant} from '../lib/ranking';
 import {scorePrediction} from '../lib/scoring';
 import type {Game, Participant} from '../lib/types';
@@ -35,15 +35,28 @@ export function ParticipantView({
 	participants,
 	reactions,
 }: ParticipantViewProps) {
+	// Knockout is the current phase, so it leads.
+	const [tab, setTab] = useState<'group' | 'knockout'>('knockout');
+
 	const knockoutBets = knockoutMatches
 		.filter((match) => knockoutPicks[match.matchNumber])
 		.sort((a, b) => a.matchNumber - b.matchNumber);
+
 	const {exactCount, scored, total} = scoreParticipant(participant, games);
 
-	const stats = useMemo(
+	const groupStats = useMemo(
 		() => buildParticipantStats(participant, participants, games),
 		[participant, participants, games]
 	);
+
+	const knockoutStats = useMemo(
+		() => buildKnockoutStats(knockoutMatches, knockoutPicks),
+		[knockoutMatches, knockoutPicks]
+	);
+
+	const isKnockout = tab === 'knockout';
+	const headlineTotal = isKnockout ? knockoutStats.total : total;
+	const headlineExact = isKnockout ? knockoutStats.tierCounts[0] : exactCount;
 
 	return (
 		<div className="space-y-4">
@@ -61,25 +74,30 @@ export function ParticipantView({
 								{participant.name}
 							</h2>
 
-							<span className="rounded-full bg-white/10 px-2 py-0.5 font-display text-sm font-bold text-slate-200">
-								#{stats.rank}
-							</span>
+							{!isKnockout && (
+								<>
+									<span className="rounded-full bg-white/10 px-2 py-0.5 font-display text-sm font-bold text-slate-200">
+										#{groupStats.rank}
+									</span>
 
-							{stats.movement > 0 && (
-								<span className="text-xs font-semibold text-sky-400">
-									▲{stats.movement}
-								</span>
-							)}
+									{groupStats.movement > 0 && (
+										<span className="text-xs font-semibold text-sky-400">
+											▲{groupStats.movement}
+										</span>
+									)}
 
-							{stats.movement < 0 && (
-								<span className="text-xs font-semibold text-rose-400">
-									▼{-stats.movement}
-								</span>
+									{groupStats.movement < 0 && (
+										<span className="text-xs font-semibold text-rose-400">
+											▼{-groupStats.movement}
+										</span>
+									)}
+								</>
 							)}
 						</div>
 
 						<p className="mt-1 text-sm text-slate-400">
-							{exactCount} exact score{exactCount === 1 ? '' : 's'}
+							{headlineExact} exact score
+							{headlineExact === 1 ? '' : 's'}
 						</p>
 
 						<div className="group mt-2">
@@ -94,7 +112,7 @@ export function ParticipantView({
 
 				<div className="text-right">
 					<p className="font-display text-4xl font-bold text-amber-400 sm:text-5xl">
-						{total}
+						{headlineTotal}
 					</p>
 
 					<p className="text-xs uppercase tracking-wider text-slate-400">
@@ -103,169 +121,223 @@ export function ParticipantView({
 				</div>
 			</div>
 
-			<ParticipantStatsPanel
-				playerCount={participants.length}
-				stats={stats}
-			/>
+			<div className="flex gap-1 rounded-xl border border-white/10 bg-white/5 p-1 text-sm font-medium">
+				<button
+					className={`flex-1 rounded-lg px-3 py-1.5 transition ${
+						isKnockout
+							? 'bg-sky-500 text-white'
+							: 'text-slate-300 hover:text-white'
+					}`}
+					onClick={() => setTab('knockout')}
+				>
+					Knockout Stage
+				</button>
 
-			{scored.length > 0 && (
-				<div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/5">
-					<table className="w-full min-w-[640px] text-left">
-						<thead>
-							<tr className="border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-slate-400">
-								<th className="px-3 py-3">#</th>
+				<button
+					className={`flex-1 rounded-lg px-3 py-1.5 transition ${
+						isKnockout
+							? 'text-slate-300 hover:text-white'
+							: 'bg-sky-500 text-white'
+					}`}
+					onClick={() => setTab('group')}
+				>
+					Group Stage
+				</button>
+			</div>
 
-								<th className="px-3 py-3">Group</th>
+			{isKnockout ? (
+				<>
+					<ParticipantStatsPanel
+						playerCount={participants.length}
+						stats={knockoutStats}
+					/>
 
-								<th className="hidden px-3 py-3 sm:table-cell">
-									Date
-								</th>
+					{knockoutBets.length > 0 ? (
+						<div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/5">
+							<table className="w-full text-left">
+								<thead>
+									<tr className="border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-slate-400">
+										<th className="px-3 py-3">Round</th>
 
-								<th className="px-3 py-3">Prediction</th>
+										<th className="px-3 py-3">Match</th>
 
-								<th className="px-3 py-3 text-center">Result</th>
+										<th className="px-3 py-3 text-center">
+											Pick
+										</th>
 
-								<th className="px-3 py-3 text-center">Status</th>
+										<th className="px-3 py-3 text-center">
+											Result
+										</th>
 
-								<th className="px-3 py-3 text-right">Points</th>
-							</tr>
-						</thead>
+										<th className="px-3 py-3 text-right">
+											Points
+										</th>
+									</tr>
+								</thead>
 
-						<tbody>
-							{scored.map((item) => (
-								<MatchRow
-									key={item.prediction.matchNo}
-									scored={item}
-								/>
-							))}
-						</tbody>
-					</table>
-				</div>
-			)}
+								<tbody>
+									{knockoutBets.map((match) => {
+										const pick =
+											knockoutPicks[match.matchNumber];
+										const sealed =
+											knockoutStatus(match, Date.now()) ===
+											'notstarted';
+										const hasScore =
+											match.scoreA != null &&
+											match.scoreB != null;
+										// Points only once the match is over
+										// (extra time included); the score can
+										// show live.
+										const scored = match.finished && hasScore;
+										const points = scored
+											? scorePrediction(
+													pick.p1,
+													pick.p2,
+													match.scoreA as number,
+													match.scoreB as number
+												)
+											: null;
 
-			{knockoutBets.length > 0 && (
-				<div>
-					<h3 className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-400">
-						Knockout
-					</h3>
+										return (
+											<tr
+												className="border-b border-white/5 last:border-0"
+												key={match.matchNumber}
+											>
+												<td className="px-3 py-2.5 text-xs text-slate-400">
+													{match.stage}
+												</td>
 
-					<div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/5">
-						<table className="w-full text-left">
-							<thead>
-								<tr className="border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-slate-400">
-									<th className="px-3 py-3">Round</th>
+												<td className="px-3 py-2.5">
+													<span className="flex items-center gap-1.5 text-sm text-white">
+														{flagCode(
+															match.teamA ?? ''
+														) && (
+															<Flag
+																className="h-3 w-4"
+																team={
+																	match.teamA as string
+																}
+															/>
+														)}
 
-									<th className="px-3 py-3">Match</th>
+														<span className="truncate">
+															{match.teamA ??
+																match.a}
+														</span>
 
-									<th className="px-3 py-3 text-center">Pick</th>
+														<span className="text-slate-500">
+															×
+														</span>
 
-									<th className="px-3 py-3 text-center">
-										Result
-									</th>
+														<span className="truncate">
+															{match.teamB ??
+																match.b}
+														</span>
 
-									<th className="px-3 py-3 text-right">Points</th>
-								</tr>
-							</thead>
-
-							<tbody>
-								{knockoutBets.map((match) => {
-									const pick = knockoutPicks[match.matchNumber];
-									const sealed =
-										knockoutStatus(match, Date.now()) === 'notstarted';
-									const hasScore =
-										match.scoreA != null &&
-										match.scoreB != null;
-									// Points only once the match is over (extra
-									// time included); the score can show live.
-									const scored = match.finished && hasScore;
-									const points = scored
-										? scorePrediction(
-												pick.p1,
-												pick.p2,
-												match.scoreA as number,
-												match.scoreB as number
-											)
-										: null;
-
-									return (
-										<tr
-											className="border-b border-white/5 last:border-0"
-											key={match.matchNumber}
-										>
-											<td className="px-3 py-2.5 text-xs text-slate-400">
-												{match.stage}
-											</td>
-
-											<td className="px-3 py-2.5">
-												<span className="flex items-center gap-1.5 text-sm text-white">
-													{flagCode(
-														match.teamA ?? ''
-													) && (
-														<Flag
-															className="h-3 w-4"
-															team={
-																match.teamA as string
-															}
-														/>
-													)}
-
-													<span className="truncate">
-														{match.teamA ?? match.a}
+														{flagCode(
+															match.teamB ?? ''
+														) && (
+															<Flag
+																className="h-3 w-4"
+																team={
+																	match.teamB as string
+																}
+															/>
+														)}
 													</span>
+												</td>
 
-													<span className="text-slate-500">
-														×
-													</span>
-
-													<span className="truncate">
-														{match.teamB ?? match.b}
-													</span>
-
-													{flagCode(
-														match.teamB ?? ''
-													) && (
-														<Flag
-															className="h-3 w-4"
-															team={
-																match.teamB as string
-															}
-														/>
-													)}
-												</span>
-											</td>
-
-											<td className="px-3 py-2.5 text-center font-display font-bold text-white">
-												<span className={sealed ? 'blur-sm select-none' : ''}>
-													{pick.p1}–{pick.p2}
-												</span>
-											</td>
-
-											<td className="px-3 py-2.5 text-center text-slate-300">
-												{hasScore
-													? `${match.scoreA}–${match.scoreB}`
-													: '—'}
-											</td>
-
-											<td className="px-3 py-2.5 text-right">
-												{points !== null ? (
+												<td className="px-3 py-2.5 text-center font-display font-bold text-white">
 													<span
-														className={`inline-block min-w-8 rounded-full px-1.5 py-0.5 text-center text-xs font-bold ${TIER_STYLES[points]}`}
+														className={
+															sealed
+																? 'blur-sm select-none'
+																: ''
+														}
 													>
-														{points}
+														{pick.p1}–{pick.p2}
 													</span>
-												) : (
-													<span className="text-slate-600">
-														—
-													</span>
-												)}
-											</td>
-										</tr>
-									);
-								})}
-							</tbody>
-						</table>
-					</div>
-				</div>
+												</td>
+
+												<td className="px-3 py-2.5 text-center text-slate-300">
+													{hasScore
+														? `${match.scoreA}–${match.scoreB}`
+														: '—'}
+												</td>
+
+												<td className="px-3 py-2.5 text-right">
+													{points !== null ? (
+														<span
+															className={`inline-block min-w-8 rounded-full px-1.5 py-0.5 text-center text-xs font-bold ${TIER_STYLES[points]}`}
+														>
+															{points}
+														</span>
+													) : (
+														<span className="text-slate-600">
+															—
+														</span>
+													)}
+												</td>
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						</div>
+					) : (
+						<p className="rounded-2xl border border-white/10 bg-white/5 px-5 py-8 text-center text-sm text-slate-500">
+							No knockout picks yet.
+						</p>
+					)}
+				</>
+			) : (
+				<>
+					<ParticipantStatsPanel
+						playerCount={participants.length}
+						stats={groupStats}
+					/>
+
+					{scored.length > 0 && (
+						<div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/5">
+							<table className="w-full min-w-[640px] text-left">
+								<thead>
+									<tr className="border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-slate-400">
+										<th className="px-3 py-3">#</th>
+
+										<th className="px-3 py-3">Group</th>
+
+										<th className="hidden px-3 py-3 sm:table-cell">
+											Date
+										</th>
+
+										<th className="px-3 py-3">Prediction</th>
+
+										<th className="px-3 py-3 text-center">
+											Result
+										</th>
+
+										<th className="px-3 py-3 text-center">
+											Status
+										</th>
+
+										<th className="px-3 py-3 text-right">
+											Points
+										</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									{scored.map((item) => (
+										<MatchRow
+											key={item.prediction.matchNo}
+											scored={item}
+										/>
+									))}
+								</tbody>
+							</table>
+						</div>
+					)}
+				</>
 			)}
 		</div>
 	);

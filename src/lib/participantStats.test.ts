@@ -1,7 +1,8 @@
 import {describe, expect, it} from 'vitest';
 
-import {buildParticipantStats} from './participantStats';
+import {buildKnockoutStats, buildParticipantStats} from './participantStats';
 import type {Game, Participant} from './types';
+import type {KnockoutMatch} from './useKnockout';
 
 function makeGame(overrides: Partial<Game> = {}): Game {
 	return {
@@ -84,5 +85,69 @@ describe('buildParticipantStats', () => {
 		expect(stats.contrarianRate).toBe(1);
 		expect(stats.favoriteScoreline).toBe('2–0');
 		expect(stats.avgGoals).toBe(2);
+	});
+});
+
+function makeKnockout(overrides: Partial<KnockoutMatch> = {}): KnockoutMatch {
+	return {
+		a: 'Winner Group A',
+		b: 'Winner Group B',
+		date: null,
+		finished: false,
+		matchNumber: 73,
+		scoreA: null,
+		scoreB: null,
+		stage: 'Round of 32',
+		teamA: 'Brazil',
+		teamB: 'Mexico',
+		...overrides,
+	};
+}
+
+describe('buildKnockoutStats', () => {
+	it('reads all-zero while no knockout match has finished', () => {
+		const stats = buildKnockoutStats([makeKnockout()], {73: {p1: 2, p2: 1}});
+
+		expect(stats.total).toBe(0);
+		expect(stats.finishedCount).toBe(0);
+		expect(stats.hits).toBe(0);
+		expect(stats.tierCounts.every((count) => count === 0)).toBe(true);
+		expect(stats.bestRound).toBeNull();
+		expect(stats.avgPerMatch).toBeNull();
+		// The picked scoreline still reads even before kickoff.
+		expect(stats.avgGoals).toBe(3);
+		expect(stats.favoriteScoreline).toBe('2–1');
+	});
+
+	it('scores a finished knockout match', () => {
+		const stats = buildKnockoutStats(
+			[makeKnockout({finished: true, scoreA: 2, scoreB: 1})],
+			{73: {p1: 2, p2: 1}}
+		);
+
+		expect(stats.total).toBe(25);
+		expect(stats.finishedCount).toBe(1);
+		expect(stats.hits).toBe(1);
+		expect(stats.tierCounts[0]).toBe(1);
+		expect(stats.streak).toBe(1);
+		expect(stats.bestRound).toEqual({
+			label: 'Brazil 2–1 Mexico',
+			points: 25,
+		});
+
+		// Pool-wide fields stay neutral without cross-participant data.
+		expect(stats.rank).toBe(0);
+		expect(stats.contrarianRate).toBeNull();
+		expect(stats.rankHistory).toEqual([]);
+	});
+
+	it('counts only the matches the participant picked', () => {
+		const stats = buildKnockoutStats(
+			[makeKnockout(), makeKnockout({matchNumber: 74})],
+			{73: {p1: 1, p2: 0}}
+		);
+
+		expect(stats.avgGoals).toBe(1);
+		expect(stats.favoriteScoreline).toBe('1–0');
 	});
 });
