@@ -101,7 +101,15 @@ function Countdown({label, startingSoon}: {label: string; startingSoon: boolean}
 
 // Hover popover listing everyone's picks for the match (with points once the
 // match is decided).
-function PicksPopover({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
+function PicksPopover({
+	m,
+	open = false,
+	picks,
+}: {
+	m: KnockoutMatch;
+	open?: boolean;
+	picks: KnockoutPick[];
+}) {
 	// Points only after the final whistle (extra time included), never on a
 	// live score the FIFA feed fills in mid-match.
 	const resolved = m.finished && m.scoreA != null && m.scoreB != null;
@@ -122,7 +130,11 @@ function PicksPopover({m, picks}: {m: KnockoutMatch; picks: KnockoutPick[]}) {
 	}));
 
 	return (
-		<div className="invisible absolute left-1/2 top-full z-50 mt-1 w-64 -translate-x-1/2 rounded-2xl border border-white/10 bg-slate-900 p-3 text-left opacity-0 shadow-xl transition group-hover:visible group-hover:opacity-100">
+		<div
+			className={`absolute left-1/2 top-full z-50 mt-1 w-64 -translate-x-1/2 rounded-2xl border border-white/10 bg-slate-900 p-3 text-left shadow-xl transition group-hover:visible group-hover:opacity-100 ${
+				open ? 'visible opacity-100' : 'invisible opacity-0'
+			}`}
+		>
 			<MatchPicks entries={entries} />
 		</div>
 	);
@@ -240,16 +252,22 @@ function MobileMatchCard({
 	const defined = Boolean(m.teamA && m.teamB);
 	const {label, startingSoon} = knockoutCountdown(m.date, now);
 	const live = knockoutStatus(m, now) === 'live';
+	const hasPicks =
+		picks.length > 0 && knockoutStatus(m, now) !== 'notstarted';
+	const [showPicks, setShowPicks] = useState(false);
 
 	return (
 		<div
 			className={`group relative w-full min-w-0 rounded-md border bg-white/5 px-2 py-1.5 ${
+				hasPicks ? 'cursor-pointer' : ''
+			} ${
 				live
 					? 'border-emerald-400/70 ring-1 ring-emerald-400/40'
 					: startingSoon
 						? 'border-pink-400/70 ring-1 ring-pink-400/40'
 						: 'border-white/10'
 			}`}
+			onClick={() => hasPicks && setShowPicks((value) => !value)}
 		>
 			<div className="flex items-center justify-center gap-2">
 				<MobileTeam placeholder={m.a} team={m.teamA ?? null} />
@@ -264,7 +282,10 @@ function MobileMatchCard({
 			{label && <Countdown label={label} startingSoon={startingSoon} />}
 
 			{signedIn && defined && (
-				<div className="mt-1.5 border-t border-white/5 pt-1 text-center text-[10px]">
+				<div
+					className="mt-1.5 border-t border-white/5 pt-1 text-center text-[10px]"
+					onClick={(event) => event.stopPropagation()}
+				>
 					{pick ? (
 						<Link
 							className="font-semibold text-sky-400 underline hover:text-sky-300"
@@ -283,9 +304,7 @@ function MobileMatchCard({
 				</div>
 			)}
 
-			{picks.length > 0 && knockoutStatus(m, now) !== 'notstarted' && (
-				<PicksPopover m={m} picks={picks} />
-			)}
+			{hasPicks && <PicksPopover m={m} open={showPicks} picks={picks} />}
 		</div>
 	);
 }
