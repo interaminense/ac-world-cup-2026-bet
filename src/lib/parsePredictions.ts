@@ -16,7 +16,12 @@ export function parsePredictionsCsv(content: string): Participant | null {
 	}
 
 	const rawName = titleMatch[1].trim();
-	const name = rawName.charAt(0).toUpperCase() + rawName.slice(1).toLowerCase();
+	// Title-case each word so multi-word names (e.g. "JOE PAK") render properly,
+	// not just the first letter.
+	const name = rawName
+		.split(/\s+/)
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+		.join(' ');
 
 	const headerIndex = data.findIndex((row) => row[0]?.trim() === 'Match #');
 
