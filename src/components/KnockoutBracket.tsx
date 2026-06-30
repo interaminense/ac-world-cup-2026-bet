@@ -61,30 +61,6 @@ function TeamBadge({team}: {team: string | null}) {
 	);
 }
 
-// Live countdown line shown on an upcoming match within 24h of kickoff. Inside
-// the last hour it turns pink with a pulsing dot.
-function Countdown({label, startingSoon}: {label: string; startingSoon: boolean}) {
-	return (
-		<div
-			className={`mt-3 flex items-center justify-center gap-1.5 text-[10px] font-semibold tracking-wide ${
-				startingSoon ? 'text-pink-300' : 'text-slate-400'
-			}`}
-		>
-			{startingSoon ? (
-				<span aria-hidden className="relative flex h-2 w-2">
-					<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-pink-400 opacity-75" />
-
-					<span className="relative inline-flex h-2 w-2 rounded-full bg-pink-500" />
-				</span>
-			) : (
-				<span aria-hidden>⏳</span>
-			)}
-
-			<span>{label}</span>
-		</div>
-	);
-}
-
 // Hover/tap popover listing everyone's picks for the match, with the current
 // points and tier colors.
 function PicksPopover({
@@ -161,7 +137,7 @@ function MatchCard({
 	picks: KnockoutPick[];
 	signedIn: boolean;
 }) {
-	const {label, startingSoon} = knockoutCountdown(m.date, now);
+	const {startingSoon} = knockoutCountdown(m.date, now);
 	const defined = Boolean(m.teamA && m.teamB);
 	const hasScore = m.scoreA != null && m.scoreB != null;
 	const status = knockoutStatus(m, now);
@@ -219,10 +195,6 @@ function MatchCard({
 					</span>
 				</div>
 
-				{label && (
-					<Countdown label={label} startingSoon={startingSoon} />
-				)}
-
 				{defined && <PicksPopover m={m} now={now} picks={picks} />}
 			</div>
 
@@ -279,7 +251,7 @@ function MobileMatchCard({
 }) {
 	const hasScore = m.scoreA != null && m.scoreB != null;
 	const defined = Boolean(m.teamA && m.teamB);
-	const {label, startingSoon} = knockoutCountdown(m.date, now);
+	const {startingSoon} = knockoutCountdown(m.date, now);
 	const live = knockoutStatus(m, now) === 'live';
 	const finished = knockoutStatus(m, now) === 'finished';
 	const [showPicks, setShowPicks] = useState(false);
@@ -327,7 +299,6 @@ function MobileMatchCard({
 				<MobileTeam team={m.teamB ?? null} />
 			</div>
 
-			{label && <Countdown label={label} startingSoon={startingSoon} />}
 
 			{signedIn && defined && (
 				<div
