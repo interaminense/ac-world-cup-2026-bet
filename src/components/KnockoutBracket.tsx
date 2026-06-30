@@ -75,6 +75,26 @@ function TeamLine({
 	);
 }
 
+// One team in the side-by-side layout used before kickoff: its flag once the
+// team is known, otherwise the "W##" feeder placeholder.
+function TeamBadge({
+	placeholder,
+	team,
+}: {
+	placeholder: string;
+	team: string | null;
+}) {
+	const hasFlag = Boolean(team && flagCode(team));
+
+	return hasFlag ? (
+		<Flag className="h-5 w-7 shrink-0" team={team as string} />
+	) : (
+		<span className="min-w-0 truncate text-xs font-medium text-slate-400">
+			{placeholder}
+		</span>
+	);
+}
+
 // Live countdown line shown on an upcoming match within 24h of kickoff. Inside
 // the last hour it turns pink with a pulsing dot.
 function Countdown({label, startingSoon}: {label: string; startingSoon: boolean}) {
@@ -191,8 +211,10 @@ function MatchCard({
 }) {
 	const {label, startingSoon} = knockoutCountdown(m.date, now);
 	const defined = Boolean(m.teamA && m.teamB);
-	const live = knockoutStatus(m, now) === 'live';
-	const finished = knockoutStatus(m, now) === 'finished';
+	const status = knockoutStatus(m, now);
+	const live = status === 'live';
+	const finished = status === 'finished';
+	const notStarted = status === 'notstarted';
 
 	return (
 		<div className="w-full min-w-0">
@@ -207,19 +229,35 @@ function MatchCard({
 			>
 				{/* Dim the result once the match is over (the popover stays full). */}
 				<div className={finished ? 'opacity-50' : ''}>
-					<TeamLine
-						placeholder={m.a}
-						score={m.scoreA ?? null}
-						team={m.teamA ?? null}
-					/>
+					{notStarted ? (
+						// Before kickoff there are no scores, so show the teams
+						// side by side with a "vs" instead of stacked rows.
+						<div className="flex items-center justify-center gap-1.5 py-0.5">
+							<TeamBadge placeholder={m.a} team={m.teamA ?? null} />
 
-					<div className="my-0.5 h-px bg-white/5" />
+							<span className="shrink-0 text-[10px] font-semibold uppercase text-slate-500">
+								vs
+							</span>
 
-					<TeamLine
-						placeholder={m.b}
-						score={m.scoreB ?? null}
-						team={m.teamB ?? null}
-					/>
+							<TeamBadge placeholder={m.b} team={m.teamB ?? null} />
+						</div>
+					) : (
+						<>
+							<TeamLine
+								placeholder={m.a}
+								score={m.scoreA ?? null}
+								team={m.teamA ?? null}
+							/>
+
+							<div className="my-0.5 h-px bg-white/5" />
+
+							<TeamLine
+								placeholder={m.b}
+								score={m.scoreB ?? null}
+								team={m.teamB ?? null}
+							/>
+						</>
+					)}
 				</div>
 
 				{label && (
