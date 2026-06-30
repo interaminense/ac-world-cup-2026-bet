@@ -62,14 +62,17 @@ function TeamBadge({team}: {team: string | null}) {
 }
 
 // Hover/tap popover listing everyone's picks for the match, with the current
-// points and tier colors.
+// points and tier colors. Before kickoff the field stays sealed, but the
+// signed-in viewer still sees their own pick (`myPick`).
 function PicksPopover({
 	m,
+	myPick,
 	now,
 	open = false,
 	picks,
 }: {
 	m: KnockoutMatch;
+	myPick?: KnockoutPick;
 	now: number;
 	open?: boolean;
 	picks: KnockoutPick[];
@@ -118,6 +121,16 @@ function PicksPopover({
 			{started && picks.length > 0 && (
 				<div className="mt-2 border-t border-white/10 pt-2">
 					<MatchPicks entries={entries} live={live} />
+				</div>
+			)}
+
+			{!started && myPick && (
+				<div className="mt-2 flex items-center justify-center gap-1.5 border-t border-white/10 pt-2 text-xs">
+					<span className="text-slate-400">Your pick</span>
+
+					<span className="font-display font-bold text-white">
+						{myPick.p1}–{myPick.p2}
+					</span>
 				</div>
 			)}
 		</div>
@@ -195,7 +208,14 @@ function MatchCard({
 					</span>
 				</div>
 
-				{defined && <PicksPopover m={m} now={now} picks={picks} />}
+				{defined && (
+					<PicksPopover
+						m={m}
+						myPick={pick}
+						now={now}
+						picks={picks}
+					/>
+				)}
 			</div>
 
 			{signedIn && defined && (
@@ -324,7 +344,13 @@ function MobileMatchCard({
 			)}
 
 			{defined && (
-				<PicksPopover m={m} now={now} open={showPicks} picks={picks} />
+				<PicksPopover
+					m={m}
+					myPick={pick}
+					now={now}
+					open={showPicks}
+					picks={picks}
+				/>
 			)}
 		</div>
 	);
