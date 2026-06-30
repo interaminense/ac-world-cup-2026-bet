@@ -45,38 +45,8 @@ const MOBILE_ROUNDS: {key: string; label: string}[] = [
 
 const LINE = 'absolute border-white/15';
 
-function TeamLine({
-	placeholder,
-	score,
-	team,
-}: {
-	placeholder: string;
-	score: number | null;
-	team: string | null;
-}) {
-	const hasFlag = Boolean(team && flagCode(team));
-
-	return (
-		<div className="flex items-center justify-between gap-1.5">
-			{hasFlag ? (
-				<Flag className="h-5 w-7 shrink-0" team={team as string} />
-			) : (
-				<span className="min-w-0 flex-1 truncate text-xs font-medium text-slate-400">
-					{placeholder}
-				</span>
-			)}
-
-			{score !== null && (
-				<span className="shrink-0 text-sm font-bold text-amber-300">
-					{score}
-				</span>
-			)}
-		</div>
-	);
-}
-
-// One team in the side-by-side layout used before kickoff: its flag once the
-// team is known, otherwise the "W##" feeder placeholder.
+// One team in the side-by-side layout: its flag once the team is known,
+// otherwise the "W##" feeder placeholder.
 function TeamBadge({
 	placeholder,
 	team,
@@ -211,10 +181,10 @@ function MatchCard({
 }) {
 	const {label, startingSoon} = knockoutCountdown(m.date, now);
 	const defined = Boolean(m.teamA && m.teamB);
+	const hasScore = m.scoreA != null && m.scoreB != null;
 	const status = knockoutStatus(m, now);
 	const live = status === 'live';
 	const finished = status === 'finished';
-	const notStarted = status === 'notstarted';
 
 	return (
 		<div className="w-full min-w-0">
@@ -227,37 +197,33 @@ function MatchCard({
 							: 'border-white/10'
 				}`}
 			>
-				{/* Dim the result once the match is over (the popover stays full). */}
-				<div className={finished ? 'opacity-50' : ''}>
-					{notStarted ? (
-						// Before kickoff there are no scores, so show the teams
-						// side by side with a "vs" instead of stacked rows.
-						<div className="flex items-center justify-center gap-1.5 py-0.5">
-							<TeamBadge placeholder={m.a} team={m.teamA ?? null} />
+				{/* Teams side by side: just "vs" before kickoff, the scoreline
+				    around it once the match is live or done. Dim a finished
+				    result (the popover stays full). */}
+				<div
+					className={`flex items-center justify-center gap-1.5 py-0.5 ${
+						finished ? 'opacity-50' : ''
+					}`}
+				>
+					<TeamBadge placeholder={m.a} team={m.teamA ?? null} />
 
-							<span className="shrink-0 text-[10px] font-semibold uppercase text-slate-500">
-								vs
-							</span>
-
-							<TeamBadge placeholder={m.b} team={m.teamB ?? null} />
-						</div>
-					) : (
-						<>
-							<TeamLine
-								placeholder={m.a}
-								score={m.scoreA ?? null}
-								team={m.teamA ?? null}
-							/>
-
-							<div className="my-0.5 h-px bg-white/5" />
-
-							<TeamLine
-								placeholder={m.b}
-								score={m.scoreB ?? null}
-								team={m.teamB ?? null}
-							/>
-						</>
+					{hasScore && (
+						<span className="shrink-0 text-sm font-bold text-amber-300">
+							{m.scoreA}
+						</span>
 					)}
+
+					<span className="shrink-0 text-[10px] font-semibold uppercase text-slate-500">
+						vs
+					</span>
+
+					{hasScore && (
+						<span className="shrink-0 text-sm font-bold text-amber-300">
+							{m.scoreB}
+						</span>
+					)}
+
+					<TeamBadge placeholder={m.b} team={m.teamB ?? null} />
 				</div>
 
 				{label && (
@@ -345,15 +311,27 @@ function MobileMatchCard({
 			onClick={() => defined && setShowPicks((value) => !value)}
 		>
 			<div
-				className={`flex items-center justify-center gap-2 ${
+				className={`flex items-center justify-center gap-1.5 ${
 					finished ? 'opacity-50' : ''
 				}`}
 			>
 				<MobileTeam placeholder={m.a} team={m.teamA ?? null} />
 
-				<span className="shrink-0 font-display text-sm font-bold text-amber-300">
-					{hasScore ? `${m.scoreA}–${m.scoreB}` : 'vs'}
+				{hasScore && (
+					<span className="shrink-0 font-display text-sm font-bold text-amber-300">
+						{m.scoreA}
+					</span>
+				)}
+
+				<span className="shrink-0 text-xs font-semibold uppercase text-slate-500">
+					vs
 				</span>
+
+				{hasScore && (
+					<span className="shrink-0 font-display text-sm font-bold text-amber-300">
+						{m.scoreB}
+					</span>
+				)}
 
 				<MobileTeam placeholder={m.b} team={m.teamB ?? null} />
 			</div>
