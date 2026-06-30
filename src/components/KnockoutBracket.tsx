@@ -6,6 +6,7 @@ import {
 	type KnockoutPick,
 	knockoutCountdown,
 	knockoutStatus,
+	upcomingUnpickedMatches,
 } from '../lib/knockoutCards';
 import type {MatchEntry} from '../lib/matches';
 import {scorePrediction} from '../lib/scoring';
@@ -126,30 +127,16 @@ function PicksPopover({
 				open ? 'visible opacity-100' : 'invisible opacity-0'
 			}`}
 		>
-			<div className="flex items-center justify-between gap-2 text-xs font-semibold text-white">
-				<span className="flex min-w-0 items-center gap-1.5">
-					{flagCode(m.teamA ?? '') && (
-						<Flag
-							className="h-3.5 w-5 shrink-0"
-							team={m.teamA as string}
-						/>
-					)}
+			<div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-400">
+				{flagCode(m.teamA ?? '') && (
+					<Flag className="h-5 w-7 shrink-0" team={m.teamA as string} />
+				)}
 
-					<span className="truncate">{m.teamA ?? m.a}</span>
-				</span>
+				<span className="text-slate-500">vs</span>
 
-				<span className="shrink-0 text-slate-500">vs</span>
-
-				<span className="flex min-w-0 items-center justify-end gap-1.5">
-					<span className="truncate">{m.teamB ?? m.b}</span>
-
-					{flagCode(m.teamB ?? '') && (
-						<Flag
-							className="h-3.5 w-5 shrink-0"
-							team={m.teamB as string}
-						/>
-					)}
-				</span>
+				{flagCode(m.teamB ?? '') && (
+					<Flag className="h-5 w-7 shrink-0" team={m.teamB as string} />
+				)}
 			</div>
 
 			{started && picks.length > 0 && (
@@ -553,8 +540,85 @@ export function KnockoutBracket({user}: {user?: KnockoutIdentity | null}) {
 		[matches]
 	);
 
+	// Your own matches kicking off within 24h that you still haven't predicted —
+	// only meaningful once you're signed in to pick.
+	const needPick = useMemo(
+		() => (user ? upcomingUnpickedMatches(matches, mine, now) : []),
+		[matches, mine, now, user]
+	);
+
 	return (
 		<div>
+			{needPick.length > 0 && (
+				<section className="mb-6 rounded-2xl border border-pink-400/40 bg-pink-500/10 p-4 sm:p-5">
+					<h3 className="flex items-center gap-2 font-display text-base font-bold text-white">
+						<span aria-hidden>⏰</span> Pick before kickoff
+					</h3>
+
+					<p className="mb-4 mt-0.5 text-xs text-pink-200/80">
+						{needPick.length}{' '}
+						{needPick.length === 1 ? 'match' : 'matches'} you haven't
+						predicted {needPick.length === 1 ? 'kicks' : 'kick'} off
+						within 24h — tap to pick.
+					</p>
+
+					<div className="grid gap-3 sm:grid-cols-2">
+						{needPick.map((match) => {
+							const {label, startingSoon} = knockoutCountdown(
+								match.date,
+								now
+							);
+
+							return (
+								<Link
+									className="group flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-pink-400/60 hover:bg-white/10"
+									key={match.matchNumber}
+									to={`/matches?match=${match.matchNumber}`}
+								>
+									<span className="flex min-w-0 items-center gap-2">
+										<Flag
+											className="h-8 w-12 shrink-0"
+											team={match.teamA as string}
+										/>
+
+										<span className="truncate text-base font-bold text-white">
+											{match.teamA}
+										</span>
+									</span>
+
+									<span className="shrink-0 px-1 text-center">
+										<span className="block text-[10px] font-semibold uppercase text-slate-500">
+											vs
+										</span>
+
+										<span
+											className={`block text-xs font-semibold ${
+												startingSoon
+													? 'text-pink-300'
+													: 'text-slate-400'
+											}`}
+										>
+											⏳ {label}
+										</span>
+									</span>
+
+									<span className="flex min-w-0 items-center justify-end gap-2">
+										<span className="truncate text-base font-bold text-white">
+											{match.teamB}
+										</span>
+
+										<Flag
+											className="h-8 w-12 shrink-0"
+											team={match.teamB as string}
+										/>
+									</span>
+								</Link>
+							);
+						})}
+					</div>
+				</section>
+			)}
+
 			{/* Desktop: symmetric tree with the trophy in the centre. */}
 			<div className="hidden sm:block">
 				<div className="flex items-stretch gap-2">

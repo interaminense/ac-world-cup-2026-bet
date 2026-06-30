@@ -9,6 +9,7 @@ import {
 	knockoutKickoff,
 	knockoutStatus,
 	type KnockoutPick,
+	upcomingUnpickedMatches,
 } from './knockoutCards';
 import type {KnockoutMatch} from './useKnockout';
 
@@ -262,5 +263,59 @@ describe("knockoutCountdown", () => {
 
 	it("flags startingSoon within the last hour", () => {
 		expect(knockoutCountdown("2026-06-29T12:45:00Z", now)).toEqual({label: "45m", startingSoon: true});
+	});
+});
+
+describe('upcomingUnpickedMatches', () => {
+	const now = Date.parse('2026-06-29T12:00:00Z');
+
+	it('lists defined, unpicked matches within 24h, soonest first', () => {
+		const matches = [
+			// 8.5h away, no pick → included (second).
+			m({
+				date: '2026-06-29T20:30:00Z',
+				matchNumber: 73,
+				teamA: 'Spain',
+				teamB: 'Japan',
+			}),
+			// 3h away, no pick → included (first).
+			m({
+				date: '2026-06-29T15:00:00Z',
+				matchNumber: 74,
+				teamA: 'Brazil',
+				teamB: 'Chile',
+			}),
+			// Already picked → excluded.
+			m({
+				date: '2026-06-29T16:00:00Z',
+				matchNumber: 75,
+				teamA: 'France',
+				teamB: 'Italy',
+			}),
+			// Teams not resolved → excluded.
+			m({date: '2026-06-29T18:00:00Z', matchNumber: 76}),
+			// More than 24h away → excluded.
+			m({
+				date: '2026-07-01T12:00:00Z',
+				matchNumber: 77,
+				teamA: 'Germany',
+				teamB: 'Egypt',
+			}),
+		];
+
+		const result = upcomingUnpickedMatches(matches, {75: {p1: 1, p2: 0}}, now);
+
+		expect(result.map((match) => match.matchNumber)).toEqual([74, 73]);
+	});
+
+	it('excludes matches that have already kicked off', () => {
+		const started = m({
+			date: '2026-06-29T10:00:00Z',
+			matchNumber: 73,
+			teamA: 'Spain',
+			teamB: 'Japan',
+		});
+
+		expect(upcomingUnpickedMatches([started], {}, now)).toEqual([]);
 	});
 });

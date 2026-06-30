@@ -190,3 +190,27 @@ export function knockoutCountdown(
 
 	return {label, startingSoon: diff <= 60 * 60 * 1000};
 }
+
+// Matches a signed-in player still needs to predict: both teams resolved, no
+// pick in yet, and kickoff within the next 24h (the same window the bracket
+// counts down). Sorted by kickoff so the most urgent leads. Drives the "pick
+// before kickoff" prompt shown above the bracket.
+export function upcomingUnpickedMatches(
+	matches: KnockoutMatch[],
+	picks: Record<number, {p1: number; p2: number}>,
+	nowMs: number
+): KnockoutMatch[] {
+	return matches
+		.filter(
+			(match) =>
+				Boolean(match.teamA) &&
+				Boolean(match.teamB) &&
+				!picks[match.matchNumber] &&
+				knockoutCountdown(match.date, nowMs).label !== null
+		)
+		.sort(
+			(a, b) =>
+				(a.date ? Date.parse(a.date) : 0) -
+				(b.date ? Date.parse(b.date) : 0)
+		);
+}
