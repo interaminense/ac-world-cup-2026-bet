@@ -18,6 +18,7 @@ interface ParticipantViewProps {
 	games: Game[];
 	knockoutMatches: KnockoutMatch[];
 	knockoutPicks: Record<number, {p1: number; p2: number}>;
+	knockoutPool: {games: Game[]; participants: Participant[]} | null;
 	myReactions: string[];
 	onReact: (emoji: string) => void;
 	participant: Participant;
@@ -30,6 +31,7 @@ export function ParticipantView({
 	games,
 	knockoutMatches,
 	knockoutPicks,
+	knockoutPool,
 	myReactions,
 	onReact,
 	participant,
@@ -56,8 +58,14 @@ export function ParticipantView({
 	);
 
 	const knockoutStats = useMemo(
-		() => buildKnockoutStats(knockoutMatches, knockoutPicks),
-		[knockoutMatches, knockoutPicks]
+		() =>
+			buildKnockoutStats(
+				knockoutMatches,
+				knockoutPicks,
+				knockoutPool,
+				participant.name
+			),
+		[knockoutMatches, knockoutPicks, knockoutPool, participant.name]
 	);
 
 	const isKnockout = tab === 'knockout';
@@ -154,7 +162,11 @@ export function ParticipantView({
 			{isKnockout ? (
 				<>
 					<ParticipantStatsPanel
-						playerCount={participants.length}
+						playerCount={
+							knockoutPool
+								? knockoutPool.participants.length
+								: participants.length
+						}
 						stats={knockoutStats}
 					/>
 

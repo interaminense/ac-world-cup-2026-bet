@@ -51,18 +51,14 @@ function sheetDateTime(iso: string | null): {date: string; time: string} {
 	};
 }
 
-// The knockout wrap-up data — fun awards, the points timeline, the evolution
-// chart, and the pool stats — all reusing the group-stage builders. We express
-// the knockout (bracket games with resolved teams + each player's in-app picks)
-// in the (Participant, Game) shape those builders consume. `played` (finished
-// knockout matches) lets the view fall back to empty states before any game is
-// decided.
-export function buildKnockoutChampion(
+// Express the knockout (bracket games with resolved teams + each player's in-app
+// picks) in the (Participant, Game) shape the group-stage builders consume, so
+// timelines, match cards, awards, and stats all work unchanged across phases.
+export function knockoutAsGroupStage(
 	roster: KnockoutRosterRow[],
 	picksByUid: Record<string, Record<number, {p1: number; p2: number}>>,
-	matches: KnockoutMatch[],
-	standings: KnockoutStandingRow[]
-): KnockoutChampion {
+	matches: KnockoutMatch[]
+): {games: Game[]; participants: Participant[]} {
 	const resolved = matches.filter((match) => match.teamA && match.teamB);
 
 	const games: Game[] = resolved.map((match) => {
@@ -106,6 +102,25 @@ export function buildKnockoutChampion(
 
 		return {name: row.name, photoURL: row.photoURL ?? null, predictions};
 	});
+
+	return {games, participants};
+}
+
+// The knockout wrap-up data — fun awards, the points timeline, the evolution
+// chart, and the pool stats — all reusing the group-stage builders over the
+// (Participant, Game) projection above. `played` (finished knockout matches)
+// lets the view fall back to empty states before any game is decided.
+export function buildKnockoutChampion(
+	roster: KnockoutRosterRow[],
+	picksByUid: Record<string, Record<number, {p1: number; p2: number}>>,
+	matches: KnockoutMatch[],
+	standings: KnockoutStandingRow[]
+): KnockoutChampion {
+	const {games, participants} = knockoutAsGroupStage(
+		roster,
+		picksByUid,
+		matches
+	);
 
 	const cards = buildMatchCards(participants, games);
 	const stats = buildStats(cards);

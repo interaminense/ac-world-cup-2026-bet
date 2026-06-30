@@ -150,4 +150,90 @@ describe('buildKnockoutStats', () => {
 		expect(stats.avgGoals).toBe(1);
 		expect(stats.favoriteScoreline).toBe('1–0');
 	});
+
+	// The knockout field, expressed in the (Participant, Game) shape buildKnockout-
+	// Stats reads for its pool-wide metrics: match 73 finished 2–1, Ana nailed it
+	// (25), Bia picked 1–1 (0).
+	const KO_FINISHED = makeGame({
+		awayScore: 1,
+		awayTeam: 'Mexico',
+		finished: true,
+		homeScore: 2,
+		homeTeam: 'Brazil',
+		id: 73,
+		timeElapsed: 'finished',
+	});
+	const KO_POOL = {
+		games: [KO_FINISHED],
+		participants: [
+			makeParticipant('Ana', [[73, 'Brazil', 2, 1, 'Mexico']]),
+			makeParticipant('Bia', [[73, 'Brazil', 1, 1, 'Mexico']]),
+		],
+	};
+
+	it('fills rank history, gap and contrarian from the finished pool', () => {
+		const stats = buildKnockoutStats(
+			[makeKnockout({finished: true, scoreA: 2, scoreB: 1})],
+			{73: {p1: 2, p2: 1}},
+			KO_POOL,
+			'Ana'
+		);
+
+		expect(stats.rank).toBe(1);
+		expect(stats.gapToLeader).toBe(0);
+		expect(stats.rankHistory).toEqual([1]);
+		expect(stats.uniquePicks).toBe(1);
+		expect(stats.contrarianRate).toBe(1);
+	});
+
+	it('ranks a trailing pick below the leader', () => {
+		const stats = buildKnockoutStats(
+			[makeKnockout({finished: true, scoreA: 2, scoreB: 1})],
+			{73: {p1: 1, p2: 1}},
+			KO_POOL,
+			'Bia'
+		);
+
+		expect(stats.rank).toBe(2);
+		expect(stats.gapToLeader).toBe(25);
+		expect(stats.rankHistory).toEqual([2]);
+	});
+
+	it('measures contrarian over finished matches only, never sealed ones', () => {
+		const upcoming = makeGame({
+			awayTeam: 'Japan',
+			homeTeam: 'Spain',
+			id: 74,
+			// notstarted: picks here are still sealed.
+		});
+
+		// On the finished match 73 Ana matches Bia (not unique); on the unplayed
+		// match 74 Ana's pick is unique — but that must not count.
+		const pool = {
+			games: [KO_FINISHED, upcoming],
+			participants: [
+				makeParticipant('Ana', [
+					[73, 'Brazil', 1, 1, 'Mexico'],
+					[74, 'Spain', 3, 0, 'Japan'],
+				]),
+				makeParticipant('Bia', [
+					[73, 'Brazil', 1, 1, 'Mexico'],
+					[74, 'Spain', 0, 0, 'Japan'],
+				]),
+			],
+		};
+
+		const stats = buildKnockoutStats(
+			[
+				makeKnockout({finished: true, scoreA: 2, scoreB: 1}),
+				makeKnockout({matchNumber: 74}),
+			],
+			{73: {p1: 1, p2: 1}, 74: {p1: 3, p2: 0}},
+			pool,
+			'Ana'
+		);
+
+		expect(stats.uniquePicks).toBe(0);
+		expect(stats.contrarianRate).toBe(0);
+	});
 });

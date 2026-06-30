@@ -11,6 +11,7 @@ export function BetsView({
 	games,
 	knockoutMatches,
 	knockoutPicksByName,
+	knockoutPool,
 	myReactions,
 	onReact,
 	participants,
@@ -23,6 +24,7 @@ export function BetsView({
 		string,
 		Record<number, {p1: number; p2: number}>
 	>;
+	knockoutPool: {games: Game[]; participants: Participant[]} | null;
 	myReactions: Record<string, string[]>;
 	onReact: (name: string, emoji: string) => void;
 	participants: Participant[];
@@ -41,6 +43,7 @@ export function BetsView({
 			games={games}
 			knockoutMatches={knockoutMatches}
 			knockoutPicks={knockoutPicksByName[active.name] ?? {}}
+			knockoutPool={knockoutPool}
 			myReactions={myReactions[active.name] ?? []}
 			onReact={(emoji) => onReact(active.name, emoji)}
 			participant={active}

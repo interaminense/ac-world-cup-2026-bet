@@ -188,14 +188,18 @@ export function buildParticipantStats(
 }
 
 // Knockout-phase stats for one participant, shaped like ParticipantStats so the
-// same panel renders both phases. Computed from this participant's own picks and
-// the match results, so it reads all-zero until knockout games finish, then
-// fills in alongside the bets table. Pool-wide fields (rank, movement,
-// contrarian, rankHistory) need every participant's knockout picks, which this
-// view does not have yet, so they stay neutral until that data is wired in.
+// same panel renders both phases. Per-player fields come from this participant's
+// own picks and the match results; pool-wide fields (rank, movement, gap,
+// contrarian, rankHistory) come from `pool` — the whole knockout field projected
+// into the (Participant, Game) shape (see knockoutAsGroupStage). Everything
+// pool-wide reads only finished bracket matches: the knockout panel is a record
+// of games already played, never a peek at the sealed picks ahead. Without a
+// pool (or a name to find in it) those fields stay neutral.
 export function buildKnockoutStats(
 	matches: KnockoutMatch[],
-	picks: Record<number, {p1: number; p2: number}>
+	picks: Record<number, {p1: number; p2: number}>,
+	pool: {games: Game[]; participants: Participant[]} | null = null,
+	participantName: string | null = null
 ): ParticipantStats {
 	const bets = matches
 		.filter((match) => picks[match.matchNumber])
@@ -282,23 +286,80 @@ export function buildKnockoutStats(
 		}
 	}
 
+	// Contrarian index over the *finished* bracket matches only: matches where
+	// nobody else made the same (oriented) call. Upcoming matches are skipped —
+	// their picks are sealed, so comparing against them would peek at the future.
+	const cards = pool ? buildMatchCards(pool.participants, pool.games) : [];
+
+	let considered = 0;
+	let uniquePicks = 0;
+
+	for (const card of cards) {
+		if (card.status !== 'finished') {
+			continue;
+		}
+
+		const mine = card.entries.find((entry) => entry.name === participantName);
+
+		if (!mine) {
+			continue;
+		}
+
+		considered++;
+
+		const same = card.entries.filter(
+			(entry) => entry.p1 === mine.p1 && entry.p2 === mine.p2
+		).length;
+
+		if (same === 1) {
+			uniquePicks++;
+		}
+	}
+
+	// Rank history and the current standing, both from the finished-match
+	// timeline so they read the past exactly like the group stage does.
+	const timeline = pool ? buildPointsTimeline(pool.participants, pool.games) : [];
+
+	const rankHistory = participantName
+		? timeline
+				.map(
+					(frame) =>
+						frame.standings.find(
+							(row) => row.name === participantName
+						)?.rank
+				)
+				.filter((value): value is number => value !== undefined)
+		: [];
+
+	const lastStandings = timeline[timeline.length - 1]?.standings ?? [];
+	const myIndex = lastStandings.findIndex(
+		(row) => row.name === participantName
+	);
+	const myStanding = myIndex >= 0 ? lastStandings[myIndex] : undefined;
+	const nextStanding = myIndex >= 0 ? lastStandings[myIndex + 1] : undefined;
+
 	return {
 		avgGoals,
 		avgPerMatch: finishedCount ? finishedPoints / finishedCount : null,
 		bestRound,
-		contrarianRate: null,
+		contrarianRate: considered ? uniquePicks / considered : null,
 		favoriteScoreline,
 		finishedCount,
-		gapToLeader: 0,
+		gapToLeader: myStanding
+			? Math.max(0, (lastStandings[0]?.total ?? 0) - myStanding.total)
+			: 0,
 		hitRate: finishedCount ? hits / finishedCount : null,
 		hits,
-		leadOverNext: null,
-		movement: 0,
-		rank: 0,
-		rankHistory: [],
+		leadOverNext:
+			myStanding && nextStanding
+				? myStanding.total - nextStanding.total
+				: null,
+		movement: myStanding?.movement ?? 0,
+		rank: myStanding?.rank ?? 0,
+		rankHistory,
 		streak,
 		tierCounts,
 		total: finishedPoints,
-		uniquePicks: 0,
+		uniquePicks,
 	};
 }

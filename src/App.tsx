@@ -61,7 +61,10 @@ import {
 	knockoutRoster,
 	mergeKnockoutParticipants,
 } from './lib/knockoutStandings';
-import {buildKnockoutChampion} from './lib/knockoutChampion';
+import {
+	buildKnockoutChampion,
+	knockoutAsGroupStage,
+} from './lib/knockoutChampion';
 import {approvedParticipant, type Approval, type Profile} from './lib/profiles';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
@@ -717,6 +720,19 @@ export default function App() {
 		return map;
 	}, [knockoutRosterRows, knockoutPicksByUid]);
 
+	// The whole knockout field projected into the (Participant, Game) shape, so
+	// each profile's knockout stats (rank over time, gap, contrarian) can be
+	// computed over the finished bracket matches with the group-stage builders.
+	const knockoutPool = useMemo(
+		() =>
+			knockoutAsGroupStage(
+				knockoutRosterRows,
+				knockoutPicksByUid,
+				knockoutMatches
+			),
+		[knockoutRosterRows, knockoutPicksByUid, knockoutMatches]
+	);
+
 	const knockoutLeader = useMemo(
 		() =>
 			buildKnockoutLeaderStats(
@@ -1029,6 +1045,7 @@ export default function App() {
 								games={games}
 								knockoutMatches={knockoutMatches}
 								knockoutPicksByName={knockoutPicksByName}
+								knockoutPool={knockoutPool}
 								myReactions={mine}
 								onReact={react}
 								participants={menuParticipants}
