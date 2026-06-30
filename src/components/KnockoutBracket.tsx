@@ -45,22 +45,17 @@ const MOBILE_ROUNDS: {key: string; label: string}[] = [
 
 const LINE = 'absolute border-white/15';
 
-// One team in the side-by-side layout: its flag once the team is known,
-// otherwise the "W##" feeder placeholder.
-function TeamBadge({
-	placeholder,
-	team,
-}: {
-	placeholder: string;
-	team: string | null;
-}) {
+// One team in the side-by-side layout: its flag once the team is known. Before
+// the bracket resolves the matchup, a muted "?" stands in — no loud "W##" code.
+// The flag is capped to its slot width so it never spills past the card.
+function TeamBadge({team}: {team: string | null}) {
 	const hasFlag = Boolean(team && flagCode(team));
 
 	return hasFlag ? (
-		<Flag className="h-5 w-7 shrink-0" team={team as string} />
+		<Flag className="h-4 w-6 max-w-full" team={team as string} />
 	) : (
-		<span className="min-w-0 truncate text-xs font-medium text-slate-400">
-			{placeholder}
+		<span aria-hidden className="text-xs font-bold text-slate-600">
+			?
 		</span>
 	);
 }
@@ -197,33 +192,44 @@ function MatchCard({
 							: 'border-white/10'
 				}`}
 			>
-				{/* Teams side by side: just "vs" before kickoff, the scoreline
-				    around it once the match is live or done. Dim a finished
-				    result (the popover stays full). */}
+				{/* Teams in equal slots so every card is the same width: the
+				    scoreline sits in the middle, a muted "-" standing in for a
+				    score that isn't in yet. Dim a finished result (the popover
+				    stays full). */}
 				<div
-					className={`flex items-center justify-center gap-1.5 py-0.5 ${
+					className={`flex items-center justify-center gap-1 py-0.5 ${
 						finished ? 'opacity-50' : ''
 					}`}
 				>
-					<TeamBadge placeholder={m.a} team={m.teamA ?? null} />
-
-					{hasScore && (
-						<span className="shrink-0 text-sm font-bold text-amber-300">
-							{m.scoreA}
-						</span>
-					)}
-
-					<span className="shrink-0 text-[10px] font-semibold uppercase text-slate-500">
-						vs
+					<span className="flex min-w-0 flex-1 justify-end">
+						<TeamBadge team={m.teamA ?? null} />
 					</span>
 
-					{hasScore && (
-						<span className="shrink-0 text-sm font-bold text-amber-300">
-							{m.scoreB}
+					<span className="flex shrink-0 items-center gap-0.5">
+						<span
+							className={`text-[11px] font-bold ${
+								hasScore ? 'text-amber-300' : 'text-slate-600'
+							}`}
+						>
+							{hasScore ? m.scoreA : '-'}
 						</span>
-					)}
 
-					<TeamBadge placeholder={m.b} team={m.teamB ?? null} />
+						<span className="text-[9px] font-semibold uppercase text-slate-500">
+							vs
+						</span>
+
+						<span
+							className={`text-[11px] font-bold ${
+								hasScore ? 'text-amber-300' : 'text-slate-600'
+							}`}
+						>
+							{hasScore ? m.scoreB : '-'}
+						</span>
+					</span>
+
+					<span className="flex min-w-0 flex-1 justify-start">
+						<TeamBadge team={m.teamB ?? null} />
+					</span>
 				</div>
 
 				{label && (
@@ -256,20 +262,14 @@ function MatchCard({
 	);
 }
 
-function MobileTeam({
-	placeholder,
-	team,
-}: {
-	placeholder: string;
-	team: string | null;
-}) {
+function MobileTeam({team}: {team: string | null}) {
 	const hasFlag = Boolean(team && flagCode(team));
 
 	return hasFlag ? (
 		<Flag className="h-6 w-9 shrink-0" team={team as string} />
 	) : (
-		<span className="truncate text-xs font-medium text-slate-400">
-			{placeholder}
+		<span aria-hidden className="text-base font-bold text-slate-600">
+			?
 		</span>
 	);
 }
@@ -315,25 +315,29 @@ function MobileMatchCard({
 					finished ? 'opacity-50' : ''
 				}`}
 			>
-				<MobileTeam placeholder={m.a} team={m.teamA ?? null} />
+				<MobileTeam team={m.teamA ?? null} />
 
-				{hasScore && (
-					<span className="shrink-0 font-display text-sm font-bold text-amber-300">
-						{m.scoreA}
-					</span>
-				)}
+				<span
+					className={`shrink-0 font-display text-sm font-bold ${
+						hasScore ? 'text-amber-300' : 'text-slate-600'
+					}`}
+				>
+					{hasScore ? m.scoreA : '-'}
+				</span>
 
 				<span className="shrink-0 text-xs font-semibold uppercase text-slate-500">
 					vs
 				</span>
 
-				{hasScore && (
-					<span className="shrink-0 font-display text-sm font-bold text-amber-300">
-						{m.scoreB}
-					</span>
-				)}
+				<span
+					className={`shrink-0 font-display text-sm font-bold ${
+						hasScore ? 'text-amber-300' : 'text-slate-600'
+					}`}
+				>
+					{hasScore ? m.scoreB : '-'}
+				</span>
 
-				<MobileTeam placeholder={m.b} team={m.teamB ?? null} />
+				<MobileTeam team={m.teamB ?? null} />
 			</div>
 
 			{label && <Countdown label={label} startingSoon={startingSoon} />}
