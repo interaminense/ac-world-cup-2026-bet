@@ -65,7 +65,7 @@ import {buildKnockoutChampion} from './lib/knockoutChampion';
 import {approvedParticipant, type Approval, type Profile} from './lib/profiles';
 import {buildLeaderboardWithMovement} from './lib/ranking';
 import {buildPointsTimeline} from './lib/timeline';
-import {simulateKnockoutTitleOdds, simulateTitleOdds} from './lib/titleOdds';
+import {simulateTitleOdds} from './lib/titleOdds';
 import {
 	liveKnockoutWhatIfContext,
 	simulateKnockoutWhatIf,
@@ -676,21 +676,6 @@ export default function App() {
 		[knockoutMatches, now]
 	);
 
-	// Chance each participant tops the knockout pool — the same Monte Carlo as the
-	// group stage, over the in-app picks. Only computed (and shown) once no match
-	// is live, so the column appears when a match has finished.
-	const knockoutOdds = useMemo(
-		() =>
-			liveKnockout
-				? undefined
-				: simulateKnockoutTitleOdds(
-						knockoutRosterRows,
-						knockoutPicksByUid,
-						knockoutMatches
-					),
-		[liveKnockout, knockoutRosterRows, knockoutPicksByUid, knockoutMatches]
-	);
-
 	// "What if" for a live knockout match: reshuffles the knockout standings (not
 	// the group leaderboard) by re-scoring everyone's bracket picks at the given
 	// score. `now` keeps the live-status check fresh on each tick.
@@ -1138,7 +1123,6 @@ export default function App() {
 								}
 								reactions={counts}
 								rows={knockoutStandings}
-								titleOdds={knockoutOdds}
 								youName={presenceName}
 							/>
 						}

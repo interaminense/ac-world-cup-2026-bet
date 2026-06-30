@@ -158,6 +158,7 @@ function MatchCard({
 	const {label, startingSoon} = knockoutCountdown(m.date, now);
 	const defined = Boolean(m.teamA && m.teamB);
 	const live = knockoutStatus(m, now) === 'live';
+	const finished = knockoutStatus(m, now) === 'finished';
 
 	return (
 		<div className="w-full min-w-0">
@@ -170,19 +171,22 @@ function MatchCard({
 							: 'border-white/10'
 				}`}
 			>
-				<TeamLine
-					placeholder={m.a}
-					score={m.scoreA ?? null}
-					team={m.teamA ?? null}
-				/>
+				{/* Dim the result once the match is over (the popover stays full). */}
+				<div className={finished ? 'opacity-50' : ''}>
+					<TeamLine
+						placeholder={m.a}
+						score={m.scoreA ?? null}
+						team={m.teamA ?? null}
+					/>
 
-				<div className="my-0.5 h-px bg-white/5" />
+					<div className="my-0.5 h-px bg-white/5" />
 
-				<TeamLine
-					placeholder={m.b}
-					score={m.scoreB ?? null}
-					team={m.teamB ?? null}
-				/>
+					<TeamLine
+						placeholder={m.b}
+						score={m.scoreB ?? null}
+						team={m.teamB ?? null}
+					/>
+				</div>
 
 				{label && (
 					<Countdown label={label} startingSoon={startingSoon} />
@@ -254,6 +258,7 @@ function MobileMatchCard({
 	const defined = Boolean(m.teamA && m.teamB);
 	const {label, startingSoon} = knockoutCountdown(m.date, now);
 	const live = knockoutStatus(m, now) === 'live';
+	const finished = knockoutStatus(m, now) === 'finished';
 	const hasPicks =
 		picks.length > 0 && knockoutStatus(m, now) !== 'notstarted';
 	const [showPicks, setShowPicks] = useState(false);
@@ -271,7 +276,11 @@ function MobileMatchCard({
 			}`}
 			onClick={() => hasPicks && setShowPicks((value) => !value)}
 		>
-			<div className="flex items-center justify-center gap-2">
+			<div
+				className={`flex items-center justify-center gap-2 ${
+					finished ? 'opacity-50' : ''
+				}`}
+			>
 				<MobileTeam placeholder={m.a} team={m.teamA ?? null} />
 
 				<span className="shrink-0 font-display text-sm font-bold text-amber-300">
