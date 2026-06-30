@@ -23,6 +23,7 @@ interface ParticipantViewProps {
 	participant: Participant;
 	participants: Participant[];
 	reactions: Record<string, number>;
+	youName: string | null;
 }
 
 export function ParticipantView({
@@ -34,9 +35,14 @@ export function ParticipantView({
 	participant,
 	participants,
 	reactions,
+	youName,
 }: ParticipantViewProps) {
 	// Knockout is the current phase, so it leads.
 	const [tab, setTab] = useState<'group' | 'knockout'>('knockout');
+
+	// Your own picks are never hidden — only other people's stay sealed until
+	// kickoff.
+	const isMe = participant.name === youName;
 
 	const knockoutBets = knockoutMatches
 		.filter((match) => knockoutPicks[match.matchNumber])
@@ -250,7 +256,7 @@ export function ParticipantView({
 												<td className="px-3 py-2.5 text-center font-display font-bold text-white">
 													<span
 														className={
-															sealed
+															sealed && !isMe
 																? 'blur-sm select-none'
 																: ''
 														}

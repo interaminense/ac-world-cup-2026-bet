@@ -1033,6 +1033,7 @@ export default function App() {
 								onReact={react}
 								participants={menuParticipants}
 								reactions={counts}
+								youName={presenceName}
 							/>
 						}
 						path="/bets/:id"

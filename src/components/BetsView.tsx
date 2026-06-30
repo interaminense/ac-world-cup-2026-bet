@@ -15,6 +15,7 @@ export function BetsView({
 	onReact,
 	participants,
 	reactions,
+	youName,
 }: {
 	games: Game[];
 	knockoutMatches: KnockoutMatch[];
@@ -26,6 +27,7 @@ export function BetsView({
 	onReact: (name: string, emoji: string) => void;
 	participants: Participant[];
 	reactions: Record<string, Record<string, number>>;
+	youName: string | null;
 }) {
 	const {id} = useParams();
 
@@ -44,6 +46,7 @@ export function BetsView({
 			participant={active}
 			participants={participants}
 			reactions={reactions[active.name] ?? {}}
+			youName={youName}
 		/>
 	);
 }
