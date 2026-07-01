@@ -1,5 +1,6 @@
 import {useMemo, useState} from 'react';
 
+import {participantAssetProps} from '../lib/analyticsAssets';
 import {flagCode} from '../lib/flags';
 import {knockoutStatus} from '../lib/knockoutCards';
 import {buildKnockoutStats, buildParticipantStats} from '../lib/participantStats';
@@ -73,7 +74,7 @@ export function ParticipantView({
 	const headlineExact = isKnockout ? knockoutStats.tierCounts[0] : exactCount;
 
 	return (
-		<div className="space-y-4">
+		<div className="space-y-4" {...participantAssetProps(participant.name, 'view')}>
 			<div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-5">
 				<div className="flex items-center gap-3 sm:gap-5">
 					<Avatar

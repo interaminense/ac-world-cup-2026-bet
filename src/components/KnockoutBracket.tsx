@@ -1,6 +1,7 @@
 import {useEffect, useMemo, useState} from 'react';
 import {Link} from 'react-router-dom';
 
+import {matchAssetProps} from '../lib/analyticsAssets';
 import {flagCode} from '../lib/flags';
 import {
 	type KnockoutPick,
@@ -167,6 +168,7 @@ function MatchCard({
 							? 'border-pink-400/70 ring-1 ring-pink-400/40'
 							: 'border-white/10'
 				}`}
+				{...(defined ? matchAssetProps(m) : {})}
 			>
 				{/* Teams in equal slots so every card is the same width: the
 				    scoreline sits in the middle, a muted "-" standing in for a
@@ -288,6 +290,7 @@ function MobileMatchCard({
 						: 'border-white/10'
 			}`}
 			onClick={() => defined && setShowPicks((value) => !value)}
+			{...(defined ? matchAssetProps(m) : {})}
 		>
 			<div
 				className={`flex items-center justify-center gap-1.5 ${

@@ -1,3 +1,4 @@
+import {participantAssetProps} from '../lib/analyticsAssets';
 import type {ParticipantStats} from '../lib/participantStats';
 import type {LeaderboardRow} from '../lib/ranking';
 import {Avatar} from './Avatar';
@@ -121,6 +122,7 @@ export function Leaderboard({
 								}`}
 								key={row.name}
 								onClick={() => onSelect(row.name)}
+								{...participantAssetProps(row.name)}
 							>
 								<td className="w-10 py-3 pl-3 pr-0 font-display text-lg font-bold text-slate-300 sm:w-12">
 									{row.rank <= 3 ? MEDALS[row.rank - 1] : row.rank}
