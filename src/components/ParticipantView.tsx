@@ -1,6 +1,7 @@
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 
 import {participantAssetProps} from '../lib/analyticsAssets';
+import {pingAssetScan} from '../lib/analyticsCloud';
 import {flagCode} from '../lib/flags';
 import {knockoutStatus} from '../lib/knockoutCards';
 import {buildKnockoutStats, buildParticipantStats} from '../lib/participantStats';
@@ -68,6 +69,13 @@ export function ParticipantView({
 			),
 		[knockoutMatches, knockoutPicks, knockoutPool, participant.name]
 	);
+
+	// This profile can render after the initial asset scan (async data / SPA
+	// route change), so nudge the scanner once it's on screen — that's what
+	// fires the participant `objectEntryViewed`.
+	useEffect(() => {
+		pingAssetScan();
+	}, [participant.name]);
 
 	const isKnockout = tab === 'knockout';
 	const headlineTotal = isKnockout ? knockoutStats.total : total;

@@ -105,3 +105,15 @@ export function acTrack(
 ): void {
 	runOrQueue(() => window.Analytics?.track(eventId, properties));
 }
+
+// Nudge the SDK's objectEntry plugin to re-scan for asset impressions/views.
+// That plugin only scans on the first load and on document scroll/resize, so
+// content that appears on a client-side route change (e.g. a profile page that
+// fits the viewport, so nothing scrolls) is never picked up on its own. A
+// synthetic document scroll triggers the scan; already-seen elements are marked
+// and skipped, so nothing double-fires.
+export function pingAssetScan(): void {
+	if (typeof document !== 'undefined') {
+		document.dispatchEvent(new Event('scroll'));
+	}
+}

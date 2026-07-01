@@ -37,7 +37,12 @@ import {GroupStageView} from './components/GroupStageView';
 import {KnockoutChampionView} from './components/KnockoutChampionView';
 import {PhotosProvider} from './components/PhotosContext';
 import {trackEvent, trackPageView} from './lib/analytics';
-import {acPage, acTrack, initAnalyticsCloud} from './lib/analyticsCloud';
+import {
+	acPage,
+	acTrack,
+	initAnalyticsCloud,
+	pingAssetScan,
+} from './lib/analyticsCloud';
 import {dataPath} from './lib/dataRoot';
 import {participantSlug} from './lib/auth';
 import {buildEvolution} from './lib/evolution';
@@ -302,6 +307,10 @@ export default function App() {
 		trackPageView(page);
 		acPage('pageViewed', {page, title: document.title});
 		acPage('pageLoaded', {page, title: document.title});
+
+		// The route's assets just rendered — poke the objectEntry scanner so
+		// impressions/views fire without waiting for a scroll.
+		pingAssetScan();
 
 		if (page.startsWith('/bets/')) {
 			acTrack('participant_opened', {
