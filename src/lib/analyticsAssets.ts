@@ -13,37 +13,30 @@ import {participantSlug} from './auth';
 
 interface AssetAttributes {
 	'data-analytics-asset-action': 'impression' | 'view';
-	'data-analytics-asset-categories'?: string;
 	'data-analytics-asset-title': string;
 	'data-analytics-asset-type': 'object-entry';
 	'data-analytics-external-reference-code': string;
 	'data-analytics-object-definition-name': string;
 }
 
-// A World Cup match (group or knockout). `matchNumber` is the stable id; the
-// title is the resolved matchup and the stage becomes the asset category.
+// A World Cup match (group or knockout). `matchNumber` is the stable id and the
+// title is the resolved matchup. No categories: the pool has no real taxonomy,
+// and AC expects that field as a JSON array of {id, name, vocabularyId}.
 export function matchAssetProps(
 	match: {
 		matchNumber: number;
-		stage?: string;
 		teamA: string | null;
 		teamB: string | null;
 	},
 	action: 'impression' | 'view' = 'impression'
 ): AssetAttributes {
-	const props: AssetAttributes = {
+	return {
 		'data-analytics-asset-action': action,
 		'data-analytics-asset-title': `${match.teamA} vs ${match.teamB}`,
 		'data-analytics-asset-type': 'object-entry',
 		'data-analytics-external-reference-code': `match-${match.matchNumber}`,
 		'data-analytics-object-definition-name': 'WorldCupMatch',
 	};
-
-	if (match.stage) {
-		props['data-analytics-asset-categories'] = match.stage;
-	}
-
-	return props;
 }
 
 // A pool participant. The slug keeps the id stable regardless of name casing.
